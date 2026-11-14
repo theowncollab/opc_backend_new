@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>OPC | Meeting Controls (Admin)</title>
+</head>
+
+<body>
+    <form>
+        <legend>
+            Cancel Timings
+        </legend>
+        <input type="date" name="date" id="cancel-date" placeholder="Date">
+        <select name="time-slots" id="cancel-time-slots">
+            <option value="" disabled selected>Select Time Slot</option>
+        </select>
+        <button type="button" id="cancel-meet-btn">Cancel</button>
+    </form>
+    <form>
+        <legend>
+            Remove Meeting
+        </legend>
+        <input type="date" name="date" id="remove-date" placeholder="Date">
+        <select name="time-slots" id="remove-time-slots">
+            <option value="" disabled selected>Select Time Slot</option>
+        </select>
+        <button type="button" id="remove-meet-btn">Remove</button>
+    </form>
+    <form>
+        <legend>
+            Add Meeting
+        </legend>
+        <input type="text" name="name" id="add-name" placeholder="Name">
+        <input type="text" name="emails" id="add-emails" placeholder="Emails">
+        <input type="text" name="user_type" id="add-user-type" placeholder="User Type">
+        <input type="date" name="date" id="add-date" placeholder="Date">
+        <select name="time-slots" id="add-time-slots">
+            <option value="" disabled selected>Select Time Slot</option>
+        </select>
+        <input type="text" name="google_meet_link" id="add-google-meet-link" placeholder="Google Meet Link">
+        <button type="button" id="add-meet-btn">Add</button>
+    </form>
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>
