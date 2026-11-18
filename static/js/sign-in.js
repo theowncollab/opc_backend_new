@@ -6,6 +6,24 @@ const cookieOptions = `${domainAttribute} path=/; max-age=604800; Secure; SameSi
 const OUR_CLIENT_ID = '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com';
 
 let selectedUserType = null;
+let pendingGoogleToken = null;
+
+// Parse a JWT payload on the client without external libraries
+function parseJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch {
+        return null;
+    }
+}
 
 // Save the tokens from sign-in, then open the dashboard.
 function finishSignIn(path, body) {
@@ -38,10 +56,125 @@ function finishSignIn(path, body) {
         .catch(() => alert("We couldn't reach OPC. Check your connection and try again."));
 }
 
+function promptNewUserModal(details) {
+    const modal = document.getElementById('new-user-modal');
+    const input = document.getElementById('new-user-username');
+    const rolePills = document.querySelectorAll('.auth-modal-role-pill');
+    let chosenRole = details.preselectedRole || 'Creator';
+
+    if (input) {
+        input.value = details.suggestedName || '';
+    }
+
+    rolePills.forEach(pill => {
+        const r = pill.getAttribute('data-role');
+        if (r.toLowerCase() === chosenRole.toLowerCase()) {
+            pill.classList.add('active');
+            chosenRole = r;
+        } else {
+            pill.classList.remove('active');
+        }
+        pill.onclick = (e) => {
+            e.preventDefault();
+            rolePills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            chosenRole = r;
+        };
+    });
+
+    if (modal && typeof modal.showModal === 'function') {
+        modal.showModal();
+        if (input) {
+            setTimeout(() => input.focus(), 150);
+        }
+    } else {
+        const fallbackName = prompt("Welcome to OPC! Please enter your username to complete sign-up:", details.suggestedName || "");
+        if (fallbackName !== null && fallbackName.trim()) {
+            finishSignIn('/auth/google-sign-in', {
+                google_id_token: details.googleToken,
+                user_type: chosenRole,
+                username: fallbackName.trim()
+            });
+        }
+    }
+}
+
+function setupNewUserModal() {
+    const form = document.getElementById('new-user-form');
+    const cancelBtn = document.getElementById('cancel-new-user-modal');
+    const modal = document.getElementById('new-user-modal');
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('new-user-username');
+            const activePill = document.querySelector('.auth-modal-role-pill.active');
+            const chosenRole = activePill ? activePill.getAttribute('data-role') : (selectedUserType || 'Creator');
+            const username = (input ? input.value.trim() : '') || 'Member';
+
+            if (modal) modal.close();
+
+            if (pendingGoogleToken) {
+                finishSignIn('/auth/google-sign-in', {
+                    google_id_token: pendingGoogleToken,
+                    user_type: chosenRole,
+                    username: username
+                });
+            }
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            if (modal) modal.close();
+            pendingGoogleToken = null;
+        });
+    }
+}
+
 function handleCredentialResponse(response) {
-    finishSignIn('/auth/google-sign-in', {
-        google_id_token: response.credential,
-        user_type: selectedUserType
+    pendingGoogleToken = response.credential;
+    const payload = parseJwt(response.credential);
+    const email = payload ? payload.email : null;
+    const suggestedName = payload ? (payload.name || (email ? email.split('@')[0] : '')) : '';
+
+    if (!email) {
+        finishSignIn('/auth/google-sign-in', {
+            google_id_token: response.credential,
+            user_type: selectedUserType
+        });
+        return;
+    }
+
+    // Check if this is an old or new user
+    fetch('/auth/check-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.exists) {
+            // Existing user: sign in directly without popup
+            finishSignIn('/auth/google-sign-in', {
+                google_id_token: response.credential,
+                user_type: selectedUserType || data.user_type
+            });
+        } else {
+            // New user: display modal to ask for username and confirm role
+            promptNewUserModal({
+                googleToken: response.credential,
+                email: email,
+                suggestedName: suggestedName,
+                preselectedRole: selectedUserType
+            });
+        }
+    })
+    .catch(() => {
+        finishSignIn('/auth/google-sign-in', {
+            google_id_token: response.credential,
+            user_type: selectedUserType
+        });
     });
 }
 
@@ -50,35 +183,34 @@ window.onload = () => {
     const types = document.querySelectorAll('.type');
     const overlay = document.getElementById('google-sign-in-overlay');
 
-    overlay.addEventListener('click', (e) => {
-        if (!selectedUserType) {
-            e.stopPropagation();
-            alert("Please select a User Type before signing in.");
-        }
-    });
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            // Dismiss overlay so Google sign in is directly accessible
+            overlay.style.display = 'none';
+        });
+    }
 
     types.forEach(type => {
         type.addEventListener('click', () => {
             if (type.classList.contains('active')) {
                 type.classList.remove('active');
                 selectedUserType = null;
-                overlay.style.display = 'block';
+                if (overlay) overlay.style.display = 'block';
             } else {
                 types.forEach(t => t.classList.remove('active'));
                 type.classList.add('active');
                 selectedUserType = type.innerText.trim();
-                overlay.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
             }
         });
     });
 
+    setupNewUserModal();
     renderGoogleButton();
 
 };
 
-// Google's own button, shown as Google draws it. It must stay visible: Google ignores
-// clicks on a hidden button (that's what broke the old look-alike button).
-// Google allows a width between 200 and 400 pixels.
+// Google's own button, shown as Google draws it.
 function renderGoogleButton() {
     const holder = document.getElementById('g_id_signin');
     const unavailable = document.getElementById('google-sign-in-unavailable');
@@ -102,13 +234,14 @@ function renderGoogleButton() {
         logo_alignment: 'left',
         width: width
     });
-    // If nothing has appeared after a few seconds, say so instead of leaving a dead space.
     setTimeout(() => {
         if (!holder.querySelector('iframe')) showUnavailable();
     }, 5000);
 }
 
 const signInScheduleMeetBtn = document.getElementById('sign-in-schedule-a-meet-btn');
-signInScheduleMeetBtn.addEventListener('click', () => {
-    window.location.href = 'schedule-a-meet.html';
-});
+if (signInScheduleMeetBtn) {
+    signInScheduleMeetBtn.addEventListener('click', () => {
+        window.location.href = 'schedule-a-meet.html';
+    });
+}

@@ -1,4 +1,4 @@
-from models.auth import GoogleToken
+from models.auth import GoogleToken, CheckUserBody
 from utils.tokens_ import create_access_token, create_refresh_token
 from utils.authorization_ import get_current_user
 from utils.auth_settings_ import settings, oauth2_scheme
@@ -8,6 +8,7 @@ from google.auth.transport import requests as google_auth_requests
 from google.oauth2 import id_token
 from datetime import datetime, timedelta, timezone
 from bson import ObjectId
+from typing import Optional
 import jwt
 import os
 from utils import email_
@@ -18,7 +19,28 @@ from database import schema
 
 router = APIRouter()
 
-async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks):
+@router.post('/check-user')
+async def check_user(body: CheckUserBody):
+    try:
+        email_clean = (body.email or '').strip().lower()
+        if not email_clean:
+            return {'status_code': 400, 'exists': False, 'message': 'Email is required.'}
+        
+        user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
+        if not user:
+            user = get({'email': body.email.strip()}, 'PERM_USERS', 'USERS')
+
+        return {
+            'status_code': 200,
+            'exists': bool(user),
+            'user_type': user.get('user_type') if user else None,
+            'name': user.get('name') or user.get('username') if user else None
+        }
+    except Exception as e:
+        print(f"[AUTH ERROR] Failed checking user: {e}")
+        return {'status_code': 500, 'exists': False, 'error': str(e)}
+
+async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks, username: Optional[str] = None, google_name: Optional[str] = None):
     """Sign in the account for this email, or create it (needs user_type)."""
     email_clean = (email or '').strip().lower()
     existing_perm_user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
@@ -28,17 +50,26 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
     if existing_perm_user:
         user_id = str(existing_perm_user['_id'])
         message = 'User signed in successfully'
+        is_new = False
     else:
         if not user_type:
             return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
 
+        display_name_val = (username or google_name or email_clean.split('@')[0]).strip()
         new_user = {
             'email': email_clean,
+            'name': display_name_val,
+            'username': display_name_val,
             'user_type': user_type,
-            'last_logout_time': None
+            'last_logout_time': None,
+            'profile': {
+                'displayName': display_name_val,
+                'legalName': google_name or display_name_val
+            }
         }
         user_id = add(new_user, 'PERM_USERS', 'USERS')
         message = 'User signed up and signed in successfully'
+        is_new = True
 
         try:
             email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
@@ -73,6 +104,7 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
     return {
         'status_code': 200,
         'message': message,
+        'is_new_user': is_new,
         'access_token': access_token,
         'refresh_token': refresh_token,
         'token_type': 'bearer',
@@ -107,7 +139,13 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
             print(f"[AUTH ERROR] Google token verification failed: {e}")
             return {'status_code': 400, 'message': 'Invalid Google ID token'}
 
-        return await _sign_in_by_email(id_info['email'], token_info.user_type, background_tasks)
+        return await _sign_in_by_email(
+            id_info['email'],
+            token_info.user_type,
+            background_tasks,
+            username=token_info.username,
+            google_name=id_info.get('name')
+        )
 
     except Exception as e:
         import traceback

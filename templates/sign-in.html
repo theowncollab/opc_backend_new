@@ -4,7 +4,7 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/forms.css?v=3">
+<link rel="stylesheet" href="/static/css/forms.css?v=4">
 {% endblock %}
 
 
@@ -52,10 +52,48 @@
         </div>
     </div>
 </section>
+
+<!-- Pop-up for new users asking for username and role confirmation -->
+<dialog id="new-user-modal" class="auth-modal" aria-labelledby="new-user-title">
+    <div class="auth-modal-card">
+        <div class="auth-modal-header">
+            <h2 id="new-user-title">Welcome to OPC</h2>
+            <p>You’re joining for the first time. Choose a username to create your account and get started on your dashboard.</p>
+        </div>
+
+        <form id="new-user-form" class="auth-modal-form" method="dialog">
+            <div class="auth-modal-field">
+                <label for="new-user-username">Choose your username / display name</label>
+                <input type="text" id="new-user-username" name="username" placeholder="e.g. Priya Sharma" required maxlength="50" autocomplete="name" />
+                <span class="field-hint">You can change this and other details in your dashboard anytime.</span>
+            </div>
+
+            <div class="auth-modal-roles">
+                <label>I am joining as a:</label>
+                <div class="auth-modal-role-pills" role="radiogroup" aria-label="Select role">
+                    <button type="button" class="auth-modal-role-pill" data-role="Creator">
+                        <i class='bx bx-palette'></i> Creator
+                    </button>
+                    <button type="button" class="auth-modal-role-pill" data-role="Brand">
+                        <i class='bx bx-store-alt'></i> Brand
+                    </button>
+                    <button type="button" class="auth-modal-role-pill" data-role="Event Partner">
+                        <i class='bx bx-calendar-star'></i> Event Partner
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-modal-actions">
+                <button type="submit" id="submit-new-user-btn" class="auth-modal-submit">Continue to Dashboard &rarr;</button>
+                <button type="button" id="cancel-new-user-modal" class="auth-modal-cancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 {% endblock %}
 
 
 {% block script %}
 <script src="https://accounts.google.com/gsi/client"></script>
-<script type="module" src="/static/js/sign-in.js?v=20261118d"></script>
+<script type="module" src="/static/js/sign-in.js?v=20261118e"></script>
 {% endblock %}
