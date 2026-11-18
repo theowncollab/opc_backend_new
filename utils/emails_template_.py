@@ -43,7 +43,7 @@ async def register_event_email(event_name):
                             </tr>
                             <tr>
                                 <td style="background-color: #333333; padding: 20px; text-align: center; font-size: 12px; color: #bbbbbb;">
-                                    <p style="margin: 0;">&copy; 2025 OPC. All rights reserved.</p>
+                                    <p style="margin: 0;">&copy; 2026 OPC. All rights reserved.</p>
                                     <p style="margin: 5px 0 0 0;">In case of any issues, please contact us at <a href="mailto:opc.owncollab@gmail.com">opc.owncollab@gmail.com</a>.</p>
                                 </td>
                             </tr>
@@ -58,6 +58,9 @@ async def register_event_email(event_name):
     }
 
 async def welcome_email(user_name, user_type):
+    name_display = (user_name or 'there').strip()
+    role_display = (user_type or 'Partner').strip().title()
+
     return {
         'subject_': 'Welcome to OPC!',
         'body_': f"""
@@ -88,9 +91,9 @@ async def welcome_email(user_name, user_type):
 
                             <tr>
                                 <td style="padding: 40px 30px;">
-                                    <p style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;">Hello {user_name or 'there'},</p>
+                                    <p style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;">Hello {name_display},</p>
                                     <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6;">
-                                        Welcome to Own Professional Collaboration! We're thrilled to have you onboard as a <b>{user_type}</b>.
+                                        Welcome to Own Professional Collaboration! We're thrilled to have you onboard as a <b>{role_display}</b>.
                                     </p>
                                     <p style="margin: 0 0 15px 0; font-size: 12px; line-height: 1.2;">
                                         Get started by exploring your dashboard. We can't wait to see what you collaborate on!
@@ -102,7 +105,7 @@ async def welcome_email(user_name, user_type):
                             </tr>
                             <tr>
                                 <td style="background-color: #333333; padding: 20px; text-align: center; font-size: 12px; color: #bbbbbb;">
-                                    <p style="margin: 0;">&copy; 2025 OPC. All rights reserved.</p>
+                                    <p style="margin: 0;">&copy; 2026 OPC. All rights reserved.</p>
                                     <p style="margin: 5px 0 0 0;">In case of any issues, please contact us at <a href="mailto:opc.owncollab@gmail.com">opc.owncollab@gmail.com</a>.</p>
                                 </td>
                             </tr>
