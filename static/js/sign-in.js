@@ -1,5 +1,6 @@
-const isProduction = window.location.hostname.includes("theowncollab.com");
-const domainAttribute = isProduction ? "domain=.theowncollab.com;" : "";
+const isOpcown = window.location.hostname.includes("opcown.com");
+const isTheOwnCollab = window.location.hostname.includes("theowncollab.com");
+const domainAttribute = isOpcown ? "domain=.opcown.com;" : (isTheOwnCollab ? "domain=.theowncollab.com;" : "");
 const cookieOptions = `${domainAttribute} path=/; max-age=604800; Secure; SameSite=Lax`;
 
 const OUR_CLIENT_ID = '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com';
