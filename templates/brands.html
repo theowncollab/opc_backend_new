@@ -5,146 +5,151 @@
 
 {% block style %}
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<link rel="stylesheet" href="/static/css/brands.css">
-<link rel="stylesheet" href="/static/images/favicons/favicon.ico">
+<link rel="stylesheet" href="/static/css/audience.css?v=5">
+<link rel="stylesheet" href="/static/css/scenes.css?v=3">
 {% endblock %}
 
 
 {% block content %}
-<!-- Title Section Start -->
-    <section id="title-section">
-        <div>
-            <span>Connecting your brand with the right voices</span>
-        </div>
-    </section>
-    <!-- Title Section End -->
-
-    <!-- Hero Section Start -->
-    <section id="br-hero-section">
-        <div id="br-hero-left">
-            <div id="br-hero-left-top">
-                <div id="br-hero-left-top-title">BRANDS,</div>
-            </div>
-            <div id="br-hero-left-bottom">
-                <div id="br-hero-left-bottom-text">
-                    At OPC, we understand that today’s consumers trust people more than ads. That’s why we help brands
-                    like yours partner with influencers who can authentically tell your story, amplify your message, and
-                    build genuine trust with your target audience.
-                </div>
-                <div id="br-hero-left-bottom-btns">
-                    <button type="button" id="brands-schedule-a-meet-btn">SCHEDULE A MEET <i
-                            class='bx  bx-arrow-right-stroke'></i></button>
-                    <a href="./terms-and-conditions.html">OUR TERMS & CONDITIONS</a>
-                </div>
+<!-- Hero -->
+<section class="band-signal aud-hero" id="br-hero-section">
+    <div class="wrap aud-hero-grid">
+        <div class="aud-hero-copy" id="br-hero-left">
+            <h1 class="aud-title">Brands</h1>
+            <p class="aud-tagline">Connecting your brand with the right voices.</p>
+            <p class="aud-body">People trust people more than ads. OPC helps your brand partner with creators who can tell your story in their own words, reach the audience you want, and build real trust with it.</p>
+            <div class="aud-actions" id="br-hero-left-bottom-btns">
+                <button type="button" id="brands-schedule-a-meet-btn">Schedule a meet</button>
+                <a href="./terms-and-conditions.html">Our terms and conditions</a>
             </div>
         </div>
-        <div id="br-hero-right">
-            <img src="/static/images/brands-promo-1.png" alt="Brands Hero Image" />
+        <div class="aud-hero-art sticker" id="br-hero-right" data-motion>
+            <img src="/static/images/brands-promo-1.webp" alt="A creator filming in a studio" loading="eager" />
+            <ol class="feed" data-motion aria-hidden="true">
+                <li style="--i:0"><i class='bx bx-megaphone'></i><span><strong>Campaign posted</strong><small>Summer skincare launch</small></span></li>
+                <li style="--i:1"><i class='bx bx-target'></i><span><strong>8 creators match your brief</strong><small>Picked by audience and niche</small></span></li>
+                <li style="--i:2"><i class='bx bx-pen'></i><span><strong>Brief signed</strong><small>Deliverables and dates agreed</small></span></li>
+                <li style="--i:3" class="is-stamp"><i class='bx bx-badge-check'></i><span><strong>Reel approved</strong><small>Ready to go live</small></span></li>
+            </ol>
         </div>
-    </section>
-    <!-- Hero Section End -->
+    </div>
+</section>
 
-    <!-- Main Content Start -->
-    <section id="br-main-content">
-        <div id="br-main-content-title">
-            <span>Why work with us?</span>
-            <span>Here's a glimpse of the many perks you’ll enjoy when you <a href="./sign-in.html">join us.</a></span>
+<!-- Why work with us -->
+<section class="band-paper aud-perks" id="br-main-content">
+    <div class="wrap">
+        <div class="aud-perks-head" id="br-main-content-title">
+            <div>
+                <h2 class="aud-section-title">Why work with us</h2>
+                <p>Here’s what you get when you <a href="./sign-in.html">join OPC</a>.</p>
+            </div>
+            <div class="scroll-left-right">
+                <button type="button" class="scroll-left secondary" aria-label="Previous"><i class='bx bx-chevron-left' aria-hidden="true"></i></button>
+                <button type="button" class="scroll-right secondary" aria-label="Next"><i class='bx bx-chevron-right' aria-hidden="true"></i></button>
+            </div>
         </div>
-
-        <div class="swiper-container">
+        <div class="swiper swiper-container">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="br-card-image">
-                        <img src="/static/images/brands-why-us-1.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-match" data-motion aria-hidden="true">
+                        <div class="ps-card brief"><small>Your brief</small><strong>Fitness brand, Mumbai</strong></div>
+                        <ul class="pool">
+                            <li style="--i:0" class="m"><i class='bx bx-user'></i><b>94%</b></li>
+                            <li style="--i:1"><i class='bx bx-user'></i></li>
+                            <li style="--i:2" class="m"><i class='bx bx-user'></i><b>88%</b></li>
+                            <li style="--i:3"><i class='bx bx-user'></i></li>
+                            <li style="--i:4"><i class='bx bx-user'></i></li>
+                            <li style="--i:5" class="m"><i class='bx bx-user'></i><b>91%</b></li>
+                        </ul>
+                        <span class="ps-pill">3 creators match</span>
                     </div>
-                    <div class="br-card-text">
-                        <span>Access to the right influencers.</span>&nbsp;We carefully match your brand with
-                        influencers who align with your industry, values, and audience — ensuring genuine engagement and
-                        maximum ROI.
-                    </div>
+                    <p><strong>Access to the right influencers.</strong> We match your brand with creators who fit your industry, values and audience, so the engagement is genuine and the return is real.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="br-card-image">
-                        <img src="/static/images/brands-why-us-2.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-trio" data-motion aria-hidden="true">
+                        <svg class="trio-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <line x1="50" y1="26" x2="24" y2="62" pathLength="1" style="--i:0" />
+                            <line x1="50" y1="26" x2="76" y2="62" pathLength="1" style="--i:1" />
+                            <line class="deal" x1="24" y1="62" x2="76" y2="62" pathLength="1" style="--i:2" />
+                        </svg>
+                        <span class="node lead" style="left:50%;top:26%;--i:0"><i class='bx bx-store-alt'></i>Your brand</span>
+                        <span class="node" style="left:24%;top:62%;--i:1"><i class='bx bx-palette'></i>Creator</span>
+                        <span class="node" style="left:76%;top:62%;--i:2"><i class='bx bx-party'></i>Sponsor</span>
+                        <span class="ps-pill">One campaign, more reach</span>
                     </div>
-                    <div class="br-card-text">
-                        <span>Seamless sponsor collaboration.</span>&nbsp;Alongside influencers, we also connect you
-                        with sponsors that can further support and amplify your campaigns.
-                    </div>
+                    <p><strong>Sponsors as well as creators.</strong> Alongside creators, we connect you with sponsors who can support and amplify your campaigns.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="br-card-image">
-                        <img src="/static/images/brands-why-us-3.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-pipe" data-motion aria-hidden="true">
+                        <ol class="ps-card pipe">
+                            <li style="--i:0"><span class="dot"></span>Idea</li>
+                            <li style="--i:1"><span class="dot"></span>Shortlist</li>
+                            <li style="--i:2"><span class="dot"></span>Agreement</li>
+                            <li style="--i:3"><span class="dot"></span>Live</li>
+                            <li style="--i:4"><span class="dot"></span>Report</li>
+                        </ol>
                     </div>
-                    <div class="br-card-text">
-                        <span>End-to-end campaign management.</span>&nbsp;From campaign ideation and influencer
-                        shortlisting to contract negotiations, execution, and performance tracking — we handle it all.
-                    </div>
+                    <p><strong>End-to-end campaign management.</strong> From the idea and the shortlist to the agreement, the work and the reporting, we handle it all.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="br-card-image">
-                        <img src="/static/images/brands-why-us-4.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-chart" data-motion aria-hidden="true">
+                        <div class="ps-card chart">
+                            <div class="chart-head"><small>Engagement</small><strong class="count" style="--target:38"></strong></div>
+                            <div class="bars"><span style="--h:32%;--i:0"></span><span style="--h:45%;--i:1"></span><span style="--h:40%;--i:2"></span><span style="--h:58%;--i:3"></span><span style="--h:70%;--i:4"></span><span style="--h:92%;--i:5"></span></div>
+                        </div>
                     </div>
-                    <div class="br-card-text">
-                        <span>Data driven results.</span>&nbsp;We provide you with clear insights and analytics to
-                        measure success, refine strategies, and scale effectively.
-                    </div>
+                    <p><strong>Results you can measure.</strong> Clear numbers on reach and engagement, so you can see what worked and plan the next campaign.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="br-card-image">
-                        <img src="/static/images/brands-why-us-5.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-receipt" data-motion aria-hidden="true">
+                        <div class="receipt">
+                            <strong>Deal summary</strong>
+                            <ul>
+                                <li style="--i:0">2 reels<i class='bx bx-check'></i></li>
+                                <li style="--i:1">1 story<i class='bx bx-check'></i></li>
+                                <li style="--i:2">30 days of usage<i class='bx bx-check'></i></li>
+                            </ul>
+                            <p class="total">Fee agreed upfront</p>
+                            <span class="mini-stamp">SIGNED</span>
+                        </div>
                     </div>
-                    <div class="br-card-text">
-                        <span>Cost effective and transparent.</span>&nbsp;Our approach ensures value for every rupee
-                        spent, with transparent processes and fair deals.
-                    </div>
+                    <p><strong>Clear costs, fair deals.</strong> You see what every rupee buys, and every deal is agreed in writing before work starts.</p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="scroll-left-right">
-            <span class="scroll-left"><i class='bx  bx-chevron-left'></i></span>
-            <span class="scroll-right"><i class='bx  bx-chevron-right'></i></span>
-        </div>
-    </section>
-    <!-- Main Content End -->
-
-    <!-- Requirements Start -->
-    <section id="br-requirements">
+<!-- Who it's for -->
+<section class="band-ink aud-list" id="br-requirements">
+    <div class="wrap aud-list-grid">
         <div id="br-requirements-content">
-            <span>Who can partner with us?</span>
-            <span>We work with brands of all sizes — from startups looking to build awareness to established companies
-                wanting to strengthen customer trust and loyalty.&nbsp;<span>A few of the many industries that we cater
-                    to, includes:</span></span>
+            <h2 class="aud-section-title">Who can partner with us?</h2>
+            <p>Brands of every size, from startups building awareness to established companies strengthening trust. Some of the industries we work with:</p>
         </div>
-        <div id="br-requirements-list">
-            <div><i class='bx  bx-dumbbell-alt'></i> Health & Fitness</div>
-            <div><i class='bx  bx-devices'></i> Technology & Gadgets</div>
-            <div><i class='bx  bx-book-bookmark'></i> Education & E-learning</div>
-            <div><i class='bx  bx-burger'></i> Food & Beverages</div>
-            <div><i class='bx  bx-shopping-bag'></i> Fashion & Lifestyle</div>
-            <div><i class='bx  bx-tv'></i> Entertainment & Media</div>
-        </div>
-        <!-- <div id="br-many-more">
-            <span>Check the full list</span><i class='bx  bx-chevron-right'  ></i>
-        </div> -->
-    </section>
-    <!-- Requirements End -->
+        <ul class="chips" id="br-requirements-list">
+            <li><i class='bx bx-dumbbell-alt' aria-hidden="true"></i> Health and fitness</li>
+            <li><i class='bx bx-devices' aria-hidden="true"></i> Technology and gadgets</li>
+            <li><i class='bx bx-book-bookmark' aria-hidden="true"></i> Education and e-learning</li>
+            <li><i class='bx bx-burger' aria-hidden="true"></i> Food and beverages</li>
+            <li><i class='bx bx-shopping-bag' aria-hidden="true"></i> Fashion and lifestyle</li>
+            <li><i class='bx bx-tv' aria-hidden="true"></i> Entertainment and media</li>
+        </ul>
+    </div>
+</section>
 
-    <!-- Conclusion Start -->
-    <section id="br-conclusion">
-        <video src="/static/videos/br-bg.mp4" loop muted autoplay></video>
-        <div id="br-conclusion-content">
-            <span>Let's grow together!</span><span>With our ecosystem of creators and sponsors, your brand gains
-                visibility, trust, and results. Whether you’re launching a product, promoting an event, or building
-                long-term brand identity,</span><span>we are here to make it happen.</span>
-        </div>
-    </section>
-    <!-- Conclusion End -->
+<!-- Closing -->
+<section class="band-ink aud-close" id="br-conclusion" data-motion>
+    {% include "network.html" %}
+    <div class="wrap aud-close-inner" id="br-conclusion-content">
+        <h2>Let’s grow together</h2>
+        <p>With our creators and sponsors behind it, your brand gains visibility, trust and results, whether you’re launching a product, promoting an event or building a name for the long term.</p>
+    </div>
+</section>
 {% endblock %}
 
 
 {% block script %}
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="/static/js/brands.js"></script>
+<script src="/static/js/brands.js?v=2"></script>
 {% endblock %}

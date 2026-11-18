@@ -1,0 +1,28 @@
+# Kept out of the Cloud Run image (smaller, and no secrets or test data inside).
+.git
+.github
+.gitignore
+.venv
+venv
+env
+__pycache__
+**/__pycache__
+*.py[cod]
+.pytest_cache
+.env
+.env.*
+.vercel
+vercel.json
+
+# Tests and local tools
+tests
+pytest.ini
+requirements-dev.txt
+scripts
+
+# Deploy notes and templates (not needed at runtime)
+deploy
+*.md
+
+# The separate, older meeting tool (its own Vercel project, not part of this app)
+admin_meet_controls

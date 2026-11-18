@@ -1,0 +1,40 @@
+# Weekly database backup (the free Atlas cluster has no automatic backups). See DEPLOY.md, step 10.
+# To turn on: copy this file to backend/.github/workflows/backup.yml and push.
+# Needs repository secrets: MONGODB_URI, BACKUP_PASSPHRASE.
+#
+# The backup is encrypted, then kept for 30 days under the run's "Artifacts".
+# Keep the repository PRIVATE: backups contain people's personal data.
+name: Weekly database backup
+
+on:
+  schedule:
+    - cron: "30 20 * * 0"   # Sundays 20:30 UTC = Mondays 2:00 am IST
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Dump the database
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          docker run --rm -v "$PWD:/out" -e MONGODB_URI mongo:8 \
+            sh -c 'mongodump --uri="$MONGODB_URI" --archive=/out/opc.archive.gz --gzip'
+          ls -lh opc.archive.gz
+
+      - name: Encrypt it
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_PASSPHRASE" \
+            --symmetric --cipher-algo AES256 -o "opc-$(date -u +%Y-%m-%d).archive.gz.gpg" opc.archive.gz
+          rm opc.archive.gz
+
+      - name: Keep it for 30 days
+        uses: actions/upload-artifact@v4
+        with:
+          name: opc-database-backup
+          path: opc-*.archive.gz.gpg
+          retention-days: 30

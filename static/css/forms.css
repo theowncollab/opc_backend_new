@@ -1,0 +1,320 @@
+/* Form pages: Contact, Schedule a meet, Register an event, Sign in.
+   A black panel says why; the paper side holds the form. */
+
+.form-page {
+    padding: clamp(2rem, 5vw, 4.5rem) 0 var(--band-y);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+}
+
+/* ---------- The black panel ---------- */
+.form-aside {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    border-radius: var(--r-panel);
+    padding: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    gap: 1.25rem;
+}
+
+.form-aside h1 {
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.95;
+    color: var(--signal);
+}
+
+.form-aside p {
+    color: var(--smoke);
+    max-width: 40ch;
+}
+
+.form-aside .form-aside-note {
+    font-size: var(--s-14);
+    border-left: 3px solid var(--signal);
+    padding-left: 0.9rem;
+}
+
+.form-aside-alt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid #2c2c29;
+}
+
+.form-aside-alt p {
+    color: var(--paper);
+    font-weight: 500;
+}
+
+/* ---------- The form ---------- */
+.form-main {
+    max-width: 40rem;
+    padding-top: clamp(0rem, 2vw, 1rem);
+}
+
+.form-title {
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.form-intro {
+    color: var(--graphite);
+    margin-bottom: 1.75rem;
+    max-width: 56ch;
+}
+
+.form-main form {
+    display: grid;
+    gap: 1rem;
+}
+
+.input-inliner,
+.input-inliners {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-box,
+.input-area-box {
+    position: relative;
+}
+
+.input-box input,
+.input-area-box textarea,
+.form-main select {
+    width: 100%;
+    min-height: 3.6rem;
+    padding: 1.45rem 1rem 0.45rem;
+    border: 1.5px solid #cfccc2;
+    border-radius: var(--r-btn);
+    background: #fff;
+    color: var(--ink);
+    font: 400 var(--s-17)/1.3 var(--font-text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-area-box textarea {
+    min-height: 9rem;
+    resize: vertical;
+    padding-top: 1.75rem;
+}
+
+.form-main select {
+    padding: 0 2.75rem 0 1rem;
+    appearance: none;
+    cursor: pointer;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 1rem center;
+}
+
+.input-box input:focus,
+.input-area-box textarea:focus,
+.form-main select:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px var(--signal);
+}
+
+/* Floating labels: the label sits in the box, then moves up once you type. */
+.input-box label,
+.input-area-box label {
+    position: absolute;
+    left: 1rem;
+    top: 1.15rem;
+    color: var(--graphite);
+    pointer-events: none;
+    transform-origin: left top;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label,
+.input-area-box textarea:focus + label,
+.input-area-box textarea:not(:placeholder-shown) + label,
+.input-box.always-up label {
+    transform: translateY(-0.7rem) scale(0.78);
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.form-submit {
+    padding-top: 0.5rem;
+}
+
+.form-submit button {
+    min-width: 12rem;
+}
+
+.form-fine {
+    font-size: var(--s-14);
+    color: var(--graphite);
+}
+
+/* Spam trap: off screen for people, still in the form for bots */
+.hp-field {
+    position: absolute !important;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.form-error {
+    background: #fde8e6;
+    color: #8f1d14;
+    border-left: 4px solid #c8372d;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+}
+
+.form-error[hidden],
+.form-done[hidden] {
+    display: none;
+}
+
+.form-done {
+    display: grid;
+    gap: 0.5rem;
+    background: var(--signal);
+    border-radius: var(--r-panel);
+    padding: 2rem;
+}
+
+.form-done-title {
+    font-family: var(--font-display);
+    font-stretch: 75%;
+    font-weight: 800;
+    font-size: var(--s-36);
+    line-height: 1;
+}
+
+#schedule-done-when {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--s-21);
+}
+
+/* ---------- Sign in ---------- */
+#direct-sign-in {
+    display: grid;
+    gap: 1.5rem;
+}
+
+#types {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+#types .type {
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 8.5rem;
+    background: #fff;
+    color: var(--ink);
+    border: 1.5px solid #cfccc2;
+    font-family: var(--font-display);
+    font-size: var(--s-21);
+    font-weight: 700;
+}
+
+#types .type i {
+    font-size: 2.25rem;
+}
+
+#types .type:hover {
+    border-color: var(--ink);
+}
+
+#types .type.active {
+    background: var(--signal);
+    border-color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+    transform: none;
+}
+
+#google-sign-in-label {
+    color: var(--graphite);
+    font-weight: 500;
+}
+
+/* The visible button is ours; Google's real button sits invisibly on top of it. */
+#google-sign-in {
+    position: relative;
+    border-radius: var(--r-btn);
+    background: var(--ink);
+    color: var(--paper);
+    min-height: 3.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#google-sign-in-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-size: var(--s-21);
+}
+
+#google-sign-in-btn i {
+    font-size: 1.6rem;
+}
+
+#g_id_signin {
+    position: absolute !important;
+    inset: 0;
+    opacity: 0 !important;
+    z-index: 1;
+}
+
+#g_id_signin > div,
+#g_id_signin iframe {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 860px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-aside {
+        position: static;
+    }
+}
+
+@media (max-width: 560px) {
+    .input-inliner,
+    .input-inliners {
+        grid-template-columns: 1fr;
+    }
+    #types {
+        grid-template-columns: 1fr;
+    }
+    #types .type {
+        flex-direction: row;
+        justify-content: flex-start;
+        min-height: 3.75rem;
+    }
+    #types .type i {
+        font-size: 1.6rem;
+    }
+}

@@ -111,12 +111,25 @@ REFRESH_TOKEN_EXPIRE_DAYS="7"
 WEB_APP_URL="https://theowncollab.com"
 DASHBOARD_URL="https://dashboard.theowncollab.com"
 
-# Google Apps Script Webhook
-GSCRIPT_URL="https://script.google.com/macros/s/your_unique_id/exec"
+# Schedule a meet: the address meeting links are sent from (shown to visitors).
+# Defaults to SMTP_USER.
+MEET_FROM_EMAIL="support@theowncollab.com"
 ```
 
-> [!CAUTION]
-> Notice the `GSCRIPT_URL`. Ensure there is NO trailing semicolon (`;`) inside or outside the quotes, or it will cause a 404 error when Javascript fetches it!
+> [!NOTE]
+> `GSCRIPT_URL` (the old Google Apps Script) is no longer used. **Schedule a meet** now books through this backend (`routes/meetings.py`):
+> - Visitors can book tomorrow only, in IST, from 9:00 am to 11:00 pm.
+> - The team emails each person the meeting link, then marks it sent in the team console under Meetings.
+>
+> You can delete `GSCRIPT_URL` from the environment variables.
+
+
+> [!NOTE]
+> **YouTube verification** uses the same Google client as "Sign in with Google" (`GOOGLE_CLIENT_ID`). It needs no new environment variable. One-time setup in [Google Cloud Console](https://console.cloud.google.com/), in the project that owns that client:
+> 1. **APIs & Services → Library:** enable **YouTube Data API v3**.
+> 2. **APIs & Services → Credentials →** the OAuth client: under **Authorized JavaScript origins**, add every address the dashboard runs on, for example `https://www.theowncollab.com`, the `opc_frontend` domain and `http://localhost:5173` for development.
+> 3. **OAuth consent screen → Data access (scopes):** add `.../auth/youtube.readonly`.
+> 4. Until Google approves that scope, keep the app in **Testing** and add up to 100 **test users**. To open it to everyone, submit it for verification. Google asks for your verified domain, the privacy policy link, and a short video showing the "Verify with YouTube" flow and how the data is used.
 
 ---
 
@@ -234,6 +247,20 @@ fetch(`${window.API_BASE_URL}/contact-us`, { ... })
 fetch('/contact-us', { ... })
 ```
 Using relative paths ensures the API call automatically hits whatever server the user is currently viewing (localhost, preview, or production).
+
+### Frontend: Styles
+The website's look is split into a few shared files in `/static/css/`:
+- `tokens.css`: values shared with the dashboard. Copy it from `dashboard-app/src/styles/tokens.css` and don't edit it here.
+- `site.css`: the website's own colours, fonts, buttons and the marquee. Sections pick their colours with `band-signal` (yellow), `band-ink` (black) or `band-paper` (white).
+- `header.css` and `footer.css`.
+- `index.css`: the home page.
+- `audience.css`: Brands, Creators and Event partners.
+- `forms.css`: Contact, Schedule a meet, Register an event and Sign in.
+- `legal.css`: Privacy policy and Terms.
+
+Fonts are **Anek Latin** for headings, **Mukta** for text and **Cedarville Cursive** for signatures only.
+
+Images: use the `.webp` copies in `/static/images/`. They are about 30 times smaller than the original PNGs.
 
 ### Frontend: Modifying HTML Templates
 All HTML files are stored in the `/templates/` folder and use Jinja2 templating syntax. 

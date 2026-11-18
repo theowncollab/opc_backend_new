@@ -84,7 +84,7 @@ async function sendDataToServer(formData) {
             });
     } catch (error) { }
     finally {
-        showBtnPreLoader(registerEventSubmitBtn, false, "REGISTER EVENT <i class='bx  bx-arrow-right-stroke'  ></i>");
+        showBtnPreLoader(registerEventSubmitBtn, false, "Register event");
     }
 }
 

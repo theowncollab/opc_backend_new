@@ -5,139 +5,135 @@
 
 {% block style %}
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<link rel="stylesheet" href="/static/css/creators.css">
-<link rel="stylesheet" href="/static/images/favicons/favicon.ico">
+<link rel="stylesheet" href="/static/css/audience.css?v=5">
+<link rel="stylesheet" href="/static/css/scenes.css?v=3">
 {% endblock %}
 
 
 {% block content %}
-<!-- Title Section Start -->
-    <section id="title-section">
-        <div>
-            <span>Building partnerships. Driving growth.</span>
-        </div>
-    </section>
-    <!-- Title Section End -->
-
-    <!-- Hero Section Start -->
-    <section id="cr-hero-section">
-        <div id="cr-hero-left">
-            <div id="cr-hero-left-top">
-                <div id="cr-hero-left-top-title">Creators,</div>
-            </div>
-            <div id="cr-hero-left-bottom">
-                <div id="cr-hero-left-bottom-text">
-                    At OPC, we believe influencers are more than just voices on social media — they are storytellers,
-                    trendsetters, and community builders. Our mission is to create meaningful collaborations where your
-                    creativity meets the right brands and sponsors, unlocking opportunities that go beyond one-time
-                    campaigns.
-                </div>
-                <div id="cr-hero-left-bottom-btns">
-                    <button type="button" id="cr-hero-schedule-a-meet-btn">SCHEDULE A MEET <i
-                            class='bx  bx-arrow-right-stroke'></i></button>
-                    <a href="./terms-and-conditions.html">OUR TERMS & CONDITIONS</a>
-                </div>
+<!-- Hero -->
+<section class="band-signal aud-hero" id="cr-hero-section">
+    <div class="wrap aud-hero-grid">
+        <div class="aud-hero-copy" id="cr-hero-left">
+            <h1 class="aud-title">Creators</h1>
+            <p class="aud-tagline">Building partnerships. Driving growth.</p>
+            <p class="aud-body">You’re more than a voice on social media: you tell stories, set trends and build communities. OPC brings you brands and sponsors that fit your work, for collaborations that last longer than one campaign.</p>
+            <div class="aud-actions" id="cr-hero-left-bottom-btns">
+                <button type="button" id="cr-hero-schedule-a-meet-btn">Schedule a meet</button>
+                <a href="./terms-and-conditions.html">Our terms and conditions</a>
             </div>
         </div>
-        <div id="cr-hero-right">
-            <img src="/static/images/creators-promo.png" alt="Creators Hero Image" />
+        <div class="aud-hero-art sticker" id="cr-hero-right" data-motion>
+            <img src="/static/images/creators-promo.webp" alt="A cheerful creator in a space suit" loading="eager" />
+            <ol class="feed" data-motion aria-hidden="true">
+                <li style="--i:0"><i class='bx bx-bell'></i><span><strong>New offer</strong><small>Skincare brand, one reel</small></span></li>
+                <li style="--i:1"><i class='bx bx-file-detail'></i><span><strong>Terms agreed in writing</strong><small>Fee, dates and deliverables</small></span></li>
+                <li style="--i:2"><i class='bx bx-send'></i><span><strong>Reel submitted</strong><small>Waiting for the brand</small></span></li>
+                <li style="--i:3" class="is-stamp"><i class='bx bx-badge-check'></i><span><strong>Approved by the brand</strong><small>Deal complete</small></span></li>
+            </ol>
         </div>
-    </section>
-    <!-- Hero Section End -->
+    </div>
+</section>
 
-    <!-- Main Content Start -->
-    <section id="cr-main-content">
-        <div id="cr-main-content-title">
-            <span>Why work with us?</span>
-            <span>Here's a glimpse of the many perks you’ll enjoy when you <a href="sign-in.html">join us.</a></span>
+<!-- Why work with us -->
+<section class="band-paper aud-perks" id="cr-main-content">
+    <div class="wrap">
+        <div class="aud-perks-head" id="cr-main-content-title">
+            <div>
+                <h2 class="aud-section-title">Why work with us</h2>
+                <p>Here’s what you get when you <a href="./sign-in.html">join OPC</a>.</p>
+            </div>
+            <div class="scroll-left-right">
+                <button type="button" class="scroll-left secondary" aria-label="Previous"><i class='bx bx-chevron-left' aria-hidden="true"></i></button>
+                <button type="button" class="scroll-right secondary" aria-label="Next"><i class='bx bx-chevron-right' aria-hidden="true"></i></button>
+            </div>
         </div>
-
-        <div class="swiper-container">
+        <div class="swiper swiper-container">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="cr-card-image">
-                        <img src="/static/images/why-us-creator-1.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-offers" data-motion aria-hidden="true">
+                        <ul class="offers">
+                            <li style="--i:0"><i class='bx bx-bell'></i><span><strong>Skincare brand</strong><small>Fits your niche</small></span><span class="fit">New offer</span></li>
+                            <li style="--i:1"><i class='bx bx-bell'></i><span><strong>Fitness app</strong><small>Fits your audience</small></span><span class="fit">New offer</span></li>
+                            <li style="--i:2"><i class='bx bx-bell'></i><span><strong>Café chain</strong><small>Near you</small></span><span class="fit">New offer</span></li>
+                        </ul>
                     </div>
-                    <div class="cr-card-text">
-                        <span>Access to leading Brands & Sponsors.</span>&nbsp;We connect you with businesses that align
-                        with your niche, values, and audience, ensuring authentic collaborations.
-                    </div>
+                    <p><strong>Brands and sponsors that fit you.</strong> We connect you with businesses that match your niche, values and audience, so every collaboration feels like you.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="cr-card-image">
-                        <img src="/static/images/why-us-creator-2.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-receipt" data-motion aria-hidden="true">
+                        <div class="receipt">
+                            <strong>Your deal</strong>
+                            <ul>
+                                <li style="--i:0">Fee agreed<i class='bx bx-check'></i></li>
+                                <li style="--i:1">Dates fixed<i class='bx bx-check'></i></li>
+                                <li style="--i:2">2 reels, 1 story<i class='bx bx-check'></i></li>
+                            </ul>
+                            <p class="total">No hidden terms</p>
+                            <span class="mini-stamp">AGREED</span>
+                        </div>
                     </div>
-                    <div class="cr-card-text">
-                        <span>Fair compensation & transparent deals.</span>&nbsp;No hidden agendas — just clear
-                        agreements that value your creativity and effort.
-                    </div>
+                    <p><strong>Fair pay, clear deals.</strong> No hidden agendas: the brief, the deliverables and the fee are agreed in writing before you start.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="cr-card-image">
-                        <img src="/static/images/why-us-creator-3.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-repeat" data-motion aria-hidden="true">
+                        <div class="ps-card cal">
+                            <div class="months"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+                            <div class="track"><b style="--c:1;--i:0"><i class='bx bx-handshake'></i></b><b style="--c:3;--i:1"><i class='bx bx-handshake'></i></b><b style="--c:5;--i:2"><i class='bx bx-handshake'></i></b></div>
+                        </div>
+                        <span class="ps-pill">Same brand, third campaign</span>
                     </div>
-                    <div class="cr-card-text">
-                        <span>Long-term relationships.</span>&nbsp;We focus on sustainable partnerships that grow with
-                        you, not just quick campaigns.
-                    </div>
+                    <p><strong>Relationships that last.</strong> We look for partnerships that grow with you, not one-off posts.</p>
                 </div>
-                <div class="swiper-slide">
-                    <div class="cr-card-image">
-                        <img src="/static/images/why-us-creator-4.png" alt="">
+                <div class="swiper-slide perk">
+                    <div class="ps ps-pipe" data-motion aria-hidden="true">
+                        <ol class="ps-card pipe">
+                            <li style="--i:0"><span class="dot"></span>Pitch</li>
+                            <li style="--i:1"><span class="dot"></span>Agreement</li>
+                            <li style="--i:2"><span class="dot"></span>Create</li>
+                            <li style="--i:3"><span class="dot"></span>Submit</li>
+                            <li style="--i:4"><span class="dot"></span>Approved</li>
+                        </ol>
                     </div>
-                    <div class="cr-card-text">
-                        <span>Support at every step.</span>&nbsp;From strategy and negotiation to execution and
-                        analytics, we provide end-to-end support so you can focus on what you do best — creating.
-                    </div>
+                    <p><strong>Support at every step.</strong> From the pitch and the agreement to the work and the numbers, we’re with you, so you can focus on creating.</p>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="scroll-left-right">
-            <span class="scroll-left"><i class='bx  bx-chevron-left'></i></span>
-            <span class="scroll-right"><i class='bx  bx-chevron-right'></i></span>
-        </div>
-    </section>
-    <!-- Main Content End -->
-
-    <!-- Requirements Start -->
-    <section id="cr-requirements">
+<!-- Who it's for -->
+<section class="band-ink aud-list" id="cr-requirements">
+    <div class="wrap aud-list-grid">
         <div id="cr-requirements-content">
-            <span>Who can be on-boarded?</span>
-            <span>Whether you’re a micro-influencer building your niche or an established creator with a large
-                following, we welcome you all.&nbsp;<span>A few of the many platforms that we cater to,
-                    includes:</span></span>
+            <h2 class="aud-section-title">Who can join?</h2>
+            <p>Whether you’re building a niche or already have a big following, you’re welcome. Some of the platforms our creators work on:</p>
         </div>
-        <div id="cr-requirements-list">
-            <div><i class='bxl  bx-youtube'></i> YouTube</div>
-            <div><i class='bxl  bx-instagram-alt'></i> Instagram</div>
-            <div><i class='bxl  bx-snapchat'></i> Snapchat</div>
-            <div><i class='bxl  bx-facebook'></i> Facebook</div>
-            <div><i class='bxl  bx-twitter-x'></i> X (formerly Twitter)</div>
-            <div><i class='bxl  bx-linkedin'></i> LinkedIn</div>
-            <div><i class='bxl  bx-whatsapp'></i> WhatsApp</div>
-            <div><i class='bxl  bx-spotify'></i> Spotify</div>
-        </div>
-        <!-- <div id="cr-many-more">
-            <span>Check the full list</span><i class='bx  bx-chevron-right'  ></i>
-        </div> -->
-    </section>
-    <!-- Requirements End -->
+        <ul class="chips" id="cr-requirements-list">
+            <li><i class='bxl bx-youtube' aria-hidden="true"></i> YouTube</li>
+            <li><i class='bxl bx-instagram-alt' aria-hidden="true"></i> Instagram</li>
+            <li><i class='bxl bx-snapchat' aria-hidden="true"></i> Snapchat</li>
+            <li><i class='bxl bx-facebook' aria-hidden="true"></i> Facebook</li>
+            <li><i class='bxl bx-twitter-x' aria-hidden="true"></i> X</li>
+            <li><i class='bxl bx-linkedin' aria-hidden="true"></i> LinkedIn</li>
+            <li><i class='bxl bx-whatsapp' aria-hidden="true"></i> WhatsApp</li>
+            <li><i class='bxl bx-spotify' aria-hidden="true"></i> Spotify</li>
+        </ul>
+    </div>
+</section>
 
-    <!-- Conclusion Start -->
-    <section id="cr-conclusion">
-        <video src="/static/videos/cr-bg.mp4" loop muted autoplay></video>
-        <div id="cr-conclusion-content">
-            <span>Let’s Create Together!</span><span>With our network of brands and sponsors, your creativity turns into
-                opportunities, growth, and recognition.<br><br>Whether you’re starting your journey or scaling your
-                influence, we’re here to support you in every step of the way.</span>
-        </div>
-    </section>
-    <!-- Conclusion End -->
+<!-- Closing -->
+<section class="band-ink aud-close" id="cr-conclusion" data-motion>
+    {% include "network.html" %}
+    <div class="wrap aud-close-inner" id="cr-conclusion-content">
+        <h2>Let’s create together</h2>
+        <p>With our network of brands and sponsors, your work turns into opportunities, growth and recognition, whether you’re just starting or already scaling.</p>
+    </div>
+</section>
 {% endblock %}
 
 
 {% block script %}
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="/static/js/creators.js"></script>
+<script src="/static/js/creators.js?v=2"></script>
 {% endblock %}

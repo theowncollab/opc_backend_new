@@ -1,0 +1,12 @@
+# Files `gcloud run deploy --source .` does NOT upload to Google (see DEPLOY.md).
+# The Dockerfile and .dockerignore must be uploaded, so they're not listed here.
+#!include:.gitignore
+.git
+.github
+.venv
+.pytest_cache
+__pycache__
+tests
+scripts
+deploy
+admin_meet_controls

@@ -1,39 +1,38 @@
+// Home page questions. Opening one closes the others; the morph itself is in index.css.
 const faqItems = document.querySelectorAll('.faq-item');
 
-faqItems.forEach(item => {
+function setOpen(item, open) {
+    item.querySelector('.faq-answer').classList.toggle('hidden', !open);
+    item.querySelector('.question-wrapper i').classList.toggle('rotate', open);
+    item.querySelector('.question-wrapper').setAttribute('aria-expanded', String(open));
+}
+
+faqItems.forEach((item) => {
     const question = item.querySelector('.question-wrapper');
+    question.setAttribute('aria-expanded', 'false');
     question.addEventListener('click', () => {
-        const answers = document.querySelectorAll('.faq-answer');
-        answers.forEach(answer => {
-            if (answer == item.querySelector('.faq-answer')) {
-                return;
-            }
-            answer.classList.add('hidden');
-        });
-        const chevrons = document.querySelectorAll('i');
-        chevrons.forEach(chevron => {
-            chevron.classList.remove('rotate');
-        });
-        const answer = item.querySelector('.faq-answer');
-        const chevron = item.querySelector('i');
-        answer.classList.toggle('hidden');
-        chevron.classList.toggle('rotate');
+        const opening = item.querySelector('.faq-answer').classList.contains('hidden');
+        faqItems.forEach((other) => setOpen(other, false));
+        setOpen(item, opening);
     });
 });
 
+// The General / For brands / For creators / For event partners tabs.
 const faqSectionLinks = document.querySelectorAll('.faq-links');
 
-faqSectionLinks.forEach(link => {
+faqSectionLinks.forEach((link) => {
+    link.setAttribute('aria-pressed', String(link.classList.contains('selected')));
     link.addEventListener('click', () => {
         const id = link.getAttribute('id');
-        const item = document.querySelector(`#${id}-faqs`);
         for (const section of document.querySelectorAll('.faqs')) {
             section.classList.add('hidden');
         }
-        item.classList.remove('hidden');
-        for (const link of faqSectionLinks) {
-            link.classList.remove('selected');
+        document.querySelector(`#${id}-faqs`).classList.remove('hidden');
+        for (const other of faqSectionLinks) {
+            other.classList.remove('selected');
+            other.setAttribute('aria-pressed', 'false');
         }
         link.classList.add('selected');
+        link.setAttribute('aria-pressed', 'true');
     });
 });

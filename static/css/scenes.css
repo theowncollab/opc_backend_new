@@ -1,0 +1,810 @@
+/*
+  "Why work with us" scenes on Brands, Creators and Event partners.
+  Each perk gets a small live scene instead of a picture (built in templates by
+  the perk's kind: match, trio, pipeline, chart, receipt, offers, repeat, reach,
+  options, checklist).
+
+  Same rules as motion.css:
+  - The plain styles below are each scene's finished state. That's what people
+    see without JavaScript or with "reduce motion" on.
+  - With .motion-ready, keyframes start each part from its empty state, and the
+    scene plays only while on screen.
+  - Most scenes loop every 9 seconds.
+*/
+
+@property --pct {
+    syntax: '<integer>';
+    inherits: true;
+    initial-value: 0;
+}
+
+.ps {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    padding: 1.25rem;
+    color: var(--ink);
+    font-size: var(--s-14);
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    /* A dotted desk in soft OPC yellow */
+    background:
+        radial-gradient(rgba(13, 13, 13, 0.09) 1px, transparent 1.4px) 0 0 / 18px 18px,
+        #fff0a6;
+}
+
+.ps ul,
+.ps ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ps small {
+    display: block;
+    color: var(--graphite);
+    font-size: var(--s-12);
+}
+
+.ps strong {
+    font-weight: 700;
+}
+
+.ps-card {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 0.8rem 0.95rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 14px 26px -16px rgba(60, 40, 0, 0.6);
+}
+
+.ps-pill {
+    background: var(--ink);
+    color: var(--signal);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    font-weight: 600;
+    font-size: var(--s-12);
+    white-space: nowrap;
+}
+
+.ps .mini-stamp {
+    top: auto;
+    bottom: 1.1rem;
+    right: 1.1rem;
+}
+
+/* Scenes pause off screen, pseudo-elements included. */
+.motion-ready [data-motion] *::before,
+.motion-ready [data-motion] *::after {
+    animation-play-state: paused !important;
+}
+
+.motion-ready [data-motion].in-view *::before,
+.motion-ready [data-motion].in-view *::after {
+    animation-play-state: running !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-motion] *::before,
+    [data-motion] *::after {
+        animation: none !important;
+    }
+}
+
+/* Shared timings */
+@keyframes ps-pill {
+    0%, 32% { opacity: 0; transform: translateY(8px); }
+    38%, 86% { opacity: 1; transform: none; }
+    94%, 100% { opacity: 0; transform: none; }
+}
+
+@keyframes ps-pop {
+    0% { opacity: 0; transform: scale(0.6); }
+    5%, 86% { opacity: 1; transform: none; }
+    94%, 100% { opacity: 0; transform: none; }
+}
+
+@keyframes ps-in {
+    0% { opacity: 0; transform: translateX(-10px); }
+    6%, 86% { opacity: 1; transform: none; }
+    94%, 100% { opacity: 0; transform: none; }
+}
+
+@keyframes ps-stamp {
+    0%, 32% { opacity: 0; transform: rotate(-10deg) scale(1.8); }
+    37%, 86% { opacity: 0.9; transform: rotate(-10deg) scale(1); }
+    94%, 100% { opacity: 0; transform: rotate(-10deg) scale(1); }
+}
+
+.motion-ready .ps-pill {
+    animation: ps-pill 9s ease infinite both;
+}
+
+.motion-ready .ps .mini-stamp {
+    animation: ps-stamp 9s cubic-bezier(0.2, 0.9, 0.3, 1.15) infinite both;
+}
+
+/* ---------- match: the brief is checked against people, matches light up ---------- */
+.ps-match .brief {
+    text-align: center;
+    min-width: 62%;
+}
+
+.ps-match .brief strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--s-17);
+}
+
+.pool {
+    display: grid;
+    grid-template-columns: repeat(3, 3.25rem);
+    gap: 0.9rem 1.1rem;
+}
+
+.pool li {
+    position: relative;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--paper);
+    font-size: 1.45rem;
+    box-shadow: 0 6px 14px -8px rgba(60, 40, 0, 0.6);
+}
+
+.pool li:not(.m) {
+    opacity: 0.35;
+}
+
+.pool li.m {
+    background: var(--ink);
+    color: var(--signal);
+}
+
+.pool b {
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    translate: -50% 0;
+    background: var(--stamp-ink);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.35;
+    padding: 0.05rem 0.4rem;
+    border-radius: 999px;
+}
+
+.motion-ready .pool li {
+    animation: m-no 9s ease infinite both;
+    animation-delay: calc(var(--i) * 0.35s);
+}
+
+.motion-ready .pool li.m {
+    animation-name: m-yes;
+}
+
+.motion-ready .pool b {
+    animation: m-badge 9s ease infinite both;
+    animation-delay: calc(var(--i) * 0.35s);
+}
+
+@keyframes m-no {
+    0% { opacity: 1; transform: none; }
+    5% { opacity: 1; transform: scale(1.12); }
+    9%, 84% { opacity: 0.35; transform: none; }
+    92%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes m-yes {
+    0% { background: var(--paper); color: var(--ink); transform: none; }
+    5% { background: var(--paper); color: var(--ink); transform: scale(1.16); }
+    9%, 84% { background: var(--ink); color: var(--signal); transform: none; }
+    92%, 100% { background: var(--paper); color: var(--ink); transform: none; }
+}
+
+@keyframes m-badge {
+    0%, 7% { opacity: 0; transform: scale(0.5); }
+    11%, 84% { opacity: 1; transform: none; }
+    92%, 100% { opacity: 0; transform: none; }
+}
+
+/* ---------- trio: brand, creator and sponsor join up ---------- */
+.ps-trio {
+    display: block;
+}
+
+.trio-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.trio-lines line {
+    stroke: var(--ink);
+    stroke-width: 0.7;
+    stroke-linecap: round;
+}
+
+.trio-lines line.deal {
+    stroke: var(--stamp-ink);
+    stroke-width: 1.1;
+}
+
+.node {
+    position: absolute;
+    translate: -50% -50%;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--paper);
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px -10px rgba(60, 40, 0, 0.6);
+}
+
+.node i {
+    font-size: 1.15rem;
+}
+
+.node.lead {
+    background: var(--ink);
+    color: var(--signal);
+}
+
+.ps-trio .ps-pill {
+    position: absolute;
+    left: 50%;
+    bottom: 1.1rem;
+    translate: -50% 0;
+}
+
+.motion-ready .ps-trio .node {
+    animation: ps-pop 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.4s);
+}
+
+.motion-ready .trio-lines line {
+    stroke-dasharray: 1;
+    animation: ps-draw 9s cubic-bezier(0.6, 0, 0.3, 1) infinite both;
+    animation-delay: calc(1.2s + var(--i) * 0.5s);
+}
+
+@keyframes ps-draw {
+    0% { stroke-dashoffset: 1; opacity: 1; }
+    9%, 86% { stroke-dashoffset: 0; opacity: 1; }
+    94%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* ---------- pipeline: steps tick off down a rail ---------- */
+.ps .pipe {
+    padding: 0.9rem 0.95rem;
+}
+
+.pipe {
+    position: relative;
+    width: 76%;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.pipe::before,
+.pipe::after {
+    content: '';
+    position: absolute;
+    left: calc(0.95rem + 0.55rem - 1px);
+    top: 1.45rem;
+    bottom: 1.45rem;
+    width: 2px;
+    background: var(--paper-line);
+}
+
+.pipe::after {
+    background: var(--ink);
+    transform-origin: top;
+}
+
+.pipe li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+}
+
+.pipe .dot {
+    position: relative;
+    z-index: 1;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--ink);
+    display: grid;
+    place-items: center;
+}
+
+.pipe .dot::after {
+    content: '';
+    width: 0.28rem;
+    height: 0.5rem;
+    border: solid var(--signal);
+    border-width: 0 2px 2px 0;
+    transform: translateY(-1px) rotate(45deg);
+}
+
+.motion-ready .pipe::after {
+    animation: rail 9s cubic-bezier(0.6, 0, 0.3, 1) infinite both;
+}
+
+.motion-ready .pipe .dot {
+    animation: dot-fill 9s ease infinite both;
+    animation-delay: calc(var(--i) * 0.8s);
+}
+
+.motion-ready .pipe .dot::after {
+    animation: tick-show 9s ease infinite both;
+    animation-delay: calc(var(--i) * 0.8s);
+}
+
+@keyframes rail {
+    0% { transform: scaleY(0); }
+    40%, 86% { transform: scaleY(1); }
+    94%, 100% { transform: scaleY(0); }
+}
+
+@keyframes dot-fill {
+    0%, 3% { background: var(--paper); transform: none; }
+    6% { background: var(--ink); transform: scale(1.25); }
+    9%, 84% { background: var(--ink); transform: none; }
+    92%, 100% { background: var(--paper); transform: none; }
+}
+
+@keyframes tick-show {
+    0%, 5% { opacity: 0; }
+    9%, 84% { opacity: 1; }
+    92%, 100% { opacity: 0; }
+}
+
+/* ---------- chart: bars grow and the number counts up ---------- */
+.ps-chart .chart {
+    width: 80%;
+}
+
+.chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.9rem;
+}
+
+.count {
+    font-family: var(--font-display);
+    font-size: var(--s-28);
+    line-height: 1;
+    --pct: var(--target);
+    counter-reset: pct var(--pct);
+}
+
+.count::before {
+    content: '+' counter(pct) '%';
+}
+
+.bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.45rem;
+    height: 7rem;
+    border-bottom: 2px solid var(--ink);
+}
+
+.bars span {
+    flex: 1;
+    height: var(--h);
+    background: var(--ink);
+    border-radius: 4px 4px 0 0;
+    transform-origin: bottom;
+}
+
+.bars span:last-child {
+    background: var(--signal);
+    box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.motion-ready .bars span {
+    animation: bar 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.25s);
+}
+
+.motion-ready .count {
+    animation: count 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+@keyframes bar {
+    0% { transform: scaleY(0); }
+    12%, 86% { transform: scaleY(1); }
+    94%, 100% { transform: scaleY(0); }
+}
+
+@keyframes count {
+    0% { --pct: 0; }
+    30%, 100% { --pct: var(--target); }
+}
+
+/* ---------- receipt: the deal's lines print, then it's stamped ---------- */
+.receipt {
+    position: relative;
+    width: 78%;
+    background: var(--paper);
+    padding: 1rem 1rem 1.6rem;
+    border-radius: 10px 10px 0 0;
+    /* torn-paper bottom edge */
+    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+}
+
+.receipt > strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--s-17);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ink);
+}
+
+.receipt li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0;
+    border-bottom: 1px dashed #cfccc2;
+}
+
+.receipt li i {
+    font-size: 1.1rem;
+}
+
+.receipt .total {
+    margin-top: 0.6rem;
+    font-weight: 700;
+}
+
+.receipt .mini-stamp {
+    bottom: 1.1rem;
+    right: 0.8rem;
+}
+
+.motion-ready .receipt li {
+    animation: ps-in 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.5s);
+}
+
+.motion-ready .receipt .total {
+    animation: ps-in 9s cubic-bezier(0.2, 0.8, 0.2, 1) 1.6s infinite both;
+}
+
+/* ---------- offers: offers land on the creator's desk ---------- */
+.offers {
+    width: 84%;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.offers li {
+    --r: -1.5deg;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 0.6rem 0.8rem 0.6rem 0.6rem;
+    box-shadow: 0 12px 22px -14px rgba(60, 40, 0, 0.6);
+    transform: rotate(var(--r));
+}
+
+.offers li:nth-child(2) { --r: 1.5deg; }
+.offers li:nth-child(3) { --r: -0.5deg; }
+
+.offers i {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--signal);
+    font-size: 1.2rem;
+}
+
+.offers .fit {
+    margin-left: auto;
+    background: var(--stamp-ink);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.15rem 0.45rem;
+}
+
+.motion-ready .offers li {
+    animation: offer 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.7s);
+}
+
+@keyframes offer {
+    0% { opacity: 0; transform: translateY(-16px) rotate(0deg); }
+    6%, 86% { opacity: 1; transform: rotate(var(--r)); }
+    94%, 100% { opacity: 0; transform: rotate(var(--r)); }
+}
+
+/* ---------- repeat: the same brand comes back, month after month ---------- */
+.ps-repeat .cal {
+    width: 86%;
+}
+
+.months,
+.track {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.months {
+    text-align: center;
+    font-size: var(--s-12);
+    color: var(--graphite);
+    margin-bottom: 0.6rem;
+}
+
+.track {
+    position: relative;
+    height: 2.5rem;
+    align-items: center;
+}
+
+.track::before {
+    content: '';
+    position: absolute;
+    left: 8.33%;
+    right: 25%;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--ink);
+    transform-origin: left;
+}
+
+.track b {
+    grid-row: 1;
+    grid-column: var(--c);
+    justify-self: center;
+    position: relative;
+    z-index: 1;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--signal);
+    font-size: 1.15rem;
+}
+
+.motion-ready .track::before {
+    animation: grow-x 9s cubic-bezier(0.6, 0, 0.3, 1) infinite both;
+}
+
+.motion-ready .track b {
+    animation: ps-pop 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.9s);
+}
+
+@keyframes grow-x {
+    0% { transform: scaleX(0); }
+    30%, 86% { transform: scaleX(1); }
+    94%, 100% { transform: scaleX(0); }
+}
+
+/* ---------- reach: a spotlight sweeps and the crowd lights up ---------- */
+.ps-reach {
+    justify-content: space-between;
+}
+
+.stage {
+    position: relative;
+    z-index: 1;
+    width: 82%;
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 0.7rem;
+    display: grid;
+    place-items: center;
+}
+
+.banner {
+    background: var(--signal);
+    padding: 0.35rem 0.85rem;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-weight: 800;
+}
+
+.spot {
+    position: absolute;
+    top: 3.4rem;
+    left: 50%;
+    width: 74%;
+    height: 58%;
+    translate: -50% 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+    clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+    transform-origin: 50% 0;
+}
+
+.crowd {
+    position: relative;
+    z-index: 1;
+    width: 82%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.55rem;
+}
+
+.crowd span {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ink);
+}
+
+.motion-ready .spot {
+    animation: swing 6s ease-in-out infinite;
+}
+
+.motion-ready .crowd span {
+    animation: lit 9s ease infinite both;
+    animation-delay: calc(var(--r) * 0.45s + var(--c) * 0.06s);
+}
+
+@keyframes swing {
+    0%, 100% { transform: rotate(-14deg); }
+    50% { transform: rotate(14deg); }
+}
+
+@keyframes lit {
+    0% { opacity: 0.18; transform: scale(0.8); }
+    8%, 86% { opacity: 1; transform: none; }
+    94%, 100% { opacity: 0.18; transform: scale(0.8); }
+}
+
+/* ---------- options: one choice after another gets picked ---------- */
+.opts {
+    width: 82%;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.opts li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 0.55rem 0.85rem;
+    box-shadow: 0 8px 18px -12px rgba(60, 40, 0, 0.6);
+}
+
+.opts small {
+    color: inherit;
+    opacity: 0.7;
+}
+
+/* Without motion, the middle choice is the one shown picked. */
+.opts li:nth-child(2) {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.ps-options .budget {
+    width: 82%;
+}
+
+.rail {
+    position: relative;
+    display: block;
+    height: 6px;
+    margin-top: 0.5rem;
+    border-radius: 999px;
+    background: var(--paper);
+}
+
+.knob {
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    width: 1.1rem;
+    height: 1.1rem;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 0 3px var(--signal);
+}
+
+.motion-ready .opts li {
+    animation: opt 9s ease infinite both;
+    animation-delay: calc(var(--i) * 3s);
+}
+
+.motion-ready .knob {
+    animation: knob 9s cubic-bezier(0.6, 0, 0.3, 1) infinite both;
+}
+
+@keyframes opt {
+    0% { background: var(--paper); color: var(--ink); }
+    3%, 30% { background: var(--ink); color: var(--paper); }
+    34%, 100% { background: var(--paper); color: var(--ink); }
+}
+
+@keyframes knob {
+    0%, 30% { left: 18%; }
+    34%, 63% { left: 55%; }
+    67%, 97% { left: 88%; }
+    100% { left: 18%; }
+}
+
+/* ---------- checklist: every detail gets ticked ---------- */
+.ps-check .list {
+    width: 78%;
+}
+
+.ps-check .list > strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--s-17);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+}
+
+.ps-check ul {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.ps-check li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+}
+
+.ps-check li i {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--signal);
+    font-size: 1rem;
+}
+
+.motion-ready .ps-check li i {
+    animation: tick-pop 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.6s);
+}
+
+@keyframes tick-pop {
+    0%, 3% { transform: scale(0); }
+    8%, 86% { transform: scale(1); }
+    94%, 100% { transform: scale(0); }
+}

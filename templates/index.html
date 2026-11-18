@@ -4,254 +4,201 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/index.css">
-<link rel="stylesheet" href="/static/images/favicons/favicon.ico">
+<link rel="stylesheet" href="/static/css/index.css?v=4">
 {% endblock %}
 
 
 {% block content %}
-<!-- Hero Section Start -->
-    <section id="hero-section">
-        <div id="hero-wrapper-duplicate"></div>
-        <div id="hero-wrapper-1">
-            <div class="adj-padd" style="padding-left: 5px;"></div>
-            <div id="hero-left">
-                <div id="hero-left-top">
-                    <div id="hero-left-top-left">
-                        <span class="above"><span class="big-letter">O</span>wn <span
-                                class="big-letter">p</span>rofessional <span
-                                class="big-letter">c</span>ollaboration</span>
-                        <span class="below">At Own Professional Collaboration, we bring creators, brands, and
-                            <br>sponsors together on one trusted platform to build lasting, <br>meaningful, and
-                            professional partnerships.</span>
-                    </div>
-                    <div id="hero-left-top-right">
-                        <span>B</span>
-                        <span>R</span>
-                        <span>A</span>
-                        <span>N</span>
-                        <span>D</span>
-                        <span>S</span>
-                        <span><i class='bx  bx-arrow-down-stroke'></i></span>
-                    </div>
-                </div>
-                <div class="adj-horr"></div>
-                <div id="hero-left-bottom">
-                    <div id="main-title">
-                        <div id="name">OPC</div>
-                        <div class="line"></div>
-                    </div>
-                    <div id="main-links">
-                        <div class="line"></div>
-                        <div id="buttons">
-                            <button type="button" id="schedule-meet-btn">SCHEDULE A MEET <i
-                                    class='bx  bx-arrow-right-stroke'></i></button>
-                            <button type="button" id="know-more-btn">KNOW MORE <i
-                                    class='bx  bx-arrow-right-stroke'></i></button>
-                        </div>
-                    </div>
-                </div>
+<!-- Hero: the agreement -->
+<section id="hero" class="band-signal">
+    <div class="wrap hero-grid">
+        <div class="hero-copy">
+            <p class="hero-name">Own Professional Collaboration</p>
+            <h1>One deal.<br>Three signatures.<br>Checked by OPC.</h1>
+            <p class="hero-lede">OPC brings brands, creators and event partners to one table. We check everyone, match the right people, and keep every deal in writing.</p>
+            <div class="hero-actions">
+                <button type="button" id="schedule-meet-btn">Schedule a meet</button>
+                <button type="button" id="know-more-btn" class="secondary">See how it works</button>
             </div>
-            <div class="adj"></div>
-            <div id="hero-middle">
-                <span>E</span>
-                <span>V</span>
-                <span>E</span>
-                <span>N</span>
-                <span>T</span>
-                <span>&nbsp;</span>
-                <span>P</span>
-                <span>A</span>
-                <span>R</span>
-                <span>T</span>
-                <span>N</span>
-                <span>E</span>
-                <span>R</span>
-                <span>S</span>
-                <span><i class='bx  bx-arrow-down-stroke'></i></span>
-            </div>
-            <div class="adj"></div>
-            <div id="hero-right">
-                <div id="hero-right-top">
-                    <span>C</span>
-                    <span>R</span>
-                    <span>E</span>
-                    <span>A</span>
-                    <span>T</span>
-                    <span>O</span>
-                    <span>R</span>
-                    <span>S</span>
-                    <span><i class='bx  bx-arrow-down-stroke'></i></span>
-                </div>
-                <div class="adj-horr"></div>
-                <div id="hero-right-bottom">
-                    <span><span>Brands</span> trust us.</span><span><span>Creators</span> grow with
-                        us.</span><span><span>Audiences</span> remember us.</span>
-                </div>
-            </div>
-            <div class="adj-padd" style="padding-right: 5px;"></div>
         </div>
-        <div id="hero-wrapper-2"></div>
-    </section>
-    <!-- Hero Section End -->
 
-    <!-- Home Section Start -->
-    <div id="home-section">
-        <!-- Intro Section Start -->
-        <section id="intro-section">
-            <div class="intro-content lag-scroll" id="brands-intro">
-                <div class="intro-image">
-                    <img src="/static/images/brands-bg.webp" alt="">
-                </div>
-                <div class="intro-text">
-                    <div class="intro-text-description">
-                        <div class="main-title">
-                            <span class="horr-line"></span>
-                            <span class="title">Brands</span>
-                        </div>
-                        <div class="description">
-                            <span>
-                                Connecting your brand with the right voices
-                            </span>
-                            <button type="button" id="explore-brands-btn">EXPLORE <i
-                                    class='bx  bx-arrow-right-stroke'></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="intro-content lag-scroll" style="z-index: 1;" id="event-partners-intro">
-                <div class="intro-text">
-                    <div class="intro-text-description">
-                        <div class="main-title">
-                            <span class="horr-line"></span>
-                            <span class="title">Event Partners</span>
-                        </div>
-                        <div class="description">
-                            <span>
-                                Powering partnerships. Amplifying impact.
-                            </span>
-                            <button type="button" id="explore-events-btn">EXPLORE <i
-                                    class='bx  bx-arrow-right-stroke'></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="intro-image">
-                    <img src="/static/images/events-bg.jpg" alt="">
-                </div>
-            </div>
-            <div class="intro-content lag-scroll" style="z-index: 2;" id="creators-intro">
-                <div class="intro-image">
-                    <img src="/static/images/creators-bg.jpeg" alt="">
-                </div>
-                <div class="intro-text">
-                    <div class="intro-text-description">
-                        <div class="main-title">
-                            <span class="horr-line"></span>
-                            <span class="title">Creators</span>
-                        </div>
-                        <div class="description">
-                            <span>
-                                Empowering creators. Building partnerships. Driving growth.
-                            </span>
-                            <button type="button" id="explore-creators-btn">EXPLORE <i
-                                    class='bx  bx-arrow-right-stroke'></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="width: 100%; height: 12vh;"></div>
-        </section>
-        <!-- Intro Section End -->
+        <figure class="agreement" aria-label="A collaboration agreement signed by a brand, a creator and an event partner, stamped verified by OPC">
+            <figcaption class="agreement-title">Collaboration agreement</figcaption>
+            <p class="agreement-clause">The parties below agree the brief, the deliverables and the dates before work starts. OPC holds everyone to it.</p>
+            <ol class="agreement-parties">
+                <li><span class="sig">Brand</span><span class="role">brings the budget</span></li>
+                <li><span class="sig">Creator</span><span class="role">brings the audience</span></li>
+                <li><span class="sig">Event partner</span><span class="role">brings the stage</span></li>
+            </ol>
+            <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true">
+                <defs>
+                    <path id="stamp-ring" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0" />
+                    <filter id="stamp-rough">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" />
+                        <feDisplacementMap in="SourceGraphic" scale="3" />
+                    </filter>
+                </defs>
+                <g filter="url(#stamp-rough)">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" stroke-width="5" />
+                    <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="2" />
+                    <text font-size="15" font-weight="700" letter-spacing="2.2" fill="currentColor">
+                        <textPath href="#stamp-ring">OWN PROFESSIONAL COLLABORATION ✦ CHECKED ✦</textPath>
+                    </text>
+                    <text x="100" y="99" text-anchor="middle" font-size="38" font-weight="800" fill="currentColor">OPC</text>
+                    <text x="100" y="124" text-anchor="middle" font-size="15" font-weight="700" letter-spacing="3" fill="currentColor">VERIFIED</text>
+                </g>
+            </svg>
+        </figure>
+    </div>
+</section>
+
+<!-- Who it's for -->
+<section id="intro-section" class="band-ink">
+    <div class="wrap">
+        <h2 class="section-title">Pick your side of the table</h2>
+        <div class="audiences">
+            <article class="audience" id="brands-intro">
+                <img src="/static/images/brands-bg.webp" alt="" width="850" height="450" loading="lazy" />
+                <h3>Brands</h3>
+                <p>Find creators who already speak to your customers, and run the whole campaign in one place.</p>
+                <button type="button" id="explore-brands-btn" class="secondary">For brands</button>
+            </article>
+            <article class="audience" id="creators-intro">
+                <img src="/static/images/creators-bg.webp" alt="" width="1200" height="675" loading="lazy" />
+                <h3>Creators</h3>
+                <p>Get offers from brands that fit your work, with fair terms agreed before you start.</p>
+                <button type="button" id="explore-creators-btn" class="secondary">For creators</button>
+            </article>
+            <article class="audience" id="event-partners-intro">
+                <img src="/static/images/events-bg.webp" alt="" width="1920" height="1080" loading="lazy" />
+                <h3>Event partners</h3>
+                <p>Bring sponsors to your fests, concerts and shows, and give them a stage worth backing.</p>
+                <button type="button" id="explore-events-btn" class="secondary">For event partners</button>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- How it works: a real sequence, so it's numbered -->
+<section id="how-it-works" class="band-paper">
+    <div class="wrap">
+        <h2 class="section-title">How a collaboration works</h2>
+        <ol class="steps" data-motion="once">
+            <li>
+                <h3>Sign up and get checked</h3>
+                <p>Sign in with Google and tell us about yourself. We verify your profile and social accounts before anyone can work with you.</p>
+            </li>
+            <li>
+                <h3>Get matched</h3>
+                <p>Brands post a campaign. We suggest the creators and event partners whose audience fits it.</p>
+            </li>
+            <li>
+                <h3>Agree in writing</h3>
+                <p>Both sides sign the brief, the deliverables and the dates before any work starts.</p>
+            </li>
+            <li>
+                <h3>Deliver and approve</h3>
+                <p>The creator submits the work. The brand approves it or asks for changes, and OPC steps in if there’s a dispute.</p>
+            </li>
+        </ol>
+    </div>
+</section>
 
         <!-- FAQ Section Start -->
-        <section id="faq-section">
-            <div id="faq-title">
-                Let's clear out any confusions
-            </div>
-            <div id="faq-wrapper">
-                <div id="faq-type-selector">
-                    <div id="general" class="faq-links selected">General<i class='bx-arrow-right-stroke'></i></div>
-                    <div id="brands" class="faq-links">For brands<i class='bx-arrow-right-stroke'></i></div>
-                    <div id="creators" class="faq-links">For creators<i class='bx-arrow-right-stroke'></i></div>
-                    <div id="event-partners" class="faq-links">For event partners<i class='bx-arrow-right-stroke'></i>
+        <section id="faq-section" class="band-paper">
+            <div class="wrap" id="faq-wrapper">
+                <div id="faq-side">
+                <h2 id="faq-title">Questions people ask us</h2>
+                <div id="faq-type-selector" role="group" aria-label="Questions for">
+                    <button type="button" id="general" class="faq-links selected">General</button>
+                    <button type="button" id="brands" class="faq-links">For brands</button>
+                    <button type="button" id="creators" class="faq-links">For creators</button>
+                    <button type="button" id="event-partners" class="faq-links">For event partners</button>
+                </div>
+                <div id="contact-us-mini">
+                    <img src="/static/images/contact-img.webp" alt="" width="160" height="160" loading="lazy" />
+                    <div>
+                        <p><strong>Didn’t find your answer?</strong> Send us a short message and we’ll reply soon.</p>
+                        <div id="contact-us-mini-button"><button type="button" class="secondary">Contact us</button></div>
                     </div>
+                </div>
                 </div>
                 <!-- General FAQs -->
                 <div class="faqs" id="general-faqs" data-lenis-prevent>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>What is Own Professional Collaboration (OPC)?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>OPC is a platform that connects creators, brands, and collaborators to build impactful
                                 partnerships that deliver measurable results.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Who can join OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Creators, brands, and collaborators from various industries who value quality,
                                 creativity, and transparency.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Is there a cost to join OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Joining is free, but certain premium services or campaign tools may involve
                                 charges.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>How does OPC ensure a good match between partners?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>We evaluate brand goals, creator style, and audience fit before recommending
                                 collaborations.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do you work with international clients?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, OPC works with both local and global partners.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I schedule a meeting with OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, you can schedule a meeting with our team directly through our website. Dates are
                                 subject to availability and any changes will be communicated.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>What happens after I create my profile?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Your profile remains in pending verification until reviewed. Ensure accuracy of
                                 provided information to avoid delays.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I be disqualified from creating an account?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, providing false or misleading information can result in immediate
                                 disqualification.</span>
@@ -262,75 +209,75 @@
                 <!-- Creators FAQs -->
                 <div class="faqs hidden" id="creators-faqs" data-lenis-prevent>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Who qualifies as a creator on OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Any influencer, content creator, or creative professional with an engaged audience and
                                 quality content.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do I need a minimum follower count to join?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>No strict number — we focus on engagement, authenticity, and niche relevance.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>How do I get brand deals through OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Once verified, brands can connect with you directly or via curated campaigns.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I work with multiple brands at the same time?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, unless bound by exclusivity agreements.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Will OPC help me improve my content?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, OPC offers guidance and insights to align your work with brand expectations and
                                 market trends (in future).</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I reject a brand offer?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, you are free to accept or reject collaborations.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do I need to share my personal phone number with brands?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>No, all communications are handled through OPC’s secure messaging system.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>What if a brand asks for work outside the agreed terms?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>You can report it to OPC, and we will step in to mediate.</span>
                         </div>
@@ -340,78 +287,78 @@
                 <!-- Brands FAQs -->
                 <div class="faqs hidden" id="brands-faqs" data-lenis-prevent>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>What types of brands does OPC work with?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>We collaborate with startups, SMEs, and large companies across industries — fashion,
                                 tech, lifestyle, wellness, and more.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>How do brands find the right creators?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>We shortlist creators based on your campaign goals, target audience, and
                                 budget.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do you handle campaign planning and execution?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, from influencer selection to event planning and performance tracking.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>How do I track my campaign’s success?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>We provide measurable results, including reach, engagement, and conversion
                                 metrics.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I run multiple campaigns at once?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, you can run several campaigns targeting different audiences
                                 simultaneously.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do brands need verification before using OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, brands must sign up with an official company email and pass our verification
                                 process.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I work with international creators?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, we connect brands with both domestic and international creators.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I request exclusive partnerships?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, exclusivity options are available for certain campaigns.</span>
                         </div>
@@ -421,68 +368,68 @@
                 <!-- Event Partners (Collaborators) FAQs -->
                 <div class="faqs hidden" id="event-partners-faqs" data-lenis-prevent>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Who can be a collaborator?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Photographers, event planners, stylists, videographers, PR professionals, or anyone
                                 adding value to brand-creator partnerships.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>How do collaborators join campaigns?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Once registered, you can browse open collaboration opportunities and apply
                                 directly.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can collaborators work with both creators and brands?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, collaborators can offer services to either or both, depending on
                                 expertise.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Is payment handled through OPC?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, we ensure secure transactions and timely payments.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do I need prior industry experience to join as a collaborator?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>No — talent, portfolio, and professionalism matter most.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Do collaborators need verification before joining?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, collaborators must sign up using an official business email and complete
                                 verification.</span>
                         </div>
                     </div>
                     <div class="faq-item">
-                        <div class="question-wrapper">
+                        <button type="button" class="question-wrapper">
                             <span>Can I offer multiple services as a collaborator?</span>
-                            <i class='bx bx-chevron-down'></i>
-                        </div>
+                            <i class='bx bx-chevron-down' aria-hidden="true"></i>
+                        </button>
                         <div class="faq-answer hidden">
                             <span>Yes, as long as they are relevant to campaign requirements.</span>
                         </div>
@@ -491,31 +438,10 @@
             </div>
         </section>
         <!-- FAQ Section End -->
-
-        <!-- Contact Us Mini Section Start -->
-        <section id="contact-us-mini">
-            <div id="contact-us-mini-content">
-                <div id="contact-us-mini-image">
-                    <img src="/static/images/contact-img.png" alt="">
-                </div>
-                <div id="contact-us-mini-wrapper">
-                    <div id="contact-us-mini-text">
-                        <span>More questions?</span>
-                        <span>Contact us and we’ll get back to you asap.</span>
-                        <span>It is just a small form to fill.</span>
-                    </div>
-                    <div id="contact-us-mini-button">
-                        <button type="button">CONTACT US <i class='bx  bx-arrow-right-stroke'></i></button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Contact Us Mini Section End -->
 {% endblock %}
 
 
 {% block script %}
-<script src="https://accounts.google.com/gsi/client"></script>
 <script src="/static/js/index.js"></script>
-<script src="/static/js/faq.js"></script>
+<script src="/static/js/faq.js?v=2"></script>
 {% endblock %}

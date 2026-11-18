@@ -63,6 +63,6 @@ async function sendDataToServer(data) {
             })
     } catch (error) { }
     finally {
-        showBtnPreLoader(contactUsSubmitButton, false, "SEND <i class='bx  bx-arrow-right-stroke'  ></i>");
+        showBtnPreLoader(contactUsSubmitButton, false, "Send message");
     }
 }

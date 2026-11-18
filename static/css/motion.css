@@ -1,0 +1,558 @@
+/*
+  Page animations. Each page gets one scene that shows what happens on OPC:
+  - Brands / Creators / Event partners: a live activity feed beside the hero.
+  - Contact: a chat. Schedule a meet: the meeting email arriving.
+  - Register an event: a ticket being stamped. Sign in: a profile getting verified.
+
+  Rules:
+  - Without JavaScript or with "reduce motion" on, scenes show their finished state.
+  - With motion.js, scenes only play while on screen (".in-view").
+  - Only opacity and transform are animated, so they stay smooth on phones.
+*/
+
+/* Loops are paused until the scene is on screen. */
+.motion-ready [data-motion] * {
+    animation-play-state: paused !important;
+}
+
+.motion-ready [data-motion].in-view * {
+    animation-play-state: running !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-motion] * {
+        animation: none !important;
+    }
+}
+
+/* ---------- Activity feed (audience pages) ---------- */
+.aud-hero-art {
+    position: relative;
+}
+
+.feed {
+    position: absolute;
+    left: -1.5rem;
+    bottom: 0.5rem;
+    width: min(17.5rem, 80%);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* All items share one spot: one notification at a time, like a live ticker.
+       Without motion, the last one (the finished deal) is the one you see. */
+    display: grid;
+    z-index: 2;
+}
+
+.feed li {
+    grid-area: 1 / 1;
+}
+
+.feed li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.9rem 0.65rem 0.65rem;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 14px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 14px 30px -14px rgba(60, 40, 0, 0.55);
+    font-size: var(--s-14);
+    line-height: 1.25;
+}
+
+.feed i {
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--signal);
+    font-size: 1.2rem;
+}
+
+.feed li.is-stamp i {
+    background: var(--stamp-ink);
+    color: var(--paper);
+}
+
+.feed strong {
+    display: block;
+    font-weight: 700;
+}
+
+.feed small {
+    color: var(--graphite);
+    font-size: var(--s-12);
+}
+
+/* Each item slides in, stays about two seconds, and leaves for the next one. */
+.motion-ready .feed li {
+    opacity: 0;
+    animation: feed 10s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+    animation-delay: calc(var(--i, 0) * 2.5s);
+}
+
+@keyframes feed {
+    0% { opacity: 0; transform: translateY(16px) scale(0.96); }
+    4%, 21% { opacity: 1; transform: none; }
+    25%, 100% { opacity: 0; transform: translateY(-12px) scale(0.98); }
+}
+
+/* ---------- Scenes in the black panel of form pages ---------- */
+/* Scenes keep their own ink colour, not the panel's grey text. */
+.form-aside .scene p {
+    color: inherit;
+    max-width: none;
+}
+
+.form-aside .scene .bubble.you {
+    color: var(--paper);
+}
+
+.scene {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 1rem;
+    font-size: var(--s-14);
+    line-height: 1.35;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.scene-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--paper-line);
+    font-weight: 700;
+}
+
+.scene-bar span {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--paper-line);
+}
+
+.scene-bar b {
+    margin-left: 0.4rem;
+}
+
+.skel {
+    display: block;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--paper-line);
+    margin-top: 0.35rem;
+    width: 70%;
+}
+
+.skel.short {
+    width: 40%;
+}
+
+/* The small violet stamp used in scenes */
+.mini-stamp {
+    position: absolute;
+    right: 0.9rem;
+    top: 0.9rem;
+    padding: 0.3rem 0.6rem;
+    border: 2.5px solid var(--stamp-ink);
+    border-radius: 6px;
+    color: var(--stamp-ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--s-14);
+    letter-spacing: 0.08em;
+    transform: rotate(-10deg);
+    mix-blend-mode: multiply;
+}
+
+/* --- Schedule a meet: the meeting email arrives --- */
+.mail-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.mail {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 10px;
+}
+
+.mail i {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--paper-line);
+    font-size: 1.05rem;
+}
+
+.mail div {
+    flex: 1;
+    min-width: 0;
+}
+
+.mail strong {
+    display: block;
+}
+
+.mail time {
+    font-size: var(--s-12);
+    color: var(--graphite);
+}
+
+.mail.new {
+    background: var(--signal);
+}
+
+.mail.new i {
+    background: var(--ink);
+    color: var(--signal);
+}
+
+.motion-ready .scene-mail .mail.new {
+    animation: mail-in 7s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+.motion-ready .scene-mail .mail.old {
+    animation: mail-push 7s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+/* The new email drops in at the top and pushes the older ones down. */
+@keyframes mail-in {
+    0%, 12% { opacity: 0; transform: translateY(-110%); }
+    22%, 86% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; transform: none; }
+}
+
+@keyframes mail-push {
+    0%, 12% { transform: translateY(-3.4rem); }
+    22%, 100% { transform: none; }
+}
+
+/* --- Contact: a quick chat --- */
+.scene-chat {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.bubble {
+    max-width: 85%;
+    padding: 0.6rem 0.85rem;
+    border-radius: 14px;
+}
+
+.bubble.you {
+    justify-self: end;
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom-right-radius: 4px;
+}
+
+.reply-slot {
+    display: grid;
+}
+
+.reply-slot > * {
+    grid-area: 1 / 1;
+}
+
+.bubble.opc {
+    justify-self: start;
+    background: var(--signal);
+    border-bottom-left-radius: 4px;
+}
+
+.bubble.typing {
+    justify-self: start;
+    align-self: start;
+    display: flex;
+    gap: 0.3rem;
+    background: var(--paper-line);
+    padding: 0.75rem 0.9rem;
+}
+
+.bubble.typing span {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--graphite);
+}
+
+/* Without motion the typing dots are hidden and the reply shows. */
+.bubble.typing {
+    visibility: hidden;
+}
+
+.motion-ready .scene-chat .bubble.typing {
+    visibility: visible;
+    animation: chat-typing 8s ease infinite both;
+}
+
+.motion-ready .scene-chat .bubble.typing span {
+    animation: dot 0.9s ease-in-out infinite;
+}
+
+.motion-ready .scene-chat .bubble.typing span:nth-child(2) { animation-delay: 0.15s; }
+.motion-ready .scene-chat .bubble.typing span:nth-child(3) { animation-delay: 0.3s; }
+
+.motion-ready .scene-chat .bubble.you {
+    animation: chat-you 8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+.motion-ready .scene-chat .bubble.opc {
+    animation: chat-opc 8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+@keyframes chat-you {
+    0%, 4% { opacity: 0; transform: translateY(10px); }
+    10%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; }
+}
+
+@keyframes chat-typing {
+    0%, 16% { opacity: 0; }
+    20%, 40% { opacity: 1; }
+    43%, 100% { opacity: 0; }
+}
+
+@keyframes chat-opc {
+    0%, 42% { opacity: 0; transform: translateY(10px); }
+    48%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; }
+}
+
+@keyframes dot {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* --- Register an event: the ticket gets stamped, sponsors show interest --- */
+.ticket {
+    display: flex;
+    border-radius: 10px;
+    background: var(--signal);
+    overflow: hidden;
+}
+
+.ticket-main {
+    flex: 1;
+    padding: 0.75rem 0.9rem;
+    display: grid;
+    gap: 0.1rem;
+}
+
+.ticket-main small {
+    color: var(--graphite);
+    font-size: var(--s-12);
+}
+
+.ticket-main strong {
+    font-family: var(--font-display);
+    font-size: var(--s-21);
+    line-height: 1.1;
+}
+
+.ticket-stub {
+    width: 4rem;
+    display: grid;
+    place-items: center;
+    border-left: 2px dashed rgba(13, 13, 13, 0.35);
+    font-size: 1.6rem;
+}
+
+.ticket-sponsors {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.ticket-sponsors li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: #f0efe8;
+    font-size: var(--s-12);
+    font-weight: 600;
+}
+
+.scene-ticket .mini-stamp {
+    top: auto;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.scene-ticket .ticket-sponsors {
+    padding-right: 7.5rem;
+}
+
+.motion-ready .scene-ticket .mini-stamp {
+    animation: stamp-land 9s cubic-bezier(0.2, 0.9, 0.3, 1.15) infinite both;
+}
+
+.motion-ready .scene-ticket .ticket-sponsors li {
+    animation: pop 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+.motion-ready .scene-ticket .ticket-sponsors li:nth-child(2) { animation-name: pop-2; }
+.motion-ready .scene-ticket .ticket-sponsors li:nth-child(3) { animation-name: pop-3; }
+
+@keyframes stamp-land {
+    0%, 14% { opacity: 0; transform: rotate(-10deg) scale(1.8); }
+    19%, 88% { opacity: 0.9; transform: rotate(-10deg) scale(1); }
+    96%, 100% { opacity: 0; transform: rotate(-10deg) scale(1); }
+}
+
+@keyframes pop {
+    0%, 30% { opacity: 0; transform: scale(0.8); }
+    35%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; }
+}
+
+@keyframes pop-2 {
+    0%, 42% { opacity: 0; transform: scale(0.8); }
+    47%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; }
+}
+
+@keyframes pop-3 {
+    0%, 54% { opacity: 0; transform: scale(0.8); }
+    59%, 88% { opacity: 1; transform: none; }
+    96%, 100% { opacity: 0; }
+}
+
+/* --- Sign in: the profile's checks tick, then the stamp lands --- */
+.profile-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--paper-line);
+}
+
+.avatar {
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--signal);
+    font-weight: 700;
+    font-size: var(--s-12);
+}
+
+.profile-row div {
+    flex: 1;
+}
+
+.profile-checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.profile-checks li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 500;
+}
+
+.profile-checks i {
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--signal);
+    font-size: 0.95rem;
+}
+
+.scene-profile .mini-stamp {
+    top: auto;
+    bottom: 1rem;
+}
+
+.motion-ready .scene-profile .profile-checks i {
+    animation: tick 8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+.motion-ready .scene-profile .profile-checks li:nth-child(2) i { animation-name: tick-2; }
+.motion-ready .scene-profile .profile-checks li:nth-child(3) i { animation-name: tick-3; }
+
+.motion-ready .scene-profile .mini-stamp {
+    animation: stamp-land-late 8s cubic-bezier(0.2, 0.9, 0.3, 1.15) infinite both;
+}
+
+@keyframes tick {
+    0%, 8% { transform: scale(0); }
+    13%, 90% { transform: scale(1); }
+    97%, 100% { transform: scale(0); }
+}
+
+@keyframes tick-2 {
+    0%, 20% { transform: scale(0); }
+    25%, 90% { transform: scale(1); }
+    97%, 100% { transform: scale(0); }
+}
+
+@keyframes tick-3 {
+    0%, 32% { transform: scale(0); }
+    37%, 90% { transform: scale(1); }
+    97%, 100% { transform: scale(0); }
+}
+
+@keyframes stamp-land-late {
+    0%, 44% { opacity: 0; transform: rotate(-10deg) scale(1.8); }
+    49%, 90% { opacity: 0.9; transform: rotate(-10deg) scale(1); }
+    97%, 100% { opacity: 0; transform: rotate(-10deg) scale(1); }
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 860px) {
+    .feed {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        width: 100%;
+        max-width: 22rem;
+        margin: -1.5rem auto 0;
+    }
+}
+
+/* ---------- The cartoon on Brands and Creators floats gently ---------- */
+/* Uses `translate`, not `transform`, so it adds to the scroll effect in the page script. */
+.motion-ready .aud-hero-art.sticker img {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -12px; }
+}

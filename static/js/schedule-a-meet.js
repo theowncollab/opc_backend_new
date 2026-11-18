@@ -1,127 +1,114 @@
+// "Schedule a meet": books through OPC's own backend (no Google Apps Script).
+// - Only tomorrow can be booked, counted in India time (IST), 9:00 am to 11:00 pm IST.
+// - The meeting link is NOT sent automatically: the OPC team emails it, then marks it
+//   sent in the team console (Meetings).
+// Paths are relative, like the site's other forms: the backend that serves these
+// pages also answers /api/meetings/* (see backend routes/meetings.py).
 import { showBtnPreLoader } from "./pre-loader.js";
 
-const scheduleAMeetSignInBtn = document.getElementById("schedule-a-meet-sign-in-btn");
-scheduleAMeetSignInBtn.addEventListener("click", () => {
+const API = "/api/meetings";
+const BUTTON_TEXT = "Request the meeting";
+
+const form = document.getElementById("schedule-form");
+const timeSelect = document.getElementById("time");
+const dayLabel = document.getElementById("meet-day");
+const errorBox = document.getElementById("schedule-error");
+const submitBtn = document.getElementById("schedule-meet-form-btn");
+let bookableDate = null;
+
+document.getElementById("schedule-a-meet-sign-in-btn").addEventListener("click", () => {
     window.location.href = "sign-in.html";
 });
 
-async function fetchAvailableTimeSlots(selectedDate) {
+function showError(text) {
+    errorBox.textContent = text;
+    errorBox.hidden = !text;
+}
+
+// "2026-11-18" -> "Wednesday, 18 November" (the date is already the IST day).
+function dayName(isoDate) {
+    return new Intl.DateTimeFormat("en-IN", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })
+        .format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+async function loadSlots() {
+    timeSelect.innerHTML = '<option value="" disabled selected>Loading tomorrow\'s times…</option>';
     try {
-        const formattedDate = selectedDate.toISOString().split('T')[0];
-        const response = await fetch(`${window.GSCRIPT_URL}?date=${formattedDate}`);
-        const data = await response.json();
-        if (data.status === "success") {
-            await populateTimeSlots(data.slots);
-        } else {
-            console.error("Backend returned an error:", data.message);
+        const res = await fetch(`${API}/slots`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        bookableDate = data.date;
+        dayLabel.textContent = `tomorrow, ${dayName(data.date)}`;
+        const free = data.slots.filter((s) => s.available);
+        timeSelect.innerHTML = `<option value="" disabled selected>${free.length ? "Pick a time (IST) *" : "No times left for tomorrow"}</option>`;
+        for (const s of data.slots) {
+            const option = document.createElement("option");
+            option.value = s.time;
+            option.disabled = !s.available;
+            option.textContent = `${s.label} IST${s.available ? "" : " (taken)"}`;
+            timeSelect.appendChild(option);
         }
-    } catch (error) {
-        console.error("Critical failure fetching time slots:", error);
+    } catch (e) {
+        timeSelect.innerHTML = '<option value="" disabled selected>Couldn\'t load times</option>';
+        showError("We couldn't load tomorrow's times. Refresh the page, or email support@theowncollab.com.");
     }
 }
 
-async function populateTimeSlots(timeSlots) {
-    const timeInput = document.getElementById("time");
-    timeInput.innerHTML = '<option value="" disabled selected>Select Time Slot *</option>';
-
-    if (timeSlots.length === 0) {
-        timeInput.innerHTML = '<option value="" disabled selected>No slots available</option>';
-        return;
-    }
-
-    timeSlots.forEach((slot) => {
-        const option = document.createElement("option");
-        option.value = JSON.stringify({ start: slot.startValue, end: slot.endValue });
-        const localTime = new Date(slot.startValue);
-        option.textContent = localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        timeInput.appendChild(option);
-    });
-}
-
-const dateInput = document.getElementById("date");
-dateInput.addEventListener("change", async () => {
-    const selectedDate = new Date(dateInput.value);
-    await fetchAvailableTimeSlots(selectedDate);
-});
-
-function scheduleMeetFormData() {
-    const nameInput = document.getElementById("name").value;
-    if (!nameInput) {
-        alert("Please enter your name.");
-        return null;
-    }
-
-    const emailInput = document.getElementById("email").value;
-    if (!emailInput) {
-        alert("Please enter your email.");
-        return null;
-    }
-
-    const userTypeSelect = document.getElementById("type").value;
-    if (!userTypeSelect) {
-        alert("Please select a user type.");
-        return null;
-    }
-
-    const dateInput = document.getElementById("date").value;
-    if (!dateInput) {
-        alert("Please select a date.");
-        return null;
-    }
-
-    const timeInput = document.getElementById("time").value;
-    if (!timeInput) {
-        alert("Please select a time.");
-        return null;
-    }
-
-    const selectedSlot = JSON.parse(timeInput);
-
-    return {
-        name: nameInput,
-        email: emailInput,
-        userType: userTypeSelect,
-        startDateTime: selectedSlot.start,
-        endDateTime: selectedSlot.end
+function readForm() {
+    const value = (id) => document.getElementById(id).value.trim();
+    const data = {
+        name: value("name"),
+        email: value("email"),
+        phone: value("phone") || null,
+        userType: value("type"),
+        company: value("company") || null,
+        topic: value("topic"),
+        date: bookableDate,
+        time: timeSelect.value,
+        website: document.getElementById("website").value || null,
     };
+    if (data.name.length < 2) return [null, "Enter your name."];
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return [null, "Enter a valid email address. We send the meeting link there."];
+    if (data.phone && !/^\+?[\d\s-]{8,16}$/.test(data.phone)) return [null, "Enter a valid phone number, or leave it empty."];
+    if (!data.userType) return [null, "Tell us whether you're a creator, a brand or an event partner."];
+    if (data.topic.length < 10) return [null, "Tell us in a sentence what you'd like to discuss."];
+    if (!data.time) return [null, "Pick a time for tomorrow."];
+    return [data, ""];
 }
 
-async function sendScheduleMeetToServer(formData) {
-    try {
-        showBtnPreLoader(scheduleFormBtn, true, '');
-
-        const response = await fetch(`${window.GSCRIPT_URL}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8",
-            },
-            body: JSON.stringify(formData),
-            redirect: "follow"
-        });
-
-        const data = await response.json();
-        if (data.status === "success") {
-            alert(`${data.message}\nWe have sent an invite to your email!`);
-            document.getElementById("name").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("type").value = "";
-            document.getElementById("date").value = "";
-            document.getElementById("time").innerHTML = '<option value="" disabled selected>Select Time Slot *</option>';
-        } else {
-            alert(`Booking failed: ${data.message}`);
-        }
-    } catch (error) {
-        console.error("Error scheduling meet:", error);
-        alert("An error occurred while scheduling the meet. Please try again later.");
-    } finally {
-        showBtnPreLoader(scheduleFormBtn, false, "SCHEDULE THE MEET <i class='bx bx-arrow-right-stroke'></i>");
-    }
-}
-
-const scheduleFormBtn = document.getElementById("schedule-meet-form-btn");
-scheduleFormBtn.addEventListener("click", async (e) => {
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const formData = scheduleMeetFormData();
-    if (!formData) return;
-    await sendScheduleMeetToServer(formData);
+    const [data, problem] = readForm();
+    showError(problem);
+    if (!data) return;
+
+    showBtnPreLoader(submitBtn, true, "");
+    try {
+        const res = await fetch(`${API}/book`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            const detail = Array.isArray(body.detail) ? body.detail[0]?.msg : body.detail;
+            showError(detail || "We couldn't book that time. Try again.");
+            // Someone took the slot, or the day moved on: show fresh times.
+            if (res.status === 409) await loadSlots();
+            return;
+        }
+        form.hidden = true;
+        document.getElementById("schedule-done-when").textContent = `${dayName(body.date)} at ${body.label} IST`;
+        document.getElementById("schedule-done-message").textContent =
+            `We'll email the meeting link to ${data.email} from ${body.fromEmail} before your meeting. ` +
+            "If you don't see it, check your spam folder.";
+        document.getElementById("schedule-done").hidden = false;
+        document.querySelector("#schedule-the-meet #description").hidden = true;
+    } catch (err) {
+        showError("We couldn't reach OPC. Check your connection and try again.");
+    } finally {
+        showBtnPreLoader(submitBtn, false, BUTTON_TEXT);
+    }
 });
+
+loadSlots();

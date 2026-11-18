@@ -10,6 +10,5 @@ footerSubscribeBtn.addEventListener("click", () => {
 
 const footerBottom = document.getElementById("footer-bottom");
 document.addEventListener("DOMContentLoaded", () => {
-  footerBottom.innerHTML = `<p>&copy; ${new Date().getFullYear()} Own Professional Collaboration. <a href="privacy-policy.html">Privacy
-                    Policy</a> | <a href="terms-and-conditions.html">Terms & Conditions</a></p>`
+  footerBottom.innerHTML = `<p>&copy; ${new Date().getFullYear()} Own Professional Collaboration. <a href="privacy-policy.html">Privacy policy</a> | <a href="terms-and-conditions.html">Terms and conditions</a></p>`
 })

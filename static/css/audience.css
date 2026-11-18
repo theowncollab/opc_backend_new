@@ -1,0 +1,332 @@
+/* Brands, Creators and Event partners pages: one shared layout. */
+
+.aud-section-title {
+    font-size: clamp(2.25rem, 4.6vw, 4rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.95;
+    margin-bottom: 1rem;
+}
+
+.aud-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+}
+
+.aud-actions a {
+    font-weight: 500;
+}
+
+/* ---------- Hero: the audience's name, set huge ---------- */
+.aud-hero {
+    overflow: hidden;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3.5rem, 7vw, 6rem);
+}
+
+.aud-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+}
+
+.aud-title {
+    font-size: clamp(4rem, 13vw, 11.5rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    margin-left: -0.04em;
+}
+
+.aud-tagline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    line-height: 1.15;
+    margin: 1.5rem 0 1.25rem;
+    max-width: 20ch;
+}
+
+.aud-body {
+    font-size: var(--s-17);
+    max-width: 52ch;
+    margin-bottom: 2rem;
+}
+
+.aud-hero-art img {
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+}
+
+/* Sticker illustrations sit straight on the yellow. */
+.aud-hero-art.sticker img {
+    filter: drop-shadow(0 24px 30px rgba(90, 64, 0, 0.35));
+}
+
+/* A photo is pinned to the desk like a print. */
+.aud-hero-art.photo img {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border: 10px solid var(--paper);
+    border-radius: 6px;
+    transform: rotate(-2deg);
+    box-shadow: 0 30px 60px -24px rgba(90, 64, 0, 0.55);
+}
+
+/* ---------- Why work with us ---------- */
+.aud-perks {
+    padding: var(--band-y) 0;
+}
+
+.aud-perks-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.aud-perks-head p {
+    color: var(--graphite);
+}
+
+.scroll-left-right {
+    display: flex;
+    gap: 0.5rem;
+    flex: none;
+}
+
+.scroll-left-right button {
+    width: 3rem;
+    padding: 0;
+    font-size: 1.5rem;
+}
+
+.scroll-left-right button.swiper-button-disabled {
+    opacity: 0.3;
+    cursor: default;
+    transform: none;
+}
+
+/* The benefit's description under its scene (scenes.css styles the scene itself). */
+.perk > p {
+    color: var(--graphite);
+    max-width: 40ch;
+}
+
+.perk > p strong {
+    display: block;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: var(--s-21);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+}
+
+/* ---------- Who it's for (chips) ---------- */
+.aud-list {
+    padding: var(--band-y) 0;
+}
+
+.aud-list-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+}
+
+.aud-list-grid p {
+    color: var(--smoke);
+    max-width: 46ch;
+}
+
+.chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.chips li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.25rem 0.7rem 1rem;
+    border: 1px solid #3a3a37;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--s-21);
+    line-height: 1;
+}
+
+.chips i {
+    color: var(--signal);
+    font-size: 1.4rem;
+}
+
+/* ---------- Event partners: sponsors and registration ---------- */
+.aud-sponsors {
+    padding: var(--band-y) 0;
+}
+
+.aud-sponsors-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+}
+
+.aud-sponsors-grid p {
+    color: var(--graphite);
+    max-width: 44ch;
+    margin-bottom: 2rem;
+}
+
+#ep-corporate-sponsors-image img {
+    border-radius: 14px;
+    width: 100%;
+}
+
+.aud-register {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    border-top: 2px solid var(--ink);
+}
+
+.aud-register-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.aud-register-inner p {
+    max-width: 50ch;
+}
+
+/* ---------- Closing, over the network ---------- */
+.aud-close {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(6rem, 14vw, 11rem) 0;
+    text-align: center;
+}
+
+/* Closing network: brands (yellow), creators (white) and event partners (violet)
+   joined by lines that draw in from left to right; every third line is a yellow deal.
+   It replaces the old 6 MB background video (templates/network.html, about 5 KB). */
+.aud-close .network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* A soft dark pool behind the words keeps them easy to read. */
+.aud-close::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(ellipse 55% 60% at 50% 50%, rgba(13, 13, 13, 0.95) 35%, rgba(13, 13, 13, 0) 100%);
+}
+
+.network line {
+    stroke: var(--paper);
+    stroke-opacity: 0.22;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+}
+
+.network line.deal {
+    stroke: var(--signal);
+    stroke-opacity: 0.75;
+    stroke-width: 1.8;
+}
+
+.network .node {
+    opacity: 0.85;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.network .node.b { fill: var(--signal); }
+.network .node.c { fill: var(--paper); }
+.network .node.e { fill: #a99cf5; }
+
+.motion-ready .network line {
+    stroke-dasharray: 1;
+    animation: link-draw 14s cubic-bezier(0.6, 0, 0.3, 1) infinite both;
+    animation-delay: calc(var(--i) * 0.35s);
+}
+
+.motion-ready .network .node {
+    animation: node-pulse 4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.37s);
+}
+
+@keyframes link-draw {
+    0% { stroke-dashoffset: 1; opacity: 0; }
+    3% { opacity: 1; }
+    16%, 70% { stroke-dashoffset: 0; opacity: 1; }
+    84%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes node-pulse {
+    0%, 100% { opacity: 0.45; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.35); }
+}
+
+.aud-close-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.aud-close h2 {
+    font-size: clamp(2.75rem, 7vw, 6rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.9;
+    color: var(--signal);
+    margin-bottom: 1.5rem;
+}
+
+.aud-close p {
+    font-size: var(--s-21);
+    max-width: 44ch;
+    margin: 0 auto;
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 860px) {
+    .aud-hero-grid,
+    .aud-list-grid,
+    .aud-sponsors-grid {
+        grid-template-columns: 1fr;
+    }
+    .aud-hero-art img {
+        max-width: 24rem;
+    }
+    .aud-register-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .aud-perks-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .chips li {
+        font-size: var(--s-17);
+    }
+}

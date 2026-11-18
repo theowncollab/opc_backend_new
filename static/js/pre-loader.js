@@ -1,7 +1,6 @@
 function createBtnPreLoader(btn) {
     btn.disabled = true;
-    btn.innerHTML = "PROCESSING <i class='bx  bx-arrow-right-stroke'  ></i>";
-    console.log("Pre-loader shown on button.");
+    btn.innerHTML = "Sending…";
 }
 
 function removeBtnPreLoader(btn, text) {

@@ -1,0 +1,24 @@
+# Hourly jobs (replaces Vercel Cron). See DEPLOY.md, step 10.
+# To turn on: copy this file to backend/.github/workflows/cron.yml and push.
+# Needs repository secrets: SITE_URL, CRON_SECRET.
+name: Hourly jobs
+
+on:
+  schedule:
+    - cron: "7 * * * *"     # every hour at :07 (UTC); GitHub may run it a few minutes late
+  workflow_dispatch:        # "Run workflow" button for a manual run
+
+jobs:
+  auto-approve:
+    name: Auto-approve deals past their review window
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call the backend
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "${SITE_URL%/}/cron/deals/auto-approve"

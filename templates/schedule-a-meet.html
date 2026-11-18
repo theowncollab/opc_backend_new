@@ -4,79 +4,84 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/schedule-a-meet.css">
-<link rel="stylesheet" href="/static/images/favicons/favicon.ico">
+<link rel="stylesheet" href="/static/css/forms.css?v=2">
 {% endblock %}
 
 
 {% block content %}
-<!-- Schedule A Meet Section Start -->
-<section id="schedule-a-meet-container">
-    <div id="why-schedule-a-meet">
-        <div id="why-text">
-            <div id="why-logo">
-                <img src="/static/images/logo.png" alt="OPC Logo" />
-                <span>Own Professional Collaboration</span>
+<section class="form-page band-paper" id="schedule-a-meet-container">
+    <div class="wrap form-grid">
+        <aside class="form-aside band-ink" id="why-schedule-a-meet">
+            <h1>Talk to the OPC team</h1>
+            <p>A short call to answer your questions and see how OPC can work for you.</p>
+            <p class="form-aside-note">We meet on Google Meet. Our team emails you the link from our official address, so keep an eye on your inbox.</p>
+            <div class="scene scene-mail" data-motion aria-hidden="true">
+                <div class="scene-bar"><span></span><span></span><span></span><b>Inbox</b></div>
+                <ul class="mail-list">
+                    <li class="mail new"><i class='bx bx-video'></i><div><strong>OPC team</strong>Your meeting link for tomorrow</div><time>now</time></li>
+                    <li class="mail old"><i class='bx bx-envelope'></i><div><span class="skel"></span><span class="skel short"></span></div></li>
+                    <li class="mail old"><i class='bx bx-envelope'></i><div><span class="skel"></span><span class="skel short"></span></div></li>
+                </ul>
             </div>
-            <div id="why-slogan">
-                <span>we want to ensure a seamless collaboration experience.</span>
-                <span>so to go an extra mile, we offer personalized meetings.</span>
-                <span>clear out any doubts or questions you may have.</span>
-                <span id="why-disclaimer">* for the sake of convenience, we will be scheduling the meet on google
-                    meet.</span>
+            <div class="form-aside-alt" id="why-extra">
+                <p>No questions? Jump straight in.</p>
+                <button type="button" id="schedule-a-meet-sign-in-btn" class="secondary">Sign in</button>
             </div>
-            <div id="why-extra">
-                <span>No questions? then try </span><button type="button" id="schedule-a-meet-sign-in-btn">SIGN
-                    IN <i class='bx  bx-arrow-right-stroke'></i></button>
-            </div>
-        </div>
-    </div>
-    <div id="schedule-the-meet">
-        <div id="title">
-            <span>Schedule a meeting</span>
-        </div>
-        <div id="description">
-            <span>
-                You will receive a confirmation email with the Google Meet link and details shortly after submitting
-                the form.
-                Please note that meeting slots are subject to availability.<br>We look forward to connecting with
-                you!
-            </span>
-        </div>
-        <form>
-            <div class="input-box">
-                <input type="text" id="name" placeholder="" required />
-                <label for="name">Name *</label>
-            </div>
-            <div class="input-box">
-                <input type="text" id="email" placeholder="" required />
-                <label for="email">Email *</label>
-            </div>
-            <select name="type" id="type">
-                <option value="" disabled selected>Select User Type</option>
-                <option value="creator">Creator</option>
-                <option value="brand">Brand</option>
-                <option value="event_partner">Event Partner</option>
-            </select>
-            <div class="input-inliner">
+        </aside>
+        <div class="form-main" id="schedule-the-meet">
+            <h2 class="form-title" id="title">Schedule a meeting</h2>
+            <p class="form-intro" id="description">
+                Meetings are for <strong id="meet-day">tomorrow</strong>, between 9:00 am and 11:00 pm
+                <strong>India Standard Time (IST)</strong>. After you book, our team emails you the meeting link.
+            </p>
+            <form id="schedule-form" novalidate>
                 <div class="input-box">
-                    <input type="date" id="date" placeholder="" required />
-                    <label for="date">Date *</label>
+                    <input type="text" id="name" placeholder=" " required autocomplete="name" maxlength="100" />
+                    <label for="name">Name *</label>
                 </div>
                 <div class="input-box">
-                    <select name="time" id="time">
-                        <option value="" disabled selected>Select Time Slot *</option>
+                    <input type="email" id="email" placeholder=" " required autocomplete="email" maxlength="200" />
+                    <label for="email">Email * (we send the meeting link here)</label>
+                </div>
+                <div class="input-inliner">
+                    <div class="input-box">
+                        <input type="tel" id="phone" placeholder=" " autocomplete="tel" maxlength="20" />
+                        <label for="phone">Phone (optional)</label>
+                    </div>
+                    <select name="type" id="type" required aria-label="I am a">
+                        <option value="" disabled selected>I am a *</option>
+                        <option value="creator">Creator</option>
+                        <option value="brand">Brand</option>
+                        <option value="event_partner">Event partner</option>
+                        <option value="other">Someone else</option>
                     </select>
                 </div>
+                <div class="input-box">
+                    <input type="text" id="company" placeholder=" " maxlength="150" />
+                    <label for="company">Company or Instagram handle (optional)</label>
+                </div>
+                <div class="input-area-box">
+                    <textarea id="topic" placeholder=" " required maxlength="1000"></textarea>
+                    <label for="topic">What would you like to discuss? *</label>
+                </div>
+                <select name="time" id="time" required aria-label="Time for tomorrow, in IST">
+                    <option value="" disabled selected>Loading tomorrow's times…</option>
+                </select>
+                <!-- Left empty by people; bots tend to fill it in -->
+                <input type="text" id="website" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <p id="schedule-error" class="form-error" role="alert" hidden></p>
+                <div class="form-submit">
+                    <button type="submit" id="schedule-meet-form-btn">Request the meeting</button>
+                </div>
+            </form>
+            <div id="schedule-done" class="form-done" role="status" hidden>
+                <span class="form-done-title">Meeting requested</span>
+                <span id="schedule-done-when"></span>
+                <span id="schedule-done-message"></span>
             </div>
-            <div>
-                <button type="submit" id="schedule-meet-form-btn">SCHEDULE THE MEET <i
-                        class='bx  bx-arrow-right-stroke'></i></button>
-            </div>
-        </form>
+        </div>
     </div>
 </section>
-<!-- Schedule A Meet Section End -->
 {% endblock %}
 
 

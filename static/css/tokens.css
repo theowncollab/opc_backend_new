@@ -1,0 +1,91 @@
+/*
+  OPC design tokens — shared with the marketing site.
+  The marketing site loads a copy at frontend/static/css/tokens.css.
+  Edit this file, then copy it there, so both always read the same values.
+
+  Palette idea: the site's black + OPC yellow stays the brand. Trust events
+  (verified, signed, released) are marked in stamp-pad violet, the ink of
+  Indian office stamps — the one place the dashboard gets loud.
+*/
+:root {
+  /* Values only: no color-scheme here, so loading this file never changes the
+     marketing site's default colours. The dashboard sets color-scheme in base.css. */
+
+  /* Surfaces */
+  --night: #0d0d0d;        /* page background, same as the marketing site */
+  --surface: #171716;      /* panels */
+  --raised: #1f1f1d;       /* rows inside panels, inputs */
+  --line: #2c2c29;         /* hairlines */
+  --line-strong: #3d3d39;
+
+  /* Ink (all >= 4.5:1 on --night and --surface) */
+  --ink: #f4f3ee;
+  --ink-2: #c4c3bb;
+  --ink-3: #96958c;
+
+  /* Brand */
+  --opc-yellow: #ffeb3b;   /* exact marketing-site yellow: actions, focus, active nav */
+  --opc-yellow-soft: rgba(255, 235, 59, 0.12);
+  --on-yellow: #0d0d0d;
+
+  /* RGB channels, for the marketing site's many transparent shades:
+     rgba(var(--opc-yellow-rgb), 0.7) */
+  --opc-yellow-rgb: 255, 235, 59;
+  --opc-yellow-light-rgb: 255, 238, 88;  /* hover / highlight */
+  --opc-yellow-deep-rgb: 253, 216, 53;   /* hero wordmark and rules */
+  --stone-rgb: 204, 198, 192;            /* site body text grey */
+
+  /* Stamp violet: verified / signed / released */
+  --stamp: #a99cf5;
+  --stamp-soft: rgba(169, 156, 245, 0.14);
+
+  /* Status (fixed, never reused as a series colour) */
+  --good: #3fbf6f;
+  --good-soft: rgba(63, 191, 111, 0.13);
+  --warning: #fab219;
+  --warning-soft: rgba(250, 178, 25, 0.13);
+  --serious: #ec835a;
+  --critical: #ef6262;
+  --critical-soft: rgba(239, 98, 98, 0.13);
+
+  /* Charts (validated for colour-blind separation on --surface) */
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --chart-bar: #e8cf2a;    /* single-series bars: brand yellow, one step deeper */
+  --chart-grid: #2a2a27;
+
+  /* Type */
+  --font-ui: 'Mukta', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-title: 'Montserrat', var(--font-ui);
+  --font-sign: 'Cedarville Cursive', cursive;
+
+  /* Scale (1.25) */
+  --t-12: 0.75rem;
+  --t-14: 0.875rem;
+  --t-15: 0.9375rem;
+  --t-17: 1.0625rem;
+  --t-20: 1.25rem;
+  --t-25: 1.5625rem;
+  --t-31: 1.9375rem;
+  --t-49: 3.0625rem;
+
+  /* Shape — radius follows hierarchy */
+  --r-panel: 16px;
+  --r-row: 10px;
+  --r-control: 8px;
+  --r-pill: 999px;
+
+  /* Space */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+
+  --sidebar-w: 248px;
+  --content-max: 1180px;
+  --focus: 0 0 0 2px var(--night), 0 0 0 4px var(--opc-yellow);
+}

@@ -4,81 +4,80 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/register-event.css">
-<link rel="stylesheet" href="/static/images/favicon.ico">
+<link rel="stylesheet" href="/static/css/forms.css?v=2">
 {% endblock %}
 
 
 {% block content %}
-<!-- Register Event Start -->
-    <section id="register-event-container">
-        <div id="register-event-card">
-            <div id="logo">
-                <img src="/static/images/logo.png" alt="OPC Logo" />
-                <span>Own Professional Collaboration</span>
+<section class="form-page band-paper" id="register-event-container">
+    <div class="wrap form-grid">
+        <aside class="form-aside band-ink" id="register-event-card">
+            <h1>Put your event in front of sponsors</h1>
+            <p>Tell us about your event and we’ll connect you with brands and artists who want a stage like yours.</p>
+            <p class="form-aside-note">To see our full network for your event, you’ll need to sign in.</p>
+            <div class="scene scene-ticket" data-motion aria-hidden="true">
+                <div class="ticket">
+                    <div class="ticket-main"><small>Event</small><strong>Your college fest</strong><small>Three days in Pune</small></div>
+                    <div class="ticket-stub"><i class='bx bx-calendar-star'></i></div>
+                </div>
+                <span class="mini-stamp">REGISTERED</span>
+                <ul class="ticket-sponsors">
+                    <li><i class='bx bx-store-alt'></i>Sportswear brand</li>
+                    <li><i class='bx bx-music'></i>Music app</li>
+                    <li><i class='bx bx-receipt'></i>Food delivery</li>
+                </ul>
             </div>
-            <div id="slogan">
-                <span>join hands with OPC to elevate your event's reach</span>
-                <span>make an impact by connecting with top brands and artists.</span>
-                <span id="disclaimer">
-                    * for full access to our network for your event, you need to sign in.
-                </span>
+            <div class="form-aside-alt" id="extras">
+                <p>Want the full network?</p>
+                <button type="button" id="register-event-sign-in-btn" class="secondary">Sign in</button>
             </div>
-            <div id="extras">
-                <span>Want access our exclusive network. Try <button type="button"
-                        id="register-event-sign-in-btn">SIGNING IN <i
-                            class='bx  bx-arrow-right-stroke'></i></button></span>
-            </div>
-        </div>
-        <div id="register-event-form">
-            <span id="title">
-                Event details
-            </span>
+        </aside>
+        <div class="form-main" id="register-event-form">
+            <h2 class="form-title" id="title">Event details</h2>
             <form>
                 <div class="input-box">
-                    <input type="text" id="event-name" name="event-name" placeholder="" required />
-                    <label for="event-name">Event Name *</label>
+                    <input type="text" id="event-name" name="event-name" placeholder=" " required />
+                    <label for="event-name">Event name *</label>
                 </div>
                 <div class="input-inliners">
-                    <div class="input-box">
-                        <input type="datetime-local" id="event-start-date" name="event-start-date" placeholder=""
-                            required />
-                        <label for="event-start-date">Start Date *</label>
+                    <div class="input-box always-up">
+                        <input type="datetime-local" id="event-start-date" name="event-start-date" placeholder=" " required />
+                        <label for="event-start-date">Starts *</label>
                     </div>
-                    <div class="input-box">
-                        <input type="datetime-local" id="event-end-date" name="event-end-date" placeholder=""
-                            required />
-                        <label for="event-end-date">End Date *</label>
+                    <div class="input-box always-up">
+                        <input type="datetime-local" id="event-end-date" name="event-end-date" placeholder=" " required />
+                        <label for="event-end-date">Ends *</label>
                     </div>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="event-organizer" name="event-organizer" placeholder="" required />
-                    <label for="event-organizer">Organizers *</label>
+                    <input type="text" id="event-organizer" name="event-organizer" placeholder=" " required />
+                    <label for="event-organizer">Organisers *</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="event-location" name="event-location" placeholder="" required />
+                    <input type="text" id="event-location" name="event-location" placeholder=" " required />
                     <label for="event-location">Location *</label>
                 </div>
                 <div class="input-box">
-                    <input type="email" id="poc-email" name="poc-email" placeholder="" required />
-                    <label for="poc-email">POC Email *</label>
+                    <input type="email" id="poc-email" name="poc-email" placeholder=" " autocomplete="email" required />
+                    <label for="poc-email">Contact person’s email *</label>
                 </div>
                 <div class="input-inliners">
                     <div class="input-box">
-                        <input type="text" id="poc-name" name="poc-name" placeholder="" required />
-                        <label for="poc-name">POC Name *</label>
+                        <input type="text" id="poc-name" name="poc-name" placeholder=" " autocomplete="name" required />
+                        <label for="poc-name">Contact person’s name *</label>
                     </div>
                     <div class="input-box">
-                        <input type="tel" id="poc-phone" name="poc-phone" placeholder="" required />
-                        <label for="poc-phone">POC Phone Number *</label>
+                        <input type="tel" id="poc-phone" name="poc-phone" placeholder=" " autocomplete="tel" required />
+                        <label for="poc-phone">Their phone number *</label>
                     </div>
                 </div>
-                <button type="submit" id="register-event-submit-btn">REGISTER EVENT <i
-                        class='bx  bx-arrow-right-stroke'></i></button>
+                <div class="form-submit">
+                    <button type="submit" id="register-event-submit-btn">Register event</button>
+                </div>
             </form>
         </div>
-    </section>
-    <!-- Register Event End -->
+    </div>
+</section>
 {% endblock %}
 
 

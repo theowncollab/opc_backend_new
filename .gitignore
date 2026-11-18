@@ -44,3 +44,9 @@ MANIFEST
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Local dev server output (sign-in tokens)
+scripts/.dev_tokens.json
+
+# Real Cloud Run settings (copied from deploy/cloudrun.env.example.yaml)
+deploy/cloudrun.env.yaml

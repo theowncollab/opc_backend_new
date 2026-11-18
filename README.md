@@ -93,6 +93,33 @@ OPC_v2/
 - `POST /contact-us`: Submits general contact form inquiries.
 - `POST /register-event`: Processes participant sign-ups for partner events.
 
+### Dashboard API (`/api/*`)
+The API behind the creator, brand and OPC team dashboards (`opc_frontend/dashboard-app`).
+
+| Where | What |
+|---|---|
+| `DASHBOARD_API.md` | The contract: every path, request body and response shape |
+| `database/schema.py` | Where each kind of data lives in MongoDB |
+| `routes/users.py` | Account, onboarding, signature, profile edits (email code), close account, brand work email |
+| `routes/social_verify.py` | Instagram and Facebook verification: codes the team sends by DM (12 hours), and single-use Instagram invite links (7 days) |
+| `routes/deals.py` | Campaigns (server-side readiness score), creator matches, reveal, deals and their actions, 6-month protection, `GET /cron/deals/auto-approve` |
+| `routes/chat.py` | Chat (the server scans every message for contact details), support tickets, notifications |
+| `routes/meetings.py` | Website Schedule a meet: tomorrow only, 9:00 am to 11:00 pm IST (replaces the Google Apps Script) |
+| `routes/admin.py`, `routes/admin_meetings.py` | Team console: people, verification, deals, disputes, moderation, alerts, tickets, team, audit log, meetings (with booking requests and link-sent tracking) |
+| `utils/deps_.py` | Sign-in from the `Authorization: Bearer` header or the `accessToken` cookie; staff and permission checks |
+| `utils/permissions_.py` | What each team role may do (the real check) |
+
+**Not built yet:** social sign-in (OAuth) and payments. Payments are off (`utils/fees_.py: PAYMENTS_LIVE = False`), so no route asks for bank details or moves money.
+
+**New environment variables**
+
+| Variable | Purpose |
+|---|---|
+| `STAFF_OWNER_EMAILS` | Comma-separated emails that are let into the team console as Owner on first sign-in (default `ceo@theowncollab.com`). Everyone else is invited from the console. |
+| `DASHBOARD_ORIGINS` | Comma-separated addresses where `opc_frontend` (and its `/dashboard/`) is deployed, for CORS. |
+| `CRON_SECRET` | Shared secret Vercel Cron sends to `/cron/deals/auto-approve`. |
+| `MEET_FROM_EMAIL` | The address visitors are told their meeting link will come from (defaults to `SMTP_USER`). `GSCRIPT_URL` is no longer used. |
+
 ---
 
 ## 💻 Local Development Setup
@@ -147,6 +174,22 @@ DB_NAME=OPC_DB
 uvicorn main:app --reload --port 8000
 ```
 Visit `http://localhost:8000` for the web app, or `http://localhost:8000/docs` for the interactive Swagger API documentation.
+
+### 5. Run it without a database (dashboard development)
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+python scripts/dev_server.py
+```
+- MongoDB is replaced by an in-memory one and emails are printed instead of sent.
+- Demo creator, brand and staff accounts are created by calling the real API.
+- Sign-in tokens are written to `scripts/.dev_tokens.json`, which git ignores.
+- The dashboard picks this server up when `VITE_API_BASE_URL=http://127.0.0.1:8000` is in `dashboard-app/.env.development.local`.
+
+### 6. Tests
+```bash
+python -m pytest -q
+```
+The 86 tests use an in-memory MongoDB, so they need no `.env` or network.
 
 ---
 

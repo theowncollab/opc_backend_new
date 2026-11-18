@@ -1,10 +1,14 @@
 const swiper = new Swiper('.swiper-container', {
-    slidesPerView: 2,
-    spaceBetween: 80,
+    slidesPerView: 1.15,
+    spaceBetween: 16,
     direction: 'horizontal',
     navigation: {
         nextEl: '.scroll-right',
         prevEl: '.scroll-left',
+    },
+    breakpoints: {
+        640: { slidesPerView: 2, spaceBetween: 24 },
+        1024: { slidesPerView: 3, spaceBetween: 32 },
     },
 });
 

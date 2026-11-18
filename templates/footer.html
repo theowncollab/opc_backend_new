@@ -1,58 +1,51 @@
-<footer>
-    <div id="footer-top">
-        <div id="footer-top-left">
-            <div id="footer-top-left-top">
-                <div id="footer-brands">
-                    BRANDS
-                </div>
-                <div id="footer-logo">
-                    <img src="./static/images/logo.png" alt="OPC Logo" />
-                </div>
-                <div id="footer-creators">
-                    CREATORS
-                </div>
-            </div>
-            <div id="footer-top-left-bottom">
+<footer class="band-ink">
+    <div class="wrap" id="footer-top">
+        <div id="footer-brand">
+            <a id="footer-logo" href="./index.html" aria-label="OPC home">
+                <img src="/static/images/logo.png" alt="" width="474" height="232" />
                 <span>Own Professional Collaboration</span>
-                <span>Where creators and brands collaborate, not just connect!</span>
-            </div>
+            </a>
+            <p id="footer-tagline">Where creators and brands collaborate, not just connect.</p>
             <div id="footer-schedule-a-meet">
-                <button id="footer-schedule-a-meet-btn">SCHEDULE A MEET <i
-                        class='bx  bx-arrow-right-stroke'></i></button>
-                <a href="./terms-and-conditions.html">OUR TERMS & CONDITIONS</a>
+                <button type="button" id="footer-schedule-a-meet-btn">Schedule a meet</button>
             </div>
         </div>
-        <div id="footer-links">
-            <div id="footer-quick-links">
-                <span>QUICK LINKS</span>
-                <a href="index.html">Home</a>
-                <a href="brands.html">Brands</a>
-                <a href="event-partners.html">Event Partners</a>
-                <a href="creators.html">Creators</a>
-                <a href="contact-us.html">Contact Us</a>
-                <div id="footer-socials">
-                    <a href="https://www.instagram.com/owncollab/"><i class='bxl  bx-instagram'></i></a>
-                    <a href="https://www.facebook.com/profile.php?id=61584250147710"><i
-                            class='bxl  bx-facebook'></i></a>
-                    <a href="https://www.x.com/theowncollab/"><i class='bxl  bx-twitter-x'></i></a>
-                </div>
+
+        <nav id="footer-links" aria-label="Footer">
+            <h2>Explore</h2>
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./brands.html">Brands</a></li>
+                <li><a href="./creators.html">Creators</a></li>
+                <li><a href="./event-partners.html">Event partners</a></li>
+                <li><a href="./register-event.html">Register an event</a></li>
+                <li><a href="./contact-us.html">Contact us</a></li>
+            </ul>
+        </nav>
+
+        <div id="footer-contact">
+            <h2>Talk to us</h2>
+            <a href="mailto:ceo@theowncollab.com">ceo@theowncollab.com</a>
+            <div id="footer-socials">
+                <a href="https://www.instagram.com/owncollab/" target="_blank" rel="noopener" aria-label="OPC on Instagram"><i class='bxl bx-instagram' aria-hidden="true"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61584250147710" target="_blank" rel="noopener" aria-label="OPC on Facebook"><i class='bxl bx-facebook' aria-hidden="true"></i></a>
+                <a href="https://www.x.com/theowncollab/" target="_blank" rel="noopener" aria-label="OPC on X"><i class='bxl bx-twitter-x' aria-hidden="true"></i></a>
             </div>
         </div>
+
         <div id="footer-newsletters">
-            <div id="footer-newsletters-title">
-                <span>SUBSCRIBE TO OUR NEWSLETTERS</span>
-            </div>
+            <h2>Newsletter</h2>
+            <p>New campaigns and events, now and then.</p>
             <div id="footer-newsletters-form">
                 <form>
-                    <input type="email" placeholder="" id="footer-newsletters-email" required />
-                    <label for="footer-newsletters-email">Email</label>
-                    <button type="button">SUBSCRIBE <i class='bx  bx-arrow-right-stroke'></i></button>
+                    <label for="footer-newsletters-email" class="sr-only">Email</label>
+                    <input type="email" id="footer-newsletters-email" placeholder="you@example.com" autocomplete="email" required />
+                    <button type="button">Subscribe</button>
                 </form>
             </div>
         </div>
     </div>
-    <div id="footer-bottom">
-        <p>&copy; 2025 Own Professional Collaboration. <a href="privacy-policy.html">Privacy
-                Policy</a> | <a href="terms-and-conditions.html">Terms & Conditions</a></p>
+    <div class="wrap" id="footer-bottom">
+        <p>&copy; 2025 Own Professional Collaboration. <a href="privacy-policy.html">Privacy policy</a> | <a href="terms-and-conditions.html">Terms and conditions</a></p>
     </div>
 </footer>

@@ -14,20 +14,30 @@
         const overlay = document.createElement('div');
         overlay.className = 'mobile-menu-overlay';
         overlay.innerHTML = `
-            <div class="mobile-menu-close"><i class="bx bx-x"></i></div>
-            <a href="./index.html">HOME</a>
-            <a href="./brands.html">BRANDS</a>
-            <a href="./event-partners.html">EVENT PARTNERS</a>
-            <a href="./creators.html">CREATORS</a>
-            <a href="./contact-us.html">CONTACT US</a>
-            <a href="./sign-in.html" class="mobile-menu-sign-in">SIGN IN <i class="bx bx-arrow-right-stroke"></i></a>
+            <div class="mobile-menu-close" role="button" tabindex="0" aria-label="Close menu"><i class="bx bx-x" aria-hidden="true"></i></div>
+            <a href="./index.html">Home</a>
+            <a href="./brands.html">Brands</a>
+            <a href="./creators.html">Creators</a>
+            <a href="./event-partners.html">Event partners</a>
+            <a href="./schedule-a-meet.html">Schedule a meet</a>
+            <a href="./contact-us.html">Contact us</a>
+            <a href="./sign-in.html" class="mobile-menu-sign-in">Sign in</a>
         `;
+        // Mark the page you're on.
+        const here = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/index';
+        overlay.querySelectorAll('a').forEach(function (link) {
+            if (new URL(link.href).pathname.replace(/\.html$/, '') === here) link.setAttribute('aria-current', 'page');
+        });
         document.body.appendChild(overlay);
 
         // Close button handler
-        overlay.querySelector('.mobile-menu-close').addEventListener('click', function () {
+        const close = overlay.querySelector('.mobile-menu-close');
+        close.addEventListener('click', function () {
             overlay.classList.remove('active');
             document.body.style.overflow = '';
+        });
+        close.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') close.click();
         });
 
         // Close on link click

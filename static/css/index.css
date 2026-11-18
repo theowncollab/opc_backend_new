@@ -1,660 +1,519 @@
-#hero-wrapper-duplicate {
-    width: 100%;
-    height: 100%;
-    background: url(../images/hero.jpeg) center/cover no-repeat;
-    position: fixed;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+/* Home page */
+
+.section-title {
+    font-size: clamp(2.25rem, 4.6vw, 4rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.95;
+    max-width: 22ch;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
-#hero-wrapper-1 {
-    width: 100%;
-    height: 76svh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-
+/* ---------- Hero: the agreement ---------- */
+#hero {
+    padding: clamp(3rem, 7vw, 6rem) 0 clamp(4rem, 8vw, 7rem);
+    overflow: hidden;
 }
 
-#hero-wrapper-2 {
-    width: 100%;
-    height: 12svh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    background: #0d0d0d;
-}
-
-#hero-left {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
     align-items: center;
-    background: transparent;
+    gap: clamp(2.5rem, 6vw, 6rem);
 }
 
-#hero-left-top {
-    width: 100%;
-    height: 44%;
-    background: transparent;
+.hero-name {
+    font-weight: 600;
+    font-size: var(--s-17);
+    margin-bottom: 1.25rem;
+}
+
+#hero h1 {
+    font-size: clamp(3rem, 6.4vw, 6.25rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+}
+
+.hero-lede {
+    font-size: var(--s-21);
+    line-height: 1.5;
+    max-width: 34ch;
+    margin: 1.75rem 0 2.25rem;
+}
+
+.hero-actions {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 }
 
-#hero-left-top-left {
-    width: 70%;
-    height: 100%;
-    background: #0d0d0d;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: 0.625rem;
-    /* 10px */
+/* The agreement is a sheet of paper on the yellow desk. */
+.agreement {
+    position: relative;
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    transform: rotate(1.5deg);
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.06),
+        0 30px 60px -24px rgba(90, 64, 0, 0.55);
 }
 
-#hero-left-top-left span.above {
-    color: rgba(255, 255, 255, 0.8);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.25rem;
-    /* 20px */
-    line-height: 1.25rem;
-    /* 20px */
-    font-weight: 500;
-    text-transform: uppercase;
-    word-spacing: 0.25rem;
-    font-style: italic;
-}
-
-#hero-left-top-left span.below {
-    color: rgba(204, 198, 192, 0.9);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.8125rem;
-    /* 13px */
-    line-height: 0.9375rem;
-    /* 15px */
-    font-weight: 300;
-    word-spacing: 0.15rem;
-    text-wrap: nowrap;
-    word-wrap: normal;
-}
-
-#hero-left-top-left .big-letter {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.875rem;
-    /* 30px */
-    line-height: 1.875rem;
-    /* 30px */
+.agreement-title {
+    font-family: var(--font-display);
     font-weight: 700;
+    font-stretch: 112%;
+    font-size: var(--s-21);
+    padding-bottom: 0.9rem;
+    border-bottom: 2px solid var(--ink);
 }
 
-#hero-left-top-right {
-    width: 30%;
-    height: 100%;
-    background: linear-gradient(to bottom, #0d0d0d, #0d0d0d80);
-    backdrop-filter: blur(0.1px);
-    box-shadow: 35px 100px 100px 10px rgba(120, 120, 120, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
+.agreement-clause {
+    font-size: var(--s-14);
+    line-height: 1.5;
+    color: var(--graphite);
+    margin: 0.9rem 0 1.5rem;
+    max-width: 44ch;
 }
 
-#hero-left-top-right span {
-    color: rgba(255, 235, 59, 0.7);
-    text-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
-    font-weight: 500;
-    text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.625rem;
-    /* 26px */
-    line-height: 1.625rem;
-    /* 26px */
-    font-weight: 600;
-    gap: 2px;
+.agreement-parties {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
 }
 
-#hero-left-top-right span:nth-child(1) {
-    padding-top: 1.875rem;
-    /* 30px */
+.agreement-parties li {
+    display: grid;
 }
 
-#hero-left-top-right span:nth-last-child(1) {
-    padding-top: 0.625rem;
-    /* 10px */
+/* Each name is signed above a dashed line, like a form. The line (on .role)
+   is there from the start; the name writes itself in. */
+.agreement-parties .sig {
+    font-family: var(--font-sign);
+    font-size: clamp(1.75rem, 2.6vw, 2.35rem);
+    line-height: 1.3;
+    padding: 0 0.25rem;
+    clip-path: inset(0 100% 0 0);
+    animation: sign 0.75s cubic-bezier(0.6, 0, 0.3, 1) forwards;
 }
 
-#hero-left-bottom {
-    width: 100%;
-    height: 50%;
-    background: #0d0d0d;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+.agreement-parties li:nth-child(1) .sig { animation-delay: 0.5s; }
+.agreement-parties li:nth-child(2) .sig { animation-delay: 1.25s; }
+.agreement-parties li:nth-child(3) .sig { animation-delay: 2s; }
+
+.agreement-parties .role {
+    font-size: var(--s-14);
+    color: var(--graphite);
+    padding-top: 0.3rem;
+    border-top: 1.5px dashed #a7a49b;
 }
 
-#hero-left-bottom #main-title {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 3.125rem;
-    /* 50px */
+.stamp {
+    position: absolute;
+    right: clamp(-1.5rem, -1vw, -0.5rem);
+    bottom: clamp(-2rem, -2vw, -1rem);
+    width: clamp(8rem, 12vw, 10.5rem);
+    color: var(--stamp-ink);
+    font-family: var(--font-display);
+    mix-blend-mode: multiply;
+    opacity: 0;
+    transform: rotate(-14deg) scale(1.7);
+    animation: stamp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.15) 2.85s forwards;
 }
 
-#hero-left-bottom #main-title #name {
-    width: max-content;
-    font-family: 'Poppins', sans-serif;
-    color: rgba(253, 216, 53, 0.7);
-    font-size: 10.625rem;
-    /* 170px */
-    line-height: 10.625rem;
-    /* 170px */
-    font-weight: 400;
-    font-style: normal;
+@keyframes sign {
+    to { clip-path: inset(0 0 0 0); }
 }
 
-#hero-left-bottom .line {
-    width: 100%;
-    height: 0.0625rem;
-    /* 1px */
-    background: rgba(253, 216, 53, 0.7);
+@keyframes stamp {
+    to {
+        opacity: 0.9;
+        transform: rotate(-14deg) scale(1);
+    }
 }
 
-#hero-left-bottom #main-links {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 3.125rem;
-    /* 50px */
-}
-
-#hero-left-bottom #main-links #buttons {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#hero-left-bottom #main-links #buttons button {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.75rem;
-    /* 12px */
-    line-height: 0.9375rem;
-    /* 15px */
-}
-
-#hero-middle {
-    width: 15%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #0d0d0d, #0d0d0d80);
-    backdrop-filter: blur(0.1px);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 1.875rem;
-    /* 30px */
-    gap: 0.125rem;
-    /* 2px */
-    cursor: pointer;
-}
-
-#hero-middle span {
-    color: rgba(255, 235, 59, 0.7);
-    text-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
-    font-weight: 500;
-    text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.625rem;
-    /* 26px */
-    line-height: 1.625rem;
-    /* 26px */
-    font-weight: 600;
-}
-
-#hero-middle span:nth-last-child(1) {
-    padding-top: 0.625rem;
-    /* 10px */
-}
-
-#hero-right {
-    width: 15%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #0d0d0d, #0d0d0d80);
-}
-
-#hero-right-top {
-    width: 100%;
-    height: 76%;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 1.875rem;
-    /* 30px */
-    cursor: pointer;
-}
-
-#hero-right-top span {
-    color: rgba(255, 235, 59, 0.7);
-    text-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
-    font-weight: 500;
-    text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.625rem;
-    /* 26px */
-    line-height: 1.625rem;
-    /* 26px */
-    font-weight: 600;
-    gap: 2px;
-}
-
-#hero-right-top span:nth-last-child(1) {
-    padding-top: 0.625rem;
-    /* 10px */
-}
-
-#hero-right-bottom {
-    width: 100%;
-    height: 18%;
-    background: #0d0d0d;
-    color: #ccc6c0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.9375rem;
-    /* 15px */
-    line-height: 1.25rem;
-    /* 20px */
-    word-spacing: 0.15rem;
-}
-
-#hero-right-bottom span span {
-    color: rgba(255, 238, 88, 0.7);
-    font-weight: 500;
-    text-transform: uppercase;
-}
-
-.adj {
-    width: 2%;
-    height: 100%;
-    background: #0d0d0d;
-}
-
-.adj-padd {
-    width: 10%;
-    height: 100%;
-    background: #0d0d0d;
-}
-
-.adj-horr {
-    width: 100%;
-    height: 6%;
-    background: #0d0d0d;
-}
-
-#home-section {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #0d0d0d;
-    /* gap: 3rem; */
-}
-
+/* ---------- Who it's for ---------- */
 #intro-section {
-    width: 100%;
+    padding: var(--band-y) 0;
+}
+
+.audiences {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* Each column stretches to the tallest; the button sits at the bottom so all three line up. */
+.audience {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    /* padding: 0 10%; */
-    /* gap: 3rem; */
+    align-items: flex-start;
 }
 
-#intro-section .intro-content {
-    width: 100%;
-    height: 100dvh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* align-items: flex-end; */
-    align-items: center;
-    box-sizing: border-box;
-    gap: 3rem;
-    background: #0d0d0d;
-    border-radius: 10rem;
-    padding: 0rem calc(10% + 2rem);
+.audience button {
+    margin-top: auto;
 }
 
-#intro-section .intro-content .intro-image {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#intro-section .intro-content .intro-image img {
+.audience img {
     width: 100%;
     height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 0 3rem rgba(255, 235, 59, 0.1)) brightness(0.8);
-    border-radius: 3rem;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
 }
 
-#intro-section .intro-content .intro-text {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    height: max-content;
+.audience h3 {
+    font-size: var(--s-36);
+    font-stretch: 75%;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
 }
 
-#intro-section .intro-content .intro-text .intro-text-description {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 3rem;
-    height: 100%;
-    box-sizing: border-box;
+.audience p {
+    color: var(--smoke);
+    max-width: 36ch;
+    margin-bottom: 1.5rem;
 }
 
-#intro-section .intro-content .intro-text .intro-text-description .main-title {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
+/* ---------- How it works ---------- */
+#how-it-works {
+    padding: var(--band-y) 0;
 }
 
-#intro-section .intro-content .intro-text .intro-text-description .main-title .title {
-    color: rgba(255, 235, 59, 0.7);
-    font-family: 'Poppins', sans-serif;
-    font-size: 3rem;
-    /* 40px */
-    line-height: 3rem;
-    /* 40px */
-    font-weight: 500;
-    text-transform: uppercase;
+.steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-#intro-section .intro-content .intro-text .intro-text-description .description {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: 5rem;
+.steps li {
+    counter-increment: step;
+    border-top: 2px solid var(--ink);
+    padding-top: 1rem;
 }
 
-#intro-section .intro-content .intro-text .intro-text-description .description span {
-    color: rgba(204, 198, 192, 0.9);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.5rem;
-    /* 16px */
-    line-height: 2rem;
-    /* 24px */
+.steps li::before {
+    content: counter(step);
+    display: block;
+    font-family: var(--font-display);
+    font-stretch: 75%;
+    font-weight: 300;
+    font-size: var(--s-64);
+    line-height: 1;
+    margin-bottom: 1rem;
 }
 
-.horr-line {
-    width: 100%;
-    height: 1px;
-    background: rgba(255, 235, 59, 0.7);
+/* As the steps scroll into view, the line over each one fills in, in order,
+   like a deal moving forward. Without motion, the lines are simply full. */
+.steps li {
+    position: relative;
 }
 
+.motion-ready .steps li {
+    border-top-color: var(--paper-line);
+}
+
+.motion-ready .steps li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2px;
+    height: 2px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.motion-ready .steps li::before {
+    opacity: 0.25;
+    transition: opacity 0.4s ease;
+}
+
+.motion-ready .steps.in-view li::after {
+    animation: step-fill 0.7s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+}
+
+.motion-ready .steps.in-view li::before {
+    opacity: 1;
+}
+
+.motion-ready .steps.in-view li:nth-child(2)::after,
+.motion-ready .steps.in-view li:nth-child(2)::before { animation-delay: 0.5s; transition-delay: 0.5s; }
+.motion-ready .steps.in-view li:nth-child(3)::after,
+.motion-ready .steps.in-view li:nth-child(3)::before { animation-delay: 1s; transition-delay: 1s; }
+.motion-ready .steps.in-view li:nth-child(4)::after,
+.motion-ready .steps.in-view li:nth-child(4)::before { animation-delay: 1.5s; transition-delay: 1.5s; }
+
+@keyframes step-fill {
+    to { transform: scaleX(1); }
+}
+
+.steps h3 {
+    font-size: var(--s-21);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.steps p {
+    color: var(--graphite);
+}
+
+/* ---------- FAQ ---------- */
 #faq-section {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 5rem 10%;
-    background: rgba(0, 0, 0, 1);
-    border-radius: 10rem;
-}
-
-#faq-title {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 3rem;
-    /* 40px */
-    line-height: 3.5rem;
-    /* 56px */
-    font-weight: 600;
-    color: rgba(255, 238, 88, 0.7);
+    padding: 0 0 var(--band-y);
 }
 
 #faq-wrapper {
-    width: 100%;
-    height: 88vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    padding-top: var(--band-y);
+    position: relative;
+}
+
+/* Rule between "How it works" and the questions, aligned with the content */
+#faq-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: var(--gutter);
+    right: var(--gutter);
+    border-top: 1px solid var(--paper-line);
+}
+
+#faq-title {
+    font-size: clamp(2.25rem, 4.6vw, 4rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.95;
+    margin-bottom: 2rem;
 }
 
 #faq-type-selector {
-    width: 40%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1rem;
-    transition: all 5s ease-in-out;
+    display: grid;
+    gap: 0.25rem;
+    margin-bottom: 2.5rem;
 }
 
-#faq-type-selector div:hover {
-    text-shadow: 0 0 1rem rgba(255, 238, 88, 0.1);
-    /* 16px -> rem */
-    color: rgba(255, 238, 88, 0.5);
-    cursor: pointer;
-    width: max-content;
-    gap: 1.5rem;
-}
-
-#faq-type-selector .selected {
-    color: rgba(255, 238, 88, 0.8);
-    text-shadow: 0 0 1.25rem rgba(255, 238, 88, 0.1);
-    /* 20px -> rem */
-    gap: 1.5rem;
-    cursor: default;
-}
-
-#faq-type-selector div {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+#faq-type-selector .faq-links {
     justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
-    /* 48px */
-    line-height: 2.5rem;
-    /* 48px */
-    cursor: pointer;
-    color: rgba(204, 198, 192, 1);
-    text-shadow: 0 0 1rem rgba(255, 238, 88, 0.3);
-    /* 16px -> rem */
+    background: transparent;
+    color: var(--graphite);
+    border: 0;
+    border-radius: var(--r-btn);
+    font-weight: 500;
+    padding: 0.7rem 1rem;
+    min-height: 2.75rem;
+    transform: none;
 }
 
-.faqs {
-    width: 60%;
-    height: 50vh;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 238, 88, 0.7) transparent;
-    overflow: auto;
-    box-sizing: border-box;
-    padding-right: 2rem;
-    overscroll-behavior: contain;
+#faq-type-selector .faq-links:hover {
+    color: var(--ink);
+    background: #f0efe8;
 }
 
+#faq-type-selector .faq-links.selected {
+    background: var(--signal);
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.faqs.hidden {
+    display: none;
+}
+
+/* Switching between General / For brands / ... fades the new list in. */
+.faqs:not(.hidden) {
+    animation: faq-swap 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes faq-swap {
+    from { opacity: 0; transform: translateY(10px); }
+}
+
+/* The open question morphs into a yellow card; the one you leave morphs back.
+   Both move at the same time, so it reads as one smooth change. */
 .faq-item {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 2rem;
-    background: #0d0d0d;
-    box-shadow: 0 0 1rem rgba(255, 238, 88, 0.1);
-    /* 50px -> rem */
-    border-radius: 0.5rem;
-    margin: 0 0 2rem 0;
+    border-bottom: 1px solid var(--paper-line);
+    border-radius: 0;
+    transition: background-color 0.4s ease, border-radius 0.4s ease, padding 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+        margin 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s ease;
+}
+
+.faq-item:first-child {
+    border-top: 1px solid var(--paper-line);
+}
+
+.faq-item:has(.faq-answer:not(.hidden)) {
+    background: var(--signal);
+    border-radius: 18px;
+    border-color: transparent;
+    padding: 0 1.25rem;
+    margin: 0.5rem 0;
 }
 
 .question-wrapper {
     width: 100%;
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    color: rgba(253, 216, 53, 0.7);
-    cursor: pointer;
+    gap: 1.5rem;
+    text-align: left;
+    background: transparent;
+    color: var(--ink);
+    border: 0;
+    border-radius: 0;
+    padding: 1.15rem 0;
+    font-family: var(--font-text);
+    font-size: var(--s-17);
+    font-weight: 600;
+    line-height: 1.4;
+    transform: none;
 }
 
-.faq-answer {
-    width: 100%;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    line-height: 1rem;
-    font-weight: 400;
-    color: rgba(204, 198, 192, 0.9);
-    margin-top: 1rem;
+.question-wrapper:hover {
+    transform: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
 }
 
-#contact-us-mini {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 10%;
+/* A plus that morphs into a minus (drawn in CSS instead of the chevron glyph). */
+.question-wrapper i {
+    flex: none;
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-#contact-us-mini-content {
-    width: 100%;
-    background: rgba(255, 238, 88, 0.5);
-    height: 40vh;
-    border-radius: 0.2rem 0.2rem 10rem 10rem;
-    box-shadow: inset 0 0 3.125rem 3.125rem rgba(255, 238, 88, 0.5);
-    /* 50px -> rem */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
+.question-wrapper i::before,
+.question-wrapper i::after {
+    content: '' !important;
+    position: absolute;
+    left: 28%;
+    right: 28%;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-#contact-us-mini-image {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-end;
-    padding-left: 10rem;
+.question-wrapper i::after {
+    transform: rotate(90deg);
 }
 
-#contact-us-mini-image img {
-    width: 350px;
-    height: auto;
+.question-wrapper i.rotate {
+    transform: rotate(180deg);
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--signal);
 }
 
-#contact-us-mini-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 5%;
-    gap: 3rem;
-}
-
-#contact-us-mini-text {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#contact-us-mini-text span {
-    width: 100%;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.5rem;
-    line-height: 2rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 1);
-    text-align: center;
-}
-
-#contact-us-mini-text span:nth-child(3) {
-    font-size: 1rem;
-    line-height: 2rem;
-}
-
-#contact-us-mini-button button {
-    color: rgba(255, 255, 255, 0.8) !important;
-    border-color: rgba(255, 255, 255, 1) !important;
-}
-
-#contact-us-mini-button button:hover {
-    color: rgba(0, 0, 0, 1) !important;
-    border-color: rgba(0, 0, 0, 1) !important;
-}
-
-.hidden {
-    display: none;
-}
-
-.rotate {
+.question-wrapper i.rotate::after {
     transform: rotate(180deg);
 }
 
-.lag-scroll {
-    position: sticky;
-    top: 0;
-    will-change: transform;
-    transition: transform 0.1s ease-out;
+/* Opening and closing slide the answer's height, instead of jumping. */
+.faq-answer {
+    display: grid;
+    grid-template-rows: 1fr;
+    color: var(--ink);
+    padding: 0 2.5rem 1.25rem 0;
+    max-width: 62ch;
+    opacity: 1;
+    transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.3s ease 0.1s, visibility 0s;
+}
+
+.faq-answer > span {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.faq-answer.hidden {
+    grid-template-rows: 0fr;
+    padding-bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.2s ease, visibility 0s linear 0.4s;
+}
+
+#contact-us-mini {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-radius: var(--r-panel);
+    background: #f0efe8;
+}
+
+#contact-us-mini img {
+    width: 5.5rem;
+    height: 5.5rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--signal);
+    object-fit: cover;
+    object-position: top;
+}
+
+#contact-us-mini p {
+    margin-bottom: 0.75rem;
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 1000px) {
+    .steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 860px) {
+    .hero-grid,
+    #faq-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .agreement {
+        max-width: 30rem;
+        margin-right: 1rem;
+    }
+    .audiences {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    #faq-type-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    #faq-type-selector .faq-links {
+        border: 1px solid var(--paper-line);
+        border-radius: 999px;
+        min-height: 2.5rem;
+        padding: 0.4rem 1rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .steps {
+        grid-template-columns: 1fr;
+    }
+    .faq-answer {
+        padding-right: 0;
+    }
 }

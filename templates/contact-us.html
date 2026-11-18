@@ -4,53 +4,54 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/contact-us.css">
-<link rel="stylesheet" href="/static/images/favicons/favicon.ico">
+<link rel="stylesheet" href="/static/css/forms.css?v=2">
 {% endblock %}
 
 
 {% block content %}
-<!-- Contact Us Start -->
-    <section id="contact-us-container">
-        <div id="contact-us-card">
-            <div id="logo">
-                <img src="/static/images/logo.png" alt="OPC Logo" />
-                <span>Own Professional Collaboration</span>
+<section class="form-page band-paper" id="contact-us-container">
+    <div class="wrap form-grid">
+        <aside class="form-aside band-ink" id="contact-us-card">
+            <h1>Leave us a message</h1>
+            <p>Tell us what you need and we’ll get back to you shortly.</p>
+            <div class="scene scene-chat" data-motion aria-hidden="true">
+                <p class="bubble you">Hi! Can OPC find creators for our café in Pune?</p>
+                <div class="reply-slot">
+                    <p class="bubble typing"><span></span><span></span><span></span></p>
+                    <p class="bubble opc">Yes, we can. Tell us a bit more and we’ll reply shortly.</p>
+                </div>
             </div>
-            <div id="slogan">
-                <span>leave us a message</span>
-                <span>we will reach out to you shortly</span>
+            <div class="form-aside-alt" id="extras">
+                <p>Rather talk it through?</p>
+                <button type="button" id="contact-us-schedule-a-meet-btn" class="secondary">Schedule a meet</button>
             </div>
-            <div id="extras">
-                <span>Want a one-on-one interaction? <button type="button" id="contact-us-schedule-a-meet-btn">SCHEDULE
-                        A MEET <i class='bx  bx-arrow-right-stroke'></i></button></span>
-            </div>
-        </div>
-        <div id="contact-us-form">
-            <span id="contact-us-title">Contact us</span>
+        </aside>
+        <div class="form-main" id="contact-us-form">
+            <h2 class="form-title" id="contact-us-title">Contact us</h2>
             <form>
                 <div class="input-box">
-                    <input type="text" id="contact-us-name" name="contact-us-name" placeholder="" required />
+                    <input type="text" id="contact-us-name" name="contact-us-name" placeholder=" " autocomplete="name" required />
                     <label for="contact-us-name">Name *</label>
                 </div>
                 <div class="input-box">
-                    <input type="email" id="contact-us-email" name="contact-us-email" placeholder="" required />
-                    <label for="contact-us-email">Contact Email *</label>
+                    <input type="email" id="contact-us-email" name="contact-us-email" placeholder=" " autocomplete="email" required />
+                    <label for="contact-us-email">Email *</label>
                 </div>
                 <div class="input-box">
-                    <input type="text" id="contact-us-subject" name="contact-us-subject" placeholder="" required />
+                    <input type="text" id="contact-us-subject" name="contact-us-subject" placeholder=" " required />
                     <label for="contact-us-subject">Subject *</label>
                 </div>
                 <div class="input-area-box">
-                    <textarea id="contact-us-message" name="contact-us-message" placeholder="" required></textarea>
+                    <textarea id="contact-us-message" name="contact-us-message" placeholder=" " required></textarea>
                     <label for="contact-us-message">Message *</label>
                 </div>
-                <button type="submit" id="contact-us-submit-button">SEND <i
-                        class='bx  bx-arrow-right-stroke'></i></button>
+                <div class="form-submit">
+                    <button type="submit" id="contact-us-submit-button">Send message</button>
+                </div>
             </form>
         </div>
-    </section>
-    <!-- Contact Us End -->
+    </div>
+</section>
 {% endblock %}
 
 

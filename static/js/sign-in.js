@@ -6,17 +6,14 @@ const OUR_CLIENT_ID = '828246651523-ulnokv5h94loanmj3pd8t8ud6kc72ov5.apps.google
 
 let selectedUserType = null;
 
-function handleCredentialResponse(response) {
-    const idToken = response.credential;
-    fetch('/auth/google-sign-in', {
+// Save the tokens from sign-in, then open the dashboard.
+function finishSignIn(path, body) {
+    return fetch(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            google_id_token: idToken,
-            user_type: selectedUserType
-        }),
+        body: JSON.stringify(body),
     })
         .then(response => response.json())
         .then(data => {
@@ -25,7 +22,7 @@ function handleCredentialResponse(response) {
                 document.cookie = `accessToken=${data.access_token}; ${cookieOptions}`;
                 document.cookie = `refreshToken=${data.refresh_token}; ${cookieOptions}`;
                 document.cookie = `tokenType=${data.token_type}; ${cookieOptions}`;
-                window.location.href = window.DASHBOARD_URL;
+                window.location.href = window.DASHBOARD_URL || '/dashboard/';
             }
             else if (data.status_code == 400) {
                 alert(data.message);
@@ -37,6 +34,14 @@ function handleCredentialResponse(response) {
                 alert('An unexpected error occurred. Please try again later.');
             }
         })
+        .catch(() => alert("We couldn't reach OPC. Check your connection and try again."));
+}
+
+function handleCredentialResponse(response) {
+    finishSignIn('/auth/google-sign-in', {
+        google_id_token: response.credential,
+        user_type: selectedUserType
+    });
 }
 
 window.onload = () => {

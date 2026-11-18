@@ -1,0 +1,125 @@
+/* Privacy policy and terms: long reading on paper. */
+#privacy-policy-container,
+#tnc-container {
+    padding: clamp(3rem, 6vw, 5rem) var(--gutter) var(--band-y);
+}
+
+.privacy-wrapper,
+.tnc-wrapper {
+    max-width: 46rem;
+    margin: 0 auto;
+}
+
+.privacy-header,
+.tnc-header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.privacy-header h1,
+.tnc-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-stretch: 75%;
+    font-weight: 800;
+    line-height: 0.95;
+    margin-bottom: 1rem;
+    text-transform: none;
+}
+
+.last-updated,
+.tnc-dates,
+.tnc-company-details {
+    color: var(--graphite);
+    font-size: var(--s-14);
+    line-height: 1.7;
+}
+
+.tnc-company-details {
+    margin-bottom: 0.5rem;
+}
+
+.privacy-content,
+.tnc-content {
+    font-size: var(--s-17);
+    line-height: 1.7;
+}
+
+.privacy-content p,
+.tnc-content p {
+    margin-bottom: 1rem;
+}
+
+.privacy-content h2,
+.tnc-content h2 {
+    font-size: var(--s-28);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 2.75rem 0 1rem;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.privacy-content h3,
+.tnc-content h3 {
+    font-size: var(--s-21);
+    font-weight: 700;
+    margin: 1.75rem 0 0.6rem;
+}
+
+.privacy-content h4,
+.tnc-content h4 {
+    font-family: var(--font-text);
+    font-size: var(--s-17);
+    font-weight: 700;
+    margin: 1.25rem 0 0.4rem;
+}
+
+.privacy-content ul,
+.tnc-content ul {
+    padding-left: 1.25rem;
+    margin: 0 0 1rem;
+}
+
+.privacy-content li,
+.tnc-content li {
+    margin-bottom: 0.4rem;
+}
+
+.privacy-content li::marker,
+.tnc-content li::marker {
+    color: var(--graphite);
+}
+
+/* Contents list on the terms page */
+.tnc-toc {
+    background: #f0efe8;
+    border-radius: var(--r-panel);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.tnc-toc h3 {
+    margin-top: 0;
+    font-size: var(--s-17);
+    text-transform: none;
+}
+
+.tnc-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 2 16rem;
+    column-gap: 2rem;
+}
+
+.tnc-toc li a {
+    text-decoration: none;
+}
+
+.tnc-toc li a:hover {
+    text-decoration: underline;
+}
+
+.tnc-section {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+}

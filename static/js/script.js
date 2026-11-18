@@ -45,8 +45,10 @@ function isTokenExpired(token) {
   }
 }
 
+// Signed-in visitors go to the dashboard. DASHBOARD_URL is set per deployment
+// (base.html); it falls back to the dashboard served by this site at /dashboard/.
 function changePage() {
-  window.location.href = 'https://dashboard.theowncollab.com/';
+  window.location.href = window.DASHBOARD_URL || '/dashboard/';
 }
 
 async function initializeHeader() {
@@ -104,78 +106,61 @@ function initializeWorkInProgress() {
   }
 }
 
+// The site's own alert: a small paper card instead of the browser's box.
 function alert(message) {
   const alertOverlay = document.createElement('div');
+  alertOverlay.setAttribute('role', 'alertdialog');
+  alertOverlay.setAttribute('aria-modal', 'true');
   alertOverlay.style.cssText = `
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
+    inset: 0;
+    background-color: rgba(13, 13, 13, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000000;
-    backdrop-filter: blur(5px);
+    padding: 1.25rem;
   `;
 
   const alertBox = document.createElement('div');
   alertBox.style.cssText = `
-    background-color: #0d0d0d;
-    border: 1px solid rgba(255, 235, 59, 0.5);
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    font-family: 'Montserrat', sans-serif;
+    background-color: #fafaf7;
+    color: #0d0d0d;
+    border-top: 6px solid #ffe14a;
+    padding: 1.75rem;
+    border-radius: 16px;
+    max-width: 26rem;
+    width: 100%;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+    font-family: 'Mukta', system-ui, sans-serif;
   `;
 
   const msg = document.createElement('p');
   msg.innerText = message;
   msg.style.cssText = `
-    color: #fff;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    font-size: 1.125rem;
     line-height: 1.5;
+    margin: 0 0 1.5rem;
   `;
 
   const okBtn = document.createElement('button');
+  okBtn.type = 'button';
   okBtn.innerText = 'OK';
-  okBtn.style.cssText = `
-    background: rgba(255, 235, 59, 0.1);
-    color: rgba(255, 235, 59, 1);
-    border: 1px solid rgba(255, 235, 59, 0.7);
-    padding: 10px 30px;
-    font-family: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    outline: none;
-    margin: 0 auto;
-  `;
+  okBtn.style.cssText = 'margin-left: auto;';
 
-  okBtn.onmouseover = () => {
-    okBtn.style.background = 'rgba(255, 235, 59, 1)';
-    okBtn.style.color = '#000';
+  const close = () => {
+    document.removeEventListener('keydown', onKey);
+    alertOverlay.remove();
   };
-  okBtn.onmouseout = () => {
-    okBtn.style.background = 'rgba(255, 235, 59, 0.1)';
-    okBtn.style.color = 'rgba(255, 235, 59, 1)';
-  };
-
-  okBtn.onclick = () => {
-    document.body.removeChild(alertOverlay);
-  };
+  const onKey = (e) => { if (e.key === 'Escape' || e.key === 'Enter') close(); };
+  okBtn.onclick = close;
+  document.addEventListener('keydown', onKey);
 
   alertBox.appendChild(msg);
   alertBox.appendChild(okBtn);
   alertOverlay.appendChild(alertBox);
   document.body.appendChild(alertOverlay);
+  okBtn.focus();
 }
 
 window.onload = init;

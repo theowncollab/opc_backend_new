@@ -10,66 +10,69 @@ from datetime import datetime, timedelta, timezone
 from bson import ObjectId
 import jwt
 import os
-from utils.email_ import send_email_async
+from utils import email_
 from utils.emails_template_ import welcome_email
 
 router = APIRouter()
+
+async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks):
+    """Sign in the account for this email, or create it (needs user_type)."""
+    existing_perm_user = get({'email': email}, 'PERM_USERS', 'USERS')
+
+    if existing_perm_user:
+        user_id = str(existing_perm_user['_id'])
+        message = 'User signed in successfully'
+    else:
+        if not user_type:
+            return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
+
+        new_user = {
+            'email': email,
+            'user_type': user_type,
+            'last_logout_time': None
+        }
+        user_id = add(new_user, 'PERM_USERS', 'USERS')
+        message = 'User signed up and signed in successfully'
+
+        email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
+        background_tasks.add_task(
+            email_.send_email_async,
+            to_=new_user['email'],
+            from_=os.getenv('SMTP_USER'),
+            subject_=email_content['subject_'],
+            body_=email_content['body_']
+        )
+
+    access_token = await create_access_token(data={"sub": user_id})
+    refresh_token = await create_refresh_token(data={"sub": user_id})
+
+    return {
+        'status_code': 200,
+        'message': message,
+        'access_token': access_token,
+        'refresh_token': refresh_token,
+        'token_type': 'bearer'
+    }
+
 
 @router.post('/google-sign-in')
 async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTasks):
     try:
         try:
             id_info = id_token.verify_oauth2_token(
-                token_info.google_id_token, 
-                google_auth_requests.Request(), 
+                token_info.google_id_token,
+                google_auth_requests.Request(),
                 os.getenv('GOOGLE_CLIENT_ID')
             )
-        except Exception as e:
-            return {'status_code': 400, 'message': f'Invalid Google ID token'}
+        except Exception:
+            return {'status_code': 400, 'message': 'Invalid Google ID token'}
 
-        email = id_info['email']
-        existing_perm_user = get({'email': email}, 'PERM_USERS', 'USERS')
-        
-        user_id, message = None, ""
-
-        if existing_perm_user:
-            user_id = str(existing_perm_user['_id'])
-            message = 'User signed in successfully'
-        else:
-            if not token_info.user_type:
-                return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
-                
-            new_user = {
-                'email': email,
-                'user_type': token_info.user_type,
-                'last_logout_time': None
-            }
-            user_id = add(new_user, 'PERM_USERS', 'USERS')
-            message = 'User signed up and signed in successfully'
-            
-            email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
-            background_tasks.add_task(
-                send_email_async,
-                to_=new_user['email'],
-                from_=os.getenv('SMTP_USER'),
-                subject_=email_content['subject_'],
-                body_=email_content['body_']
-            )
-
-        access_token = await create_access_token(data={"sub": user_id})
-        refresh_token = await create_refresh_token(data={"sub": user_id})
-
-        return {
-            'status_code': 200, 
-            'message': message,
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'token_type': 'bearer'
-        }
+        return await _sign_in_by_email(id_info['email'], token_info.user_type, background_tasks)
 
     except Exception as e:
         print(f"Google Sign-In Error: {e}")
         return {'status_code': 500, 'message': 'Error during Google sign in.'}
+
 
 @router.post('/logout')
 async def logout(user_id: str = Depends(get_current_user)):

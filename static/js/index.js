@@ -33,7 +33,7 @@ if (schdBtn) {
 const kmBtn = document.getElementById("know-more-btn");
 if (kmBtn) {
     kmBtn.addEventListener("click", function() {
-        reRoute("index.html#intro-section");
+        reRoute("index.html#how-it-works");
     });
 }
 
