@@ -86,7 +86,8 @@ async def brand_account(user: dict = Depends(current_user)) -> dict:
 # ── OPC team ─────────────────────────────────────────────────────────────
 def _owner_emails() -> set[str]:
     """Bootstrap owners from the env so the first person can get in: STAFF_OWNER_EMAILS=a@x.com,b@x.com"""
-    return {e.strip().lower() for e in os.getenv('STAFF_OWNER_EMAILS', 'ceo@theowncollab.com').split(',') if e.strip()}
+    defaults = 'ceo@theowncollab.com,opc.owncollab@gmail.com,yashankrajvanshi@gmail.com'
+    return {e.strip().lower() for e in os.getenv('STAFF_OWNER_EMAILS', defaults).split(',') if e.strip()}
 
 
 def staff_member(user: dict = Depends(current_user)) -> dict:

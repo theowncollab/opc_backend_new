@@ -23,7 +23,7 @@ function finishSignIn(path, body) {
                 document.cookie = `accessToken=${data.access_token}; ${cookieOptions}`;
                 document.cookie = `refreshToken=${data.refresh_token}; ${cookieOptions}`;
                 document.cookie = `tokenType=${data.token_type}; ${cookieOptions}`;
-                window.location.href = window.DASHBOARD_URL || '/dashboard/';
+                window.location.href = data.redirect_url || window.DASHBOARD_URL || '/dashboard/';
             }
             else if (data.status_code == 400) {
                 alert(data.message);
