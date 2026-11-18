@@ -62,7 +62,7 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
             id_info = id_token.verify_oauth2_token(
                 token_info.google_id_token,
                 google_auth_requests.Request(),
-                os.getenv('GOOGLE_CLIENT_ID')
+                os.getenv('GOOGLE_CLIENT_ID', '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com')
             )
         except Exception:
             return {'status_code': 400, 'message': 'Invalid Google ID token'}

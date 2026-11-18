@@ -2,7 +2,7 @@ const isProduction = window.location.hostname.includes("theowncollab.com");
 const domainAttribute = isProduction ? "domain=.theowncollab.com;" : "";
 const cookieOptions = `${domainAttribute} path=/; max-age=604800; Secure; SameSite=Lax`;
 
-const OUR_CLIENT_ID = '828246651523-ulnokv5h94loanmj3pd8t8ud6kc72ov5.apps.googleusercontent.com';
+const OUR_CLIENT_ID = '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com';
 
 let selectedUserType = null;
 

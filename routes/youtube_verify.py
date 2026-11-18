@@ -37,7 +37,7 @@ class YouTubeBody(BaseModel):
 
 def _check_token(token: str) -> None:
     """The token must be live, made for OPC's Google client, and include the YouTube permission."""
-    client_id = os.getenv('GOOGLE_CLIENT_ID', '').strip()
+    client_id = os.getenv('GOOGLE_CLIENT_ID', '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com').strip()
     if not client_id:
         raise HTTPException(503, 'YouTube verification isn’t set up yet. Try again later.')
     try:
