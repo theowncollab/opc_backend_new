@@ -88,9 +88,9 @@ async def welcome_email(user_name, user_type):
 
                             <tr>
                                 <td style="padding: 40px 30px;">
-                                    <p style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;">Hello {{user_name or 'there'}},</p>
+                                    <p style="margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;">Hello {user_name or 'there'},</p>
                                     <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.6;">
-                                        Welcome to Own Professional Collaboration! We're thrilled to have you onboard as a <b>{{user_type}}</b>.
+                                        Welcome to Own Professional Collaboration! We're thrilled to have you onboard as a <b>{user_type}</b>.
                                     </p>
                                     <p style="margin: 0 0 15px 0; font-size: 12px; line-height: 1.2;">
                                         Get started by exploring your dashboard. We can't wait to see what you collaborate on!
