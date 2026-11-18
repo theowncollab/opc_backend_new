@@ -20,7 +20,10 @@ router = APIRouter()
 
 async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks):
     """Sign in the account for this email, or create it (needs user_type)."""
-    existing_perm_user = get({'email': email}, 'PERM_USERS', 'USERS')
+    email_clean = (email or '').strip().lower()
+    existing_perm_user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
+    if not existing_perm_user and email:
+        existing_perm_user = get({'email': email.strip()}, 'PERM_USERS', 'USERS')
 
     if existing_perm_user:
         user_id = str(existing_perm_user['_id'])
@@ -30,27 +33,40 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
             return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
 
         new_user = {
-            'email': email,
+            'email': email_clean,
             'user_type': user_type,
             'last_logout_time': None
         }
         user_id = add(new_user, 'PERM_USERS', 'USERS')
         message = 'User signed up and signed in successfully'
 
-        email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
-        background_tasks.add_task(
-            email_.send_email_async,
-            to_=new_user['email'],
-            from_=os.getenv('SMTP_USER'),
-            subject_=email_content['subject_'],
-            body_=email_content['body_']
-        )
+        try:
+            email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
+            background_tasks.add_task(
+                email_.send_email_async,
+                to_=new_user['email'],
+                from_=os.getenv('SMTP_USER'),
+                subject_=email_content['subject_'],
+                body_=email_content['body_']
+            )
+        except Exception as e:
+            print(f"[AUTH WARNING] Failed to queue welcome email: {e}")
 
     access_token = await create_access_token(data={"sub": user_id})
     refresh_token = await create_refresh_token(data={"sub": user_id})
 
     # Detect if user is staff/owner (e.g. opc.owncollab@gmail.com)
-    is_staff = email.lower() in _owner_emails() or bool(col(schema.TEAM).find_one({'email': email.lower()}))
+    is_staff = False
+    try:
+        if email_clean in _owner_emails():
+            is_staff = True
+        else:
+            team_doc = col(schema.TEAM).find_one({'email': email_clean})
+            is_staff = bool(team_doc)
+    except Exception as e:
+        print(f"[AUTH WARNING] Could not verify staff status for {email_clean}: {e}")
+        is_staff = False
+
     base_dashboard = os.getenv('DASHBOARD_URL', 'https://dashboard.opcown.com/').rstrip('/')
     redirect_url = f"{base_dashboard}/admin" if is_staff else f"{base_dashboard}/"
 
@@ -94,8 +110,10 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
         return await _sign_in_by_email(id_info['email'], token_info.user_type, background_tasks)
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Google Sign-In Error: {e}")
-        return {'status_code': 500, 'message': 'Error during Google sign in.'}
+        return {'status_code': 500, 'message': f'Error during Google sign in: {str(e)}'}
 
 
 @router.post('/logout')
