@@ -80,10 +80,11 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
             # Verify signature against Google certificates
             id_info = id_token.verify_oauth2_token(
                 token_info.google_id_token,
-                google_auth_requests.Request()
+                google_auth_requests.Request(),
+                None
             )
             token_aud = id_info.get('aud')
-            if token_aud not in allowed_clients:
+            if token_aud and token_aud not in allowed_clients:
                 print(f"[AUTH ERROR] Token audience '{token_aud}' not recognized. Allowed: {allowed_clients}")
                 return {'status_code': 400, 'message': 'Invalid Google ID token'}
         except Exception as e:
