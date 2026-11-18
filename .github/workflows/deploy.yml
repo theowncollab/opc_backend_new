@@ -1,0 +1,45 @@
+# Deploy to Cloud Run on every push to main, after the tests pass. See DEPLOY.md, step 11 (optional).
+# To turn on: finish the one-time Google setup in DEPLOY.md, then copy this file to
+# backend/.github/workflows/deploy.yml and push.
+# Needs repository secrets: GCP_PROJECT_ID, GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_DEPLOY_SERVICE_ACCOUNT.
+#
+# No Google key is stored in GitHub: GitHub proves who it is to Google (Workload Identity Federation).
+# Deploys keep the service's existing settings, secrets and scaling limits.
+name: Deploy backend
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Deploy
+        run: gcloud run deploy opc-backend --source . --region asia-south1 --quiet
