@@ -4,7 +4,7 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/forms.css?v=2">
+<link rel="stylesheet" href="/static/css/forms.css?v=3">
 {% endblock %}
 
 
@@ -40,12 +40,13 @@
                 </div>
                 <p id="google-sign-in-label">Then continue with</p>
                 <div id="google-sign-in">
-                    <div id="google-sign-in-btn"><i class='bxl bx-google' aria-hidden="true"></i> Google</div>
+                    <!-- Google draws its own button here (sign-in.js). Keep it visible: Google ignores clicks on a hidden button. -->
                     <div id="g_id_signin"></div>
-                    <div id="google-sign-in-overlay"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer;">
-                    </div>
+                    <div id="google-sign-in-overlay" title="Pick Brand, Creator or Event Partner first"></div>
                 </div>
+                <p id="google-sign-in-unavailable" class="form-error" role="alert" hidden>
+                    Google sign-in didn’t load. If you use an ad blocker or strict tracking prevention, allow opcown.com and reload, or try another browser.
+                </p>
                 <p class="form-fine">By signing in you agree to our <a href="./terms-and-conditions.html">terms</a> and <a href="./privacy-policy.html">privacy policy</a>.</p>
             </div>
         </div>
@@ -56,5 +57,5 @@
 
 {% block script %}
 <script src="https://accounts.google.com/gsi/client"></script>
-<script type="module" src="/static/js/sign-in.js?v=20261118c"></script>
+<script type="module" src="/static/js/sign-in.js?v=20261118d"></script>
 {% endblock %}

@@ -72,17 +72,41 @@ window.onload = () => {
         });
     });
 
+    renderGoogleButton();
+
+};
+
+// Google's own button, shown as Google draws it. It must stay visible: Google ignores
+// clicks on a hidden button (that's what broke the old look-alike button).
+// Google allows a width between 200 and 400 pixels.
+function renderGoogleButton() {
+    const holder = document.getElementById('g_id_signin');
+    const unavailable = document.getElementById('google-sign-in-unavailable');
+    const showUnavailable = () => { if (unavailable) unavailable.hidden = false; };
+
+    if (!window.google || !google.accounts || !google.accounts.id) {
+        showUnavailable();
+        return;
+    }
     google.accounts.id.initialize({
         client_id: OUR_CLIENT_ID,
         callback: handleCredentialResponse
     });
-
-    google.accounts.id.renderButton(
-        document.getElementById('g_id_signin'),
-        { type: 'standard' }
-    );
-
-};
+    const width = Math.max(200, Math.min(400, Math.floor(holder.parentElement.clientWidth)));
+    google.accounts.id.renderButton(holder, {
+        type: 'standard',
+        theme: 'filled_black',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'pill',
+        logo_alignment: 'left',
+        width: width
+    });
+    // If nothing has appeared after a few seconds, say so instead of leaving a dead space.
+    setTimeout(() => {
+        if (!holder.querySelector('iframe')) showUnavailable();
+    }, 5000);
+}
 
 const signInScheduleMeetBtn = document.getElementById('sign-in-schedule-a-meet-btn');
 signInScheduleMeetBtn.addEventListener('click', () => {
