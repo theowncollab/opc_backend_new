@@ -10,6 +10,11 @@ from database import schema
 def col(where: tuple):
     """Collection for a (database, collection) pair from database/schema.py."""
     db, name = where
+    # In MongoDB Atlas, 'admin' / 'ADMIN' is a system-reserved database name that
+    # standard database users cannot access. Map 'ADMIN' to 'OPC_ADMIN' on real
+    # MongoDB clusters, while keeping 'ADMIN' in mongomock tests.
+    if db == 'ADMIN' and not type(client).__module__.startswith('mongomock'):
+        db = 'OPC_ADMIN'
     return client[db][name]
 
 
@@ -113,7 +118,10 @@ def status_of(account: dict) -> str:
 # ── Side effects shared by every module ─────────────────────────────────
 def audit(actor: str, action: str, target: str) -> None:
     """Team console audit log. Insert-only: nothing updates or deletes these."""
-    col(schema.AUDIT).insert_one({'actor': actor, 'action': action, 'target': target, 'at': iso()})
+    try:
+        col(schema.AUDIT).insert_one({'actor': actor, 'action': action, 'target': target, 'at': iso()})
+    except Exception as e:
+        print(f"[AUDIT WARNING] Failed to record audit log: {e}")
 
 
 def open_conversation(brand: dict, creator: dict, subject: str, deal_code: str | None = None) -> str:

@@ -102,19 +102,32 @@ def _owner_emails() -> set[str]:
 def staff_member(user: dict = Depends(current_user)) -> dict:
     """The signed-in person's team record. 403 unless they're on the OPC team."""
     email = user['email'].lower()
-    member = col(schema.TEAM).find_one({'email': email})
-    if member and email in PERMANENT_OWNERS and member.get('role') != 'Owner':
-        # Added earlier with a smaller role: OPC's own account is always an Owner.
-        col(schema.TEAM).update_one({'_id': member['_id']}, {'$set': {'role': 'Owner'}})
-        member = col(schema.TEAM).find_one({'_id': member['_id']})
-    if not member and email in _owner_emails():
-        name = 'OPC' if email in PERMANENT_OWNERS else email.split('@')[0].title()
-        member = {'email': email, 'name': name, 'role': 'Owner', 'invited': False}
-        col(schema.TEAM).insert_one(dict(member))
+    is_owner = email in _owner_emails()
+
+    member = None
+    try:
         member = col(schema.TEAM).find_one({'email': email})
+        if member and email in PERMANENT_OWNERS and member.get('role') != 'Owner':
+            # Added earlier with a smaller role: OPC's own account is always an Owner.
+            col(schema.TEAM).update_one({'_id': member['_id']}, {'$set': {'role': 'Owner'}})
+            member = col(schema.TEAM).find_one({'_id': member['_id']})
+        if not member and is_owner:
+            name = 'OPC' if email in PERMANENT_OWNERS else email.split('@')[0].title()
+            doc = {'email': email, 'name': name, 'role': 'Owner', 'invited': False}
+            col(schema.TEAM).insert_one(dict(doc))
+            member = col(schema.TEAM).find_one({'email': email})
+        if member:
+            col(schema.TEAM).update_one({'_id': member['_id']}, {'$set': {'lastActive': iso(), 'invited': False}})
+    except Exception as e:
+        print(f"[STAFF WARNING] Team database access failed for {email}: {e}")
+
+    # Fallback: verified console owners (including opc.owncollab@gmail.com) are never locked out
+    if not member and is_owner:
+        name = 'OPC' if email in PERMANENT_OWNERS else email.split('@')[0].title()
+        return {'email': email, 'name': name, 'role': 'Owner', 'invited': False}
+
     if not member:
         raise HTTPException(403, 'This area is for the OPC team.')
-    col(schema.TEAM).update_one({'_id': member['_id']}, {'$set': {'lastActive': iso(), 'invited': False}})
     return member
 
 
