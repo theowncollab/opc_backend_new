@@ -19,7 +19,7 @@ from database import schema
 from utils import email_, fees_
 from utils.deps_ import require, staff_member
 from utils.helpers_ import (
-    audit, col, display_name, handle_of, iso, notify, now, oid, parse_iso, role_of, ser, status_of,
+    MEMBER_ROLES, audit, col, display_name, handle_of, iso, notify, now, oid, parse_iso, role_of, ser, status_of,
 )
 from utils.permissions_ import ROLE_PERMISSIONS, TEAM_ROLES
 
@@ -278,7 +278,7 @@ async def me(member: dict = Depends(staff_member)):
 
 @router.get('/overview')
 async def overview(member: dict = Depends(require('people.view'))):
-    accounts = list(col(schema.USERS).find())
+    accounts = [a for a in col(schema.USERS).find() if role_of(a) in MEMBER_ROLES]
     roles = [role_of(a) for a in accounts]
     today = now()
     monday = (today - timedelta(days=today.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
@@ -319,7 +319,7 @@ async def overview(member: dict = Depends(require('people.view'))):
 @router.get('/people')
 async def list_people(type: str = Query(''), status: str = Query(''), q: str = Query(''),
                       member: dict = Depends(require('people.view'))):
-    people = [_person(a) for a in col(schema.USERS).find()]
+    people = [_person(a) for a in col(schema.USERS).find() if role_of(a) in MEMBER_ROLES]
     needle = q.strip().lower()
     out = [
         p for p in people

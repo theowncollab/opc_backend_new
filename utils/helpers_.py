@@ -80,7 +80,12 @@ ROLE_ALIASES = {
     'event partner': 'event_partner',
     'event_partner': 'event_partner',
     'eventpartner': 'event_partner',
+    'team': 'team',
 }
+
+# Account types that are platform members. "team" accounts belong to the OPC team
+# (created when a team email signs in for the first time) and aren't listed as people.
+MEMBER_ROLES = ('creator', 'brand', 'event_partner')
 
 
 def role_of(account: dict) -> str:

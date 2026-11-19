@@ -155,11 +155,12 @@ function handleCredentialResponse(response) {
     })
     .then(res => res.json())
     .then(data => {
-        if (data.exists) {
-            // Existing user: sign in directly without popup
+        if (data.exists || data.is_staff) {
+            // Existing account, or the OPC team (e.g. opc.owncollab@gmail.com):
+            // sign in straight away, no role to pick. The team lands in the team console.
             finishSignIn('/auth/google-sign-in', {
                 google_id_token: response.credential,
-                user_type: selectedUserType || data.user_type
+                user_type: data.is_staff ? null : (selectedUserType || data.user_type)
             });
         } else {
             // New user: display modal to ask for username and confirm role
@@ -182,26 +183,22 @@ function handleCredentialResponse(response) {
 window.onload = () => {
 
     const types = document.querySelectorAll('.type');
-    const overlay = document.getElementById('google-sign-in-overlay');
 
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            // Dismiss overlay so Google sign in is directly accessible
-            overlay.style.display = 'none';
-        });
-    }
+    // No role is needed before Google: people who already have an account and the
+    // OPC team sign straight in. A role tile only pre-selects the role a new member
+    // confirms in the sign-up window afterwards.
+    const overlay = document.getElementById('google-sign-in-overlay');
+    if (overlay) overlay.remove();
 
     types.forEach(type => {
         type.addEventListener('click', () => {
             if (type.classList.contains('active')) {
                 type.classList.remove('active');
                 selectedUserType = null;
-                if (overlay) overlay.style.display = 'block';
             } else {
                 types.forEach(t => t.classList.remove('active'));
                 type.classList.add('active');
                 selectedUserType = type.innerText.trim();
-                if (overlay) overlay.style.display = 'none';
             }
         });
     });

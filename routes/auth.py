@@ -19,7 +19,8 @@ from database import schema
 
 router = APIRouter()
 
-USERNAME_MAX = 50  # same limit as the sign-in form's input
+USERNAME_MAX = 50
+  # same limit as the sign-in form's input
 
 
 def _allowed_google_clients() -> set:
@@ -62,6 +63,16 @@ def _clean_username(raw: Optional[str]) -> str:
     return ' '.join(text.split())[:USERNAME_MAX].strip()
 
 
+def _is_staff_email(email: str) -> bool:
+    """On the OPC team: a console owner (incl. opc.owncollab@gmail.com) or an invited member."""
+    email_clean = (email or '').strip().lower()
+    try:
+        return email_clean in _owner_emails() or bool(col(schema.TEAM).find_one({'email': email_clean}))
+    except Exception as e:
+        print(f"[AUTH WARNING] Could not verify staff status for {email_clean}: {e}")
+        return False
+
+
 @router.post('/check-user')
 async def check_user(body: CheckUserBody):
     """
@@ -70,6 +81,8 @@ async def check_user(body: CheckUserBody):
     Takes Google's sign-in token, not a bare email, so it only ever answers about
     the signed-in person's own address. It returns no names, so it can't be used
     to look up other people.
+
+    is_staff: the OPC team signs in straight away, with no role to pick.
     """
     try:
         info = _verify_google_token(body.google_id_token)
@@ -82,14 +95,22 @@ async def check_user(body: CheckUserBody):
             'status_code': 200,
             'exists': bool(user),
             'user_type': user.get('user_type') if user else None,
+            'is_staff': _is_staff_email(email_clean),
         }
     except Exception as e:
         print(f"[AUTH ERROR] Failed checking user: {e}")
         return {'status_code': 500, 'exists': False, 'message': 'Could not check your account. Try again.'}
 
 async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks, username: Optional[str] = None, google_name: Optional[str] = None):
-    """Sign in the account for this email, or create it (needs user_type)."""
+    """
+    Sign in the account for this email, or create it.
+
+    New members need a user_type (Brand / Creator / Event Partner). A new OPC team
+    email gets a "Team" account instead: no role to pick, no welcome email, and it
+    isn't listed among the platform's people.
+    """
     email_clean = (email or '').strip().lower()
+    is_staff = _is_staff_email(email_clean)
     existing_perm_user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
     if not existing_perm_user and email:
         existing_perm_user = get({'email': email.strip()}, 'PERM_USERS', 'USERS')
@@ -99,7 +120,9 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
         message = 'User signed in successfully'
         is_new = False
     else:
-        if not user_type:
+        if is_staff:
+            user_type = 'Team'
+        elif not user_type:
             return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
 
         display_name_val = (_clean_username(username) or _clean_username(google_name)
@@ -119,33 +142,23 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
         message = 'User signed up and signed in successfully'
         is_new = True
 
-        try:
-            email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
-            background_tasks.add_task(
-                email_.send_email_async,
-                to_=new_user['email'],
-                from_=os.getenv('SMTP_USER'),
-                subject_=email_content['subject_'],
-                body_=email_content['body_']
-            )
-        except Exception as e:
-            print(f"[AUTH WARNING] Failed to queue welcome email: {e}")
+        if not is_staff:  # team accounts don't get the member welcome email
+            try:
+                email_content = await welcome_email(new_user.get('name', ''), new_user.get('user_type', ''))
+                background_tasks.add_task(
+                    email_.send_email_async,
+                    to_=new_user['email'],
+                    from_=os.getenv('SMTP_USER'),
+                    subject_=email_content['subject_'],
+                    body_=email_content['body_']
+                )
+            except Exception as e:
+                print(f"[AUTH WARNING] Failed to queue welcome email: {e}")
 
     access_token = await create_access_token(data={"sub": user_id})
     refresh_token = await create_refresh_token(data={"sub": user_id})
 
-    # Detect if user is staff/owner (e.g. opc.owncollab@gmail.com)
-    is_staff = False
-    try:
-        if email_clean in _owner_emails():
-            is_staff = True
-        else:
-            team_doc = col(schema.TEAM).find_one({'email': email_clean})
-            is_staff = bool(team_doc)
-    except Exception as e:
-        print(f"[AUTH WARNING] Could not verify staff status for {email_clean}: {e}")
-        is_staff = False
-
+    # The OPC team (e.g. opc.owncollab@gmail.com) goes straight to the team console.
     base_dashboard = os.getenv('DASHBOARD_URL', 'https://dashboard.opcown.com/').rstrip('/')
     redirect_url = f"{base_dashboard}/admin" if is_staff else f"{base_dashboard}/"
 

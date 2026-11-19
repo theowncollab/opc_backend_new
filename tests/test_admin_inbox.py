@@ -130,3 +130,43 @@ def test_newsletter_list_export_and_remove(client, staff, db):
     # Signing up again after being removed puts them back on the list
     client.post('/api/newsletter', json={'email': 'a@x.com'})
     assert db['WEBSITE']['NEWSLETTER'].find_one({'email': 'a@x.com'})['status'] == 'subscribed'
+
+
+# ── The team signs in with no role to pick ──────────────────────────────
+def _google_is(monkeypatch, email):
+    from routes import auth as auth_routes
+    monkeypatch.setattr(auth_routes.id_token, 'verify_oauth2_token', lambda t, r, a: {
+        'email': email, 'email_verified': True,
+        'aud': '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com'})
+
+
+def test_first_team_sign_in_needs_no_role(client, db, mails, staff, monkeypatch):
+    _google_is(monkeypatch, 'opc.owncollab@gmail.com')
+    chk = client.post('/auth/check-user', json={'google_id_token': 't'}).json()
+    assert chk['exists'] is False and chk['is_staff'] is True  # the page signs in straight away
+
+    r = client.post('/auth/google-sign-in', json={'google_id_token': 't'}).json()  # no user_type
+    assert r['status_code'] == 200 and r['is_staff'] is True and r['redirect_url'].endswith('/admin')
+    [acct] = list(db['USERS']['PERM_USERS'].find({'email': 'opc.owncollab@gmail.com'}))
+    assert acct['user_type'] == 'Team'
+    assert mails == []  # no member welcome email for the team
+
+    h = {'Authorization': f"Bearer {r['access_token']}"}
+    assert client.get('/api/admin/me', headers=h).json()['role'] == 'Owner'
+    # A team account isn't one of the platform's people
+    people = client.get('/api/admin/people', headers=h).json()
+    assert all(p['email'] != 'opc.owncollab@gmail.com' for p in people)
+
+
+def test_invited_team_member_also_skips_the_role(client, db, monkeypatch):
+    db['ADMIN']['TEAM'].insert_one({'email': 'meera@theowncollab.com', 'name': 'Meera', 'role': 'Support'})
+    _google_is(monkeypatch, 'meera@theowncollab.com')
+    assert client.post('/auth/check-user', json={'google_id_token': 't'}).json()['is_staff'] is True
+    r = client.post('/auth/google-sign-in', json={'google_id_token': 't'}).json()
+    assert r['status_code'] == 200 and r['redirect_url'].endswith('/admin')
+
+
+def test_members_still_pick_a_role(client, db, monkeypatch):
+    _google_is(monkeypatch, 'newbrand@example.com')
+    assert client.post('/auth/check-user', json={'google_id_token': 't'}).json()['is_staff'] is False
+    assert client.post('/auth/google-sign-in', json={'google_id_token': 't'}).json()['status_code'] == 400

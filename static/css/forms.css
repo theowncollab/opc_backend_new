@@ -252,6 +252,13 @@
     font-weight: 500;
 }
 
+/* Role tiles are optional: only new members confirm a role, after Google. */
+#choose-user-type-hint {
+    color: var(--graphite);
+    font-size: var(--s-14);
+    margin: 0 0 0.75rem;
+}
+
 /* Google's own button, drawn by Google (sign-in.js picks the black, large, rounded style).
    It must stay visible and uncovered: Google ignores clicks on a hidden button, which is
    why the old look-alike button with Google's invisible one on top didn't work. */

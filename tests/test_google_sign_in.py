@@ -75,7 +75,7 @@ def test_check_user_and_custom_username(client, db, mails, monkeypatch):
 
     # Now they exist, and the answer carries their role but no name
     chk2 = client.post('/auth/check-user', json={'google_id_token': 't'}).json()
-    assert chk2 == {'status_code': 200, 'exists': True, 'user_type': 'Creator'}
+    assert chk2 == {'status_code': 200, 'exists': True, 'user_type': 'Creator', 'is_staff': False}
 
 
 def test_check_user_no_longer_accepts_a_bare_email(client, db, make_account):

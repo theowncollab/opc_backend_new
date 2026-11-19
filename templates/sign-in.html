@@ -4,7 +4,7 @@
 
 
 {% block style %}
-<link rel="stylesheet" href="/static/css/forms.css?v=4">
+<link rel="stylesheet" href="/static/css/forms.css?v=5">
 {% endblock %}
 
 
@@ -29,20 +29,20 @@
             </div>
         </aside>
         <div class="form-main" id="sign-in-form">
-            <h2 class="form-title" id="title">Sign in as</h2>
+            <h2 class="form-title" id="title">Sign in</h2>
             <div id="direct-sign-in">
                 <div id="choose-user-type">
+                    <p id="choose-user-type-hint">New to OPC? Pick what you’re joining as. Already have an account? Just continue with Google.</p>
                     <div id="types" role="group" aria-label="I am a">
                         <button type="button" class="type"><i class='bx bx-store-alt' aria-hidden="true"></i>Brand</button>
                         <button type="button" class="type"><i class='bx bx-palette' aria-hidden="true"></i>Creator</button>
                         <button type="button" class="type"><i class='bx bx-calendar-star' aria-hidden="true"></i>Event Partner</button>
                     </div>
                 </div>
-                <p id="google-sign-in-label">Then continue with</p>
+                <p id="google-sign-in-label">Continue with</p>
                 <div id="google-sign-in">
                     <!-- Google draws its own button here (sign-in.js). Keep it visible: Google ignores clicks on a hidden button. -->
                     <div id="g_id_signin"></div>
-                    <div id="google-sign-in-overlay" title="Pick Brand, Creator or Event Partner first"></div>
                 </div>
                 <p id="google-sign-in-unavailable" class="form-error" role="alert" hidden>
                     Google sign-in didn’t load. If you use an ad blocker or strict tracking prevention, allow opcown.com and reload, or try another browser.
@@ -95,5 +95,5 @@
 
 {% block script %}
 <script src="https://accounts.google.com/gsi/client"></script>
-<script type="module" src="/static/js/sign-in.js?v=20261119a"></script>
+<script type="module" src="/static/js/sign-in.js?v=20261119b"></script>
 {% endblock %}
