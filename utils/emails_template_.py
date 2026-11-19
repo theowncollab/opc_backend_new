@@ -1,3 +1,6 @@
+from html import escape
+
+
 async def register_event_email(event_name):
     return {
         'subject_': 'New Event Registered',
@@ -58,8 +61,9 @@ async def register_event_email(event_name):
     }
 
 async def welcome_email(user_name, user_type):
-    name_display = (user_name or 'there').strip()
-    role_display = (user_type or 'Partner').strip().title()
+    # Escaped: the name is typed by the person signing up, so it must not become HTML.
+    name_display = escape((user_name or 'there').strip())
+    role_display = escape((user_type or 'Partner').strip().title())
 
     return {
         'subject_': 'Welcome to OPC!',

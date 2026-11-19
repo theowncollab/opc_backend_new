@@ -19,26 +19,73 @@ from database import schema
 
 router = APIRouter()
 
+USERNAME_MAX = 50  # same limit as the sign-in form's input
+
+
+def _allowed_google_clients() -> set:
+    allowed = {
+        '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com',
+        '828246651523-ulnokv5h94loanmj3pd8t8ud6kc72ov5.apps.googleusercontent.com',
+    }
+    env_client = os.getenv('GOOGLE_CLIENT_ID')
+    if env_client:
+        allowed.add(env_client.strip())
+    return allowed
+
+
+def _verify_google_token(token: str) -> Optional[dict]:
+    """
+    Claims of a Google ID token, or None if it isn't a valid sign-in for OPC.
+
+    - The signature is checked against Google's keys (verify_oauth2_token).
+    - The token must be issued to one of OPC's Google clients. A missing audience is refused.
+    - Google must have verified the email address, so nobody can sign in as an
+      address they don't own.
+    """
+    try:
+        info = id_token.verify_oauth2_token(token, google_auth_requests.Request(), None)
+    except Exception as e:
+        print(f"[AUTH ERROR] Google token verification failed: {e}")
+        return None
+    if info.get('aud') not in _allowed_google_clients():
+        print(f"[AUTH ERROR] Token audience '{info.get('aud')}' not recognized.")
+        return None
+    if not info.get('email') or str(info.get('email_verified', '')).lower() != 'true':
+        print("[AUTH ERROR] Google token has no verified email.")
+        return None
+    return info
+
+
+def _clean_username(raw: Optional[str]) -> str:
+    """Trim, drop control characters, squeeze spaces, cap at USERNAME_MAX."""
+    text = ''.join(ch for ch in (raw or '') if ch.isprintable())
+    return ' '.join(text.split())[:USERNAME_MAX].strip()
+
+
 @router.post('/check-user')
 async def check_user(body: CheckUserBody):
-    try:
-        email_clean = (body.email or '').strip().lower()
-        if not email_clean:
-            return {'status_code': 400, 'exists': False, 'message': 'Email is required.'}
-        
-        user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
-        if not user:
-            user = get({'email': body.email.strip()}, 'PERM_USERS', 'USERS')
+    """
+    Does the person who just signed in with Google already have an OPC account?
 
+    Takes Google's sign-in token, not a bare email, so it only ever answers about
+    the signed-in person's own address. It returns no names, so it can't be used
+    to look up other people.
+    """
+    try:
+        info = _verify_google_token(body.google_id_token)
+        if not info:
+            return {'status_code': 400, 'exists': False, 'message': 'Invalid Google ID token'}
+
+        email_clean = info['email'].strip().lower()
+        user = get({'email': email_clean}, 'PERM_USERS', 'USERS')
         return {
             'status_code': 200,
             'exists': bool(user),
             'user_type': user.get('user_type') if user else None,
-            'name': user.get('name') or user.get('username') if user else None
         }
     except Exception as e:
         print(f"[AUTH ERROR] Failed checking user: {e}")
-        return {'status_code': 500, 'exists': False, 'error': str(e)}
+        return {'status_code': 500, 'exists': False, 'message': 'Could not check your account. Try again.'}
 
 async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks, username: Optional[str] = None, google_name: Optional[str] = None):
     """Sign in the account for this email, or create it (needs user_type)."""
@@ -55,7 +102,8 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
         if not user_type:
             return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
 
-        display_name_val = (username or google_name or email_clean.split('@')[0]).strip()
+        display_name_val = (_clean_username(username) or _clean_username(google_name)
+                            or email_clean.split('@')[0][:USERNAME_MAX])
         new_user = {
             'email': email_clean,
             'name': display_name_val,
@@ -64,7 +112,7 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
             'last_logout_time': None,
             'profile': {
                 'displayName': display_name_val,
-                'legalName': google_name or display_name_val
+                'legalName': _clean_username(google_name) or display_name_val
             }
         }
         user_id = add(new_user, 'PERM_USERS', 'USERS')
@@ -116,27 +164,8 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
 @router.post('/google-sign-in')
 async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTasks):
     try:
-        try:
-            allowed_clients = {
-                '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com',
-                '828246651523-ulnokv5h94loanmj3pd8t8ud6kc72ov5.apps.googleusercontent.com',
-            }
-            env_client = os.getenv('GOOGLE_CLIENT_ID')
-            if env_client:
-                allowed_clients.add(env_client.strip())
-
-            # Verify signature against Google certificates
-            id_info = id_token.verify_oauth2_token(
-                token_info.google_id_token,
-                google_auth_requests.Request(),
-                None
-            )
-            token_aud = id_info.get('aud')
-            if token_aud and token_aud not in allowed_clients:
-                print(f"[AUTH ERROR] Token audience '{token_aud}' not recognized. Allowed: {allowed_clients}")
-                return {'status_code': 400, 'message': 'Invalid Google ID token'}
-        except Exception as e:
-            print(f"[AUTH ERROR] Google token verification failed: {e}")
+        id_info = _verify_google_token(token_info.google_id_token)
+        if not id_info:
             return {'status_code': 400, 'message': 'Invalid Google ID token'}
 
         return await _sign_in_by_email(
@@ -151,7 +180,7 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
         import traceback
         traceback.print_exc()
         print(f"Google Sign-In Error: {e}")
-        return {'status_code': 500, 'message': f'Error during Google sign in: {str(e)}'}
+        return {'status_code': 500, 'message': 'Error during Google sign in. Try again.'}
 
 
 @router.post('/logout')

@@ -146,11 +146,12 @@ function handleCredentialResponse(response) {
         return;
     }
 
-    // Check if this is an old or new user
+    // Old or new user? Send Google's token, not the email: the backend checks the
+    // token and only answers about the signed-in person's own account.
     fetch('/auth/check-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ google_id_token: response.credential })
     })
     .then(res => res.json())
     .then(data => {
