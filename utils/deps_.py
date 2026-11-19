@@ -84,18 +84,32 @@ async def brand_account(user: dict = Depends(current_user)) -> dict:
 
 
 # ── OPC team ─────────────────────────────────────────────────────────────
+# OPC's own account is always an Owner of the team console, whatever STAFF_OWNER_EMAILS says,
+# so no setting can lock the business out of its own console.
+PERMANENT_OWNERS = frozenset({'opc.owncollab@gmail.com'})
+
+
 def _owner_emails() -> set[str]:
-    """Bootstrap owners from the env so the first person can get in: STAFF_OWNER_EMAILS=a@x.com,b@x.com"""
-    defaults = 'ceo@theowncollab.com,opc.owncollab@gmail.com,yashankrajvanshi@gmail.com'
-    return {e.strip().lower() for e in os.getenv('STAFF_OWNER_EMAILS', defaults).split(',') if e.strip()}
+    """
+    Owners of the team console: PERMANENT_OWNERS plus STAFF_OWNER_EMAILS=a@x.com,b@x.com
+    (or the defaults below when that isn't set). Everyone else is invited from the console.
+    """
+    defaults = 'ceo@theowncollab.com,yashankrajvanshi@gmail.com'
+    listed = {e.strip().lower() for e in os.getenv('STAFF_OWNER_EMAILS', defaults).split(',') if e.strip()}
+    return set(PERMANENT_OWNERS) | listed
 
 
 def staff_member(user: dict = Depends(current_user)) -> dict:
     """The signed-in person's team record. 403 unless they're on the OPC team."""
     email = user['email'].lower()
     member = col(schema.TEAM).find_one({'email': email})
+    if member and email in PERMANENT_OWNERS and member.get('role') != 'Owner':
+        # Added earlier with a smaller role: OPC's own account is always an Owner.
+        col(schema.TEAM).update_one({'_id': member['_id']}, {'$set': {'role': 'Owner'}})
+        member = col(schema.TEAM).find_one({'_id': member['_id']})
     if not member and email in _owner_emails():
-        member = {'email': email, 'name': email.split('@')[0].title(), 'role': 'Owner', 'invited': False}
+        name = 'OPC' if email in PERMANENT_OWNERS else email.split('@')[0].title()
+        member = {'email': email, 'name': name, 'role': 'Owner', 'invited': False}
         col(schema.TEAM).insert_one(dict(member))
         member = col(schema.TEAM).find_one({'email': email})
     if not member:

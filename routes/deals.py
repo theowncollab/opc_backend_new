@@ -73,6 +73,8 @@ def campaign_out(c: dict) -> dict:
         'creators': int(c.get('creators') or 0),
         'cirs': int(c.get('cirs') or 0),
         'deadline': c.get('deadline') or '',
+        # Set when the OPC team paused or closed it (routes/admin_campaigns.py)
+        'teamReason': c.get('teamReason', ''),
     }
 
 
@@ -390,6 +392,8 @@ async def campaign_matches(campaign_id: str, brand: dict = Depends(brand_account
 async def reveal_creator(creator_id: str, body: RevealBody, brand: dict = Depends(brand_account)):
     """Show the creator's name, start a deal and the 6-month protection window, and open a chat."""
     campaign = _brand_campaign(body.campaignId, brand)
+    if campaign.get('status') in ('paused', 'closed'):
+        raise HTTPException(409, f"OPC has {campaign['status']} this campaign, so no new creators can be added. {campaign.get('teamReason', '')}".strip())
     creator = col(schema.USERS).find_one({'_id': oid(creator_id)})
     if not creator or role_of(creator) != 'creator' or status_of(creator) != 'active' or not creator.get('verified'):
         raise HTTPException(404, 'Creator not found.')

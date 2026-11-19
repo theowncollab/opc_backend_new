@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from routes import auth, contact_us, register_event
-from routes import config as config_routes, users, deals, chat, admin, admin_meetings, social_verify, meetings, youtube_verify
+from routes import config as config_routes, users, deals, chat, admin, admin_meetings, social_verify, meetings, youtube_verify, admin_inbox, admin_campaigns
 from urllib.parse import urlparse
 import os
 
@@ -70,6 +70,8 @@ app.include_router(router=admin.router, tags=["Team console"])
 app.include_router(router=admin_meetings.router, tags=["Team console: meetings"])
 app.include_router(router=social_verify.router, tags=["Instagram and Facebook verification"])
 app.include_router(router=youtube_verify.router, tags=["YouTube verification"])
+app.include_router(router=admin_inbox.router, tags=["Team console: website inbox"])
+app.include_router(router=admin_campaigns.router, tags=["Team console: campaigns"])
 app.include_router(router=meetings.router, tags=["Schedule a meet (website)"])
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

@@ -91,12 +91,14 @@ def seed() -> dict:
                      'city': 'Mumbai', 'website': 'https://stylekart.in', 'signatory': 'Rohan Kapoor', 'workEmail': 'ananya@stylekart.in'},
                     emailVerified=True)
     staff = account('ceo@theowncollab.com', 'Brand', {'company': 'OPC'})
+    # OPC's own Gmail: a permanent console Owner (utils/deps_.py PERMANENT_OWNERS)
+    opc = account('opc.owncollab@gmail.com', 'Brand', {'company': 'OPC'})
     newcomer = account('arjun.nair@email.com', 'Creator', {'legalName': 'Arjun Nair', 'displayName': '@arjun.eats', 'city': 'Kochi', 'niche': 'Food & Beverages'},
                        status='pending', verified=False)
     DB['MEET']['TIMINGS'].insert_one({'time_slots': ['10:00', '10:30', '11:00', '11:30', '15:00', '15:30', '16:00']})
 
     # 'newcomer' has no verified Instagram, for trying an invite link.
-    tokens = {'creator': token(creator), 'brand': token(brand), 'staff': token(staff), 'newcomer': token(newcomer)}
+    tokens = {'creator': token(creator), 'brand': token(brand), 'staff': token(staff), 'newcomer': token(newcomer), 'opc': token(opc)}
     c = TestClient(app)
     h = {k: {'Authorization': f'Bearer {v}'} for k, v in tokens.items()}
 
@@ -124,6 +126,13 @@ def seed() -> dict:
     ok(c.post('/api/meetings/book', json={'name': 'Rahul Verma', 'email': 'rahul@fitfuel.co.in', 'phone': '+91 98200 11223', 'userType': 'brand',
                                          'company': 'FitFuel Nutrition', 'topic': 'Planning a creator campaign for our new protein bars.',
                                          'date': tomorrow, 'time': '19:30'}))
+    # Website inbox: a contact message, a registered event and a newsletter sign-up
+    ok(c.post('/contact-us', json={'name': 'Kabir Malhotra', 'email': 'kabir@brewcafe.in', 'subject': 'Food creators in Pune',
+                                   'message': 'We run three cafés in Pune and want 4–5 food creators for our winter menu. Can OPC help?'}))
+    ok(c.post('/register-event', json={'name': 'Mood Indigo 2026', 'start_date': '2026-12-20T10:00', 'end_date': '2026-12-23T22:00',
+                                       'organizer': 'IIT Bombay', 'location': 'Mumbai', 'poc_email': 'sponsors@moodi.in',
+                                       'poc_name': 'Rhea Kapoor', 'poc_phone': 9876543210}))
+    ok(c.post('/api/newsletter', json={'email': 'neha.styles@gmail.com'}))
     return tokens
 
 

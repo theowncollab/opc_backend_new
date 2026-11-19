@@ -188,3 +188,41 @@ def test_cron_auto_approve(client, people, db):
     db['DEALS']['DEALS'].update_one({'code': deal_id}, {'$set': {'graceEndsOn': '2020-01-01T00:00:00Z'}})
     assert client.get('/cron/deals/auto-approve', headers=ok).json() == {'approved': 1}
     assert db['DEALS']['DEALS'].find_one({'code': deal_id})['stage'] == 'verify'
+
+
+# ── Team console: campaigns ──────────────────────────────────────────────
+def test_team_sees_every_campaign(client, people, staff):
+    new_campaign(client, people['h'](people['brand']))
+    new_campaign(client, people['h'](people['outsider']), name='Other launch')
+    rows = client.get('/api/admin/campaigns', headers=staff('Support')).json()
+    assert {(r['name'], r['brand']) for r in rows} == {('FashionFest Winter', 'StyleKart Fashion'), ('Other launch', 'Other Co')}
+
+
+def test_pause_blocks_new_deals_and_resume_restores(client, people, staff, db):
+    hb = people['h'](people['brand'])
+    camp = new_campaign(client, hb)
+    h = staff('Operations')
+    assert client.post(f"/api/admin/campaigns/{camp['id']}/pause", json={'reason': ''}, headers=h).status_code == 422
+    out = client.post(f"/api/admin/campaigns/{camp['id']}/pause", json={'reason': 'Brief breaks the creator rules'}, headers=h).json()
+    assert out['status'] == 'paused' and out['teamReason'] == 'Brief breaks the creator rules'
+
+    # The brand sees it, can't reveal creators from it, and was notified
+    mine = client.get('/api/campaigns?role=brand', headers=hb).json()[0]
+    assert mine['status'] == 'paused' and mine['teamReason'] == 'Brief breaks the creator rules'
+    r = client.post(f"/api/discover/creators/{people['priya']}/reveal?role=brand", json={'campaignId': camp['id']}, headers=hb)
+    assert r.status_code == 409
+    assert any('paused your campaign' in n['text'] for n in db['NOTIFY']['NOTIFICATIONS'].find())
+
+    back = client.post(f"/api/admin/campaigns/{camp['id']}/resume", headers=h).json()
+    assert back['status'] == 'matching' and back['teamReason'] == ''
+    assert client.post(f"/api/discover/creators/{people['priya']}/reveal?role=brand", json={'campaignId': camp['id']}, headers=hb).status_code == 200
+
+
+def test_close_and_permissions(client, people, staff):
+    camp = new_campaign(client, people['h'](people['brand']))
+    assert client.post(f"/api/admin/campaigns/{camp['id']}/close", json={'reason': 'Fake brand'}, headers=staff('Support')).status_code == 403
+    h = staff('Owner')
+    assert client.post(f"/api/admin/campaigns/{camp['id']}/close", json={'reason': 'Fake brand'}, headers=h).json()['status'] == 'closed'
+    assert client.post(f"/api/admin/campaigns/{camp['id']}/resume", headers=h).status_code == 409
+    assert client.post(f"/api/admin/campaigns/{camp['id']}/close", json={'reason': 'again'}, headers=h).status_code == 409
+    assert client.post('/api/admin/campaigns/nope/pause', json={'reason': 'x'}, headers=h).status_code == 404

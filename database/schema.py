@@ -66,6 +66,18 @@ ADMIN / COUNTERS      {_id: name, seq}                   for readable codes
 MEET / TIMINGS        (existing, admin_meet_controls) [{time_slots: ["10:00", ...]}]
 MEET / SCHEDULED_MEETS (existing) {date, time_slot, name?, email?, type?, blocked?}
 MEET / EXTRA_SLOTS    {date, time_slot}                  slots added for one day
+WEBSITE / CONTACT_MESSAGES {_id, name, email, subject, message, receivedAt,
+                       status ("new" | "replied" | "closed"), replies: [{by, at, text}]}
+WEBSITE / NEWSLETTER  {_id, email (lower case, unique), subscribedAt, source,
+                       status ("subscribed" | "unsubscribed"), removedAt, removedBy}
+EVENTS / REGISTERED_EVENTS (existing) {name, start_date, end_date, organizer, location,
+                       poc_email, poc_name, poc_phone}
+                       -- added for the team console --
+                       receivedAt, status ("new" | "contacted" | "listed" | "declined"),
+                       note, updatedBy, updatedAt
+DEALS / CAMPAIGNS     -- added for the team console --
+                       status may also be "paused" or "closed" (set by the OPC team);
+                       statusBefore (to resume), teamReason, teamBy, teamAt
 """
 
 USERS = ("USERS", "PERM_USERS")
@@ -88,3 +100,6 @@ COUNTERS = ("ADMIN", "COUNTERS")
 MEET_TIMINGS = ("MEET", "TIMINGS")
 MEET_BOOKINGS = ("MEET", "SCHEDULED_MEETS")
 MEET_EXTRA = ("MEET", "EXTRA_SLOTS")
+CONTACT_MESSAGES = ("WEBSITE", "CONTACT_MESSAGES")
+NEWSLETTER = ("WEBSITE", "NEWSLETTER")
+REGISTERED_EVENTS = ("EVENTS", "REGISTERED_EVENTS")
