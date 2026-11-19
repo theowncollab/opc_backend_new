@@ -14,7 +14,7 @@ import os
 from utils import email_
 from utils.emails_template_ import welcome_email
 from utils.deps_ import _owner_emails
-from utils.helpers_ import col
+from utils.helpers_ import col, role_of
 from database import schema
 
 router = APIRouter()
@@ -158,9 +158,19 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
     access_token = await create_access_token(data={"sub": user_id})
     refresh_token = await create_refresh_token(data={"sub": user_id})
 
-    # The OPC team (e.g. opc.owncollab@gmail.com) goes straight to the team console.
+    # The OPC team goes to the team console; creators and brands go straight to their dashboard.
     base_dashboard = os.getenv('DASHBOARD_URL', 'https://dashboard.opcown.com/').rstrip('/')
-    redirect_url = f"{base_dashboard}/admin" if is_staff else f"{base_dashboard}/"
+    if is_staff:
+        redirect_url = f"{base_dashboard}/admin"
+    else:
+        acct_doc = existing_perm_user if existing_perm_user else new_user
+        acct_role = role_of(acct_doc) if acct_doc else ''
+        if acct_role == 'creator':
+            redirect_url = f"{base_dashboard}/creator"
+        elif acct_role in ('brand', 'event_partner'):
+            redirect_url = f"{base_dashboard}/brand"
+        else:
+            redirect_url = f"{base_dashboard}/"
 
     return {
         'status_code': 200,
