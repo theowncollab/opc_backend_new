@@ -112,6 +112,34 @@ def test_invite_link_verifies_instagram_on_sign_up(client, make_account, auth, s
     assert again.status_code == 410 and 'already been used' in again.json()['detail']
 
 
+def test_google_sign_up_with_invite_token_auto_redeems(client, db, staff, monkeypatch):
+    import hashlib
+    from routes import auth as auth_routes
+    monkeypatch.setattr(auth_routes.id_token, 'verify_oauth2_token', lambda t, r, a: {
+        'email': 'priya.invited@example.com', 'email_verified': True, 'name': 'Priya Invited',
+        'aud': '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com'
+    })
+    h_team = staff('Operations')
+    made = client.post('/api/admin/invites', json={'handle': '@priya_creates', 'name': 'Priya', 'followers': 50000}, headers=h_team).json()
+    token = made['token']
+
+    # Sign up via google-sign-in with invite_token, omitting user_type
+    res = client.post('/auth/google-sign-in', json={'google_id_token': 'dummy', 'invite_token': token}).json()
+    assert res['status_code'] == 200
+    assert res['redirect_url'].endswith('/creator')
+
+    acct = db['USERS']['PERM_USERS'].find_one({'email': 'priya.invited@example.com'})
+    assert acct is not None
+    assert acct['user_type'] == 'Creator'
+    assert acct['socials'][0]['handle'] == '@priya_creates'
+    assert acct['socials'][0]['verified'] is True
+    assert acct['socials'][0]['via'] == 'invite'
+
+    # Check invite marked used
+    invite = db['ADMIN']['INVITES'].find_one({'token_hash': hashlib.sha256(f':{token}'.encode()).hexdigest()})
+    assert invite['usedAt'] is not None
+
+
 def test_invite_expiry_revoke_and_rules(client, make_account, auth, staff, db):
     h_team = staff('Owner')
     token = client.post('/api/admin/invites', json={'handle': '@late'}, headers=h_team).json()['token']

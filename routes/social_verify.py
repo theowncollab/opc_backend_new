@@ -269,6 +269,29 @@ async def view_invite(token: str):
     return {'handle': doc['handle'], 'name': doc.get('name') or '', 'expiresAt': doc['expiresAt'], 'status': invite_status(doc)}
 
 
+def redeem_invite_for_account(token: str, account: dict) -> bool:
+    """After sign-up: automatically verify the invite's Instagram handle on this creator account."""
+    try:
+        doc = _find_invite(token)
+        if invite_status(doc) != 'active':
+            return False
+        taken = col(schema.USERS).find_one({
+            '_id': {'$ne': account['_id']},
+            'socials': {'$elemMatch': {'platform': 'instagram', 'handle': doc['handle'], 'verified': True}},
+        })
+        if taken:
+            return False
+        _replace_social(account, {'platform': 'instagram', 'handle': doc['handle'], 'followers': int(doc.get('followers') or 0),
+                                  'verified': True, 'pending': False, 'verifiedOn': iso()[:10], 'via': 'invite'})
+        col(schema.VERIFICATION).delete_many({'personId': str(account['_id']), 'kind': 'social', 'platform': 'instagram'})
+        col(schema.INVITES).update_one({'_id': doc['_id']}, {'$set': {'usedAt': iso(), 'usedBy': str(account['_id']), 'usedByName': display_name(account)}})
+        audit('System', 'Used Instagram invite', f"{display_name(account)}: {doc['handle']}")
+        return True
+    except Exception as e:
+        print(f"[INVITE WARNING] Auto-redeem failed: {e}")
+        return False
+
+
 @router.post('/api/invites/{token}/redeem')
 async def redeem_invite(token: str, account: dict = Depends(creator_account)):
     """After sign-up: verify the invite's Instagram handle on this creator account. Single use."""

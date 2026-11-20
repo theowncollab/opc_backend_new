@@ -5,6 +5,7 @@ class GoogleToken(BaseModel):
     google_id_token: str
     user_type: Optional[str] = None
     username: Optional[str] = None
+    invite_token: Optional[str] = None
 
 class CheckUserBody(BaseModel):
     # Google's sign-in token, not a bare email: /auth/check-user only answers

@@ -5,7 +5,15 @@ const cookieOptions = `${domainAttribute} path=/; max-age=604800; Secure; SameSi
 
 const OUR_CLIENT_ID = '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com';
 
-let selectedUserType = null;
+const urlParams = new URLSearchParams(window.location.search);
+let inviteToken = urlParams.get('invite') || null;
+if (!inviteToken) {
+    try { inviteToken = localStorage.getItem('opc.invite'); } catch {}
+} else {
+    try { localStorage.setItem('opc.invite', inviteToken); } catch {}
+}
+
+let selectedUserType = inviteToken ? 'Creator' : null;
 let pendingGoogleToken = null;
 
 // Parse a JWT payload on the client without external libraries
@@ -37,6 +45,7 @@ function finishSignIn(path, body) {
         .then(response => response.json())
         .then(data => {
             if (data.status_code == 200) {
+                try { localStorage.removeItem('opc.invite'); } catch {}
                 alert(data.message);
                 document.cookie = `accessToken=${data.access_token}; ${cookieOptions}`;
                 document.cookie = `refreshToken=${data.refresh_token}; ${cookieOptions}`;
@@ -160,7 +169,17 @@ function handleCredentialResponse(response) {
             // sign in straight away, no role to pick. The team lands in the team console.
             finishSignIn('/auth/google-sign-in', {
                 google_id_token: response.credential,
-                user_type: data.is_staff ? null : (selectedUserType || data.user_type)
+                user_type: data.is_staff ? null : (selectedUserType || data.user_type),
+                invite_token: inviteToken || undefined
+            });
+        } else if (inviteToken) {
+            // Creator invited via Instagram link: skip asking what role to register as!
+            // Directly onboards them with the Creator tag.
+            finishSignIn('/auth/google-sign-in', {
+                google_id_token: response.credential,
+                user_type: 'Creator',
+                username: suggestedName || 'Creator',
+                invite_token: inviteToken
             });
         } else {
             // New user: display modal to ask for username and confirm role
@@ -175,7 +194,9 @@ function handleCredentialResponse(response) {
     .catch(() => {
         finishSignIn('/auth/google-sign-in', {
             google_id_token: response.credential,
-            user_type: selectedUserType
+            user_type: inviteToken ? 'Creator' : selectedUserType,
+            username: inviteToken ? (suggestedName || 'Creator') : undefined,
+            invite_token: inviteToken || undefined
         });
     });
 }
@@ -183,6 +204,23 @@ function handleCredentialResponse(response) {
 window.onload = () => {
 
     const types = document.querySelectorAll('.type');
+
+    if (inviteToken) {
+        selectedUserType = 'Creator';
+        const hint = document.getElementById('choose-user-type-hint');
+        if (hint) {
+            hint.innerHTML = 'You’ve been invited as a verified <strong>Creator</strong>! Continue with Google to activate your account.';
+        }
+        types.forEach(type => {
+            if (type.innerText.trim().toLowerCase() === 'creator') {
+                type.classList.add('active');
+            } else {
+                type.classList.remove('active');
+                type.disabled = true;
+                type.style.opacity = '0.4';
+            }
+        });
+    }
 
     // No role is needed before Google: people who already have an account and the
     // OPC team sign straight in. A role tile only pre-selects the role a new member

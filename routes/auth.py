@@ -101,13 +101,14 @@ async def check_user(body: CheckUserBody):
         print(f"[AUTH ERROR] Failed checking user: {e}")
         return {'status_code': 500, 'exists': False, 'message': 'Could not check your account. Try again.'}
 
-async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks, username: Optional[str] = None, google_name: Optional[str] = None):
+async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundTasks, username: Optional[str] = None, google_name: Optional[str] = None, invite_token: Optional[str] = None):
     """
     Sign in the account for this email, or create it.
 
-    New members need a user_type (Brand / Creator / Event Partner). A new OPC team
-    email gets a "Team" account instead: no role to pick, no welcome email, and it
-    isn't listed among the platform's people.
+    New members need a user_type (Brand / Creator / Event Partner). An invite token
+    automatically onboards them as Creator. A new OPC team email gets a "Team"
+    account instead: no role to pick, no welcome email, and it isn't listed among
+    the platform's people.
     """
     email_clean = (email or '').strip().lower()
     is_staff = _is_staff_email(email_clean)
@@ -122,6 +123,8 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
     else:
         if is_staff:
             user_type = 'Team'
+        elif invite_token:
+            user_type = 'Creator'
         elif not user_type:
             return {'status_code': 400, 'message': 'Please select a User Type before signing up.'}
 
@@ -154,6 +157,15 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
                 )
             except Exception as e:
                 print(f"[AUTH WARNING] Failed to queue welcome email: {e}")
+
+    # Redeem invite token if one was provided
+    target_acct = existing_perm_user if existing_perm_user else new_user
+    if invite_token and target_acct:
+        try:
+            from routes.social_verify import redeem_invite_for_account
+            redeem_invite_for_account(invite_token, target_acct)
+        except Exception as e:
+            print(f"[AUTH WARNING] Failed to auto-redeem invite: {e}")
 
     access_token = await create_access_token(data={"sub": user_id})
     refresh_token = await create_refresh_token(data={"sub": user_id})
@@ -196,7 +208,8 @@ async def google_sign_in(token_info: GoogleToken, background_tasks: BackgroundTa
             token_info.user_type,
             background_tasks,
             username=token_info.username,
-            google_name=id_info.get('name')
+            google_name=id_info.get('name'),
+            invite_token=token_info.invite_token
         )
 
     except Exception as e:
