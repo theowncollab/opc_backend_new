@@ -170,19 +170,28 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
     access_token = await create_access_token(data={"sub": user_id})
     refresh_token = await create_refresh_token(data={"sub": user_id})
 
-    # The OPC team goes to the team console; creators and brands go straight to their dashboard.
+    # The OPC team goes to the team console; creators and brands go to onboarding if incomplete, else their dashboard.
     base_dashboard = os.getenv('DASHBOARD_URL', 'https://dashboard.opcown.com/').rstrip('/')
     if is_staff:
         redirect_url = f"{base_dashboard}/admin"
     else:
         acct_doc = existing_perm_user if existing_perm_user else new_user
         acct_role = role_of(acct_doc) if acct_doc else ''
-        if acct_role == 'creator':
-            redirect_url = f"{base_dashboard}/creator"
-        elif acct_role in ('brand', 'event_partner'):
-            redirect_url = f"{base_dashboard}/brand"
+        is_onboarded = bool(((acct_doc or {}).get('onboarding') or {}).get('completedAt'))
+        if not is_onboarded:
+            if acct_role == 'creator':
+                redirect_url = f"{base_dashboard}/onboarding/creator"
+            elif acct_role in ('brand', 'event_partner'):
+                redirect_url = f"{base_dashboard}/onboarding/brand"
+            else:
+                redirect_url = f"{base_dashboard}/"
         else:
-            redirect_url = f"{base_dashboard}/"
+            if acct_role == 'creator':
+                redirect_url = f"{base_dashboard}/creator"
+            elif acct_role in ('brand', 'event_partner'):
+                redirect_url = f"{base_dashboard}/brand"
+            else:
+                redirect_url = f"{base_dashboard}/"
 
     return {
         'status_code': 200,

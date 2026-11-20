@@ -126,7 +126,7 @@ def test_google_sign_up_with_invite_token_auto_redeems(client, db, staff, monkey
     # Sign up via google-sign-in with invite_token, omitting user_type
     res = client.post('/auth/google-sign-in', json={'google_id_token': 'dummy', 'invite_token': token}).json()
     assert res['status_code'] == 200
-    assert res['redirect_url'].endswith('/creator')
+    assert res['redirect_url'].endswith('/onboarding/creator')
 
     acct = db['USERS']['PERM_USERS'].find_one({'email': 'priya.invited@example.com'})
     assert acct is not None
