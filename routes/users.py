@@ -34,8 +34,8 @@ OTP_MAX_PER_DAY = 5
 
 # Onboarding form keys copied into `profile`, per role.
 ONBOARDING_KEYS = {
-    'creator': ['legalName', 'displayName', 'city', 'niche', 'niche2', 'format', 'audience'],
-    'brand': ['company', 'industry', 'contact', 'designation', 'city', 'website', 'gstin', 'about', 'signatory'],
+    'creator': ['legalName', 'displayName', 'city', 'niche', 'niche2', 'format', 'audience', 'phone'],
+    'brand': ['company', 'industry', 'contact', 'designation', 'city', 'website', 'gstin', 'about', 'signatory', 'phone'],
 }
 # Profile keys editable after onboarding (needs a fresh emailed code).
 EDITABLE_KEYS = {
@@ -48,7 +48,7 @@ REQUIRED_KEYS = {
 }
 FIELD_LABELS = {
     'legalName': 'full legal name', 'displayName': 'creator name', 'city': 'city', 'niche': 'main niche',
-    'company': 'company name', 'industry': 'industry', 'contact': 'contact person',
+    'company': 'company name', 'industry': 'industry', 'contact': 'contact person', 'phone': 'phone number',
 }
 
 
@@ -147,7 +147,7 @@ def _issue_code(recipient: str, purpose: str, account_id: str | None, tasks: Bac
         'created': iso(),
     })
     body = f"<p>{intro}</p><p style='font-size:24px;letter-spacing:4px'><b>{code}</b></p><p>It expires in {OTP_MINUTES} minutes. If you didn’t ask for it, ignore this email.</p>"
-    tasks.add_task(email_.send_email_async, to_=recipient, from_=os.getenv('SMTP_USER'), subject_=subject, body_=body)
+    tasks.add_task(email_.send_email_async, to_=recipient, from_=os.getenv('SMTP_USER') or 'opc.owncollab@gmail.com', subject_=subject, body_=body)
 
 
 def _check_code(query: dict, code: str) -> None:

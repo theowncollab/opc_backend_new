@@ -147,6 +147,7 @@ def _person(account: dict) -> dict:
         'sub': sub or account.get('email', ''),
         'type': role,
         'email': account.get('email', ''),
+        'phone': profile.get('phone', ''),
         'city': profile.get('city', ''),
         'status': status_of(account),
         'verified': bool(account.get('verified', False)),
