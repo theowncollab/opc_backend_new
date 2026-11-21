@@ -116,6 +116,8 @@ def verify_youtube(body: YouTubeBody, account: dict = Depends(creator_or_brand))
     handle = (snippet.get('customUrl') or '').strip() or title
     hidden = bool(stats.get('hiddenSubscriberCount'))
     subscribers = 0 if hidden else int(stats.get('subscriberCount') or 0)
+    videos = int(stats.get('videoCount') or 0)
+    views = int(stats.get('viewCount') or 0)
 
     # One channel, one OPC person. The same person's creator and brand accounts may share it.
     taken = col(schema.USERS).find_one({
@@ -137,7 +139,8 @@ def verify_youtube(body: YouTubeBody, account: dict = Depends(creator_or_brand))
         'channelId': channel_id,
         'channelTitle': title,
         'hiddenSubscribers': hidden,
-        'videos': int(stats.get('videoCount') or 0),
+        'videos': videos,
+        'views': views,
     })
     audit('System', 'Verified YouTube channel with Google', f'{display_name(account)}: {title} ({handle}), {subscribers} subscribers')
     return {'socials': _socials_out(account['_id'])}

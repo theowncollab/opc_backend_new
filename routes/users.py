@@ -62,8 +62,8 @@ def _socials(account: dict) -> list:
             'followers': int(s.get('followers') or 0),
             'verified': bool(s.get('verified')),
         }
-        for key in ('verifiedOn', 'via', 'codeExpiresAt'):
-            if s.get(key):
+        for key in ('verifiedOn', 'via', 'codeExpiresAt', 'views', 'videos', 'channelTitle', 'channelId', 'hiddenSubscribers'):
+            if s.get(key) is not None:
                 item[key] = s[key]
         if s.get('pending'):
             item['pending'] = True
