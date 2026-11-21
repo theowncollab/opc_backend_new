@@ -14,7 +14,7 @@ import os
 from utils import email_
 from utils.emails_template_ import welcome_email
 from utils.deps_ import _owner_emails
-from utils.helpers_ import col, role_of
+from utils.helpers_ import col, now, role_of
 from database import schema
 
 router = APIRouter()
@@ -130,11 +130,14 @@ async def _sign_in_by_email(email: str, user_type, background_tasks: BackgroundT
 
         display_name_val = (_clean_username(username) or _clean_username(google_name)
                             or email_clean.split('@')[0][:USERNAME_MAX])
+        now_ts = now()
         new_user = {
             'email': email_clean,
             'name': display_name_val,
             'username': display_name_val,
             'user_type': user_type,
+            'joined': now_ts,
+            'createdAt': now_ts,
             'last_logout_time': None,
             'profile': {
                 'displayName': display_name_val,

@@ -77,7 +77,7 @@ def profile_of(account: dict) -> dict:
     p = account.get('profile') or {}
     common = {
         'id': str(account['_id']),
-        'memberSince': account.get('joined') or '',
+        'memberSince': account.get('joined') or account.get('createdAt') or now(),
         'status': status_of(account),
         'onboarded': bool((account.get('onboarding') or {}).get('completedAt')),
     }
