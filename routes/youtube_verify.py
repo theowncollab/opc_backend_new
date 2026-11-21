@@ -35,19 +35,40 @@ class YouTubeBody(BaseModel):
     access_token: str = Field(min_length=10, max_length=4096)
 
 
+def _allowed_clients() -> set:
+    env_client = os.getenv('GOOGLE_CLIENT_ID')
+    if env_client == '':
+        return set()
+    allowed = {
+        '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com',
+        '828246651523-ulnokv5h94loanmj3pd8t8ud6kc72ov5.apps.googleusercontent.com',
+    }
+    if env_client and env_client.strip():
+        allowed.add(env_client.strip())
+    return allowed
+
+
 def _check_token(token: str) -> None:
     """The token must be live, made for OPC's Google client, and include the YouTube permission."""
-    client_id = os.getenv('GOOGLE_CLIENT_ID', '448793401303-6serf6pei5g4ra81vd4i57nbhevqav6i.apps.googleusercontent.com').strip()
-    if not client_id:
+    allowed = _allowed_clients()
+    if not allowed:
         raise HTTPException(503, 'YouTube verification isn’t set up yet. Try again later.')
     try:
         res = requests.get(TOKENINFO_URL, params={'access_token': token}, timeout=TIMEOUT)
     except requests.RequestException:
         raise HTTPException(502, 'We couldn’t reach Google. Try again in a minute.')
     if res.status_code != 200:
+        print(f"[YOUTUBE_VERIFY ERROR] Google tokeninfo HTTP {res.status_code}: {getattr(res, 'text', '')}")
         raise HTTPException(400, 'Google didn’t accept that sign-in. Try again.')
     info = res.json()
-    if client_id not in (info.get('aud'), info.get('azp')):
+    token_clients = {
+        info.get('issued_to'),
+        info.get('audience'),
+        info.get('aud'),
+        info.get('azp'),
+    } - {None, ''}
+    if not token_clients.intersection(allowed):
+        print(f"[YOUTUBE_VERIFY ERROR] Token clients {token_clients} not in allowed {allowed}")
         raise HTTPException(400, 'Google didn’t accept that sign-in. Try again.')
     if YOUTUBE_SCOPE not in (info.get('scope') or '').split():
         raise HTTPException(400, 'OPC needs permission to see your YouTube account. Try again and tick the YouTube box.')
