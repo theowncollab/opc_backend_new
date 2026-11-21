@@ -755,7 +755,7 @@ async def reply_ticket(code: str, body: ReplyBody, bg: BackgroundTasks, member: 
 
 
 # ── Team ─────────────────────────────────────────────────────────────────
-EMAIL_RE = re.compile(r'^[^\s@]+@theowncollab\.com$', re.IGNORECASE)
+EMAIL_RE = re.compile(r'^[^\s@]+@(opcown\.com|theowncollab\.com)$', re.IGNORECASE)
 
 
 def _get_member(member_id: str) -> dict:
@@ -776,7 +776,7 @@ async def list_team(member: dict = Depends(staff_member)):
 async def invite_member(body: InviteBody, bg: BackgroundTasks, member: dict = Depends(require('team.manage'))):
     email = (body.email or '').strip().lower()
     if not EMAIL_RE.match(email):
-        raise HTTPException(422, 'Only @theowncollab.com addresses can join the team.')
+        raise HTTPException(422, 'Only @opcown.com or @theowncollab.com addresses can join the team.')
     if body.role not in TEAM_ROLES:
         raise HTTPException(422, f"Role must be one of: {', '.join(TEAM_ROLES)}.")
     if body.role == 'Owner':
